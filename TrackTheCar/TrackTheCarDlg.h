@@ -6,6 +6,21 @@
 
 // include the dialogs
 #include "CameraDialog.h"
+class CAboutDlg : public CDialogEx
+{
+public:
+    CAboutDlg();
+
+    // 对话框数据
+    enum { IDD = IDD_ABOUTBOX };
+
+protected:
+    virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+
+    // 实现
+protected:
+    DECLARE_MESSAGE_MAP()
+};
 
 // CTrackTheCarDlg 对话框
 class CTrackTheCarDlg : public CDialogEx
@@ -35,5 +50,10 @@ protected:
 public:
     // this is for all the function dialogs
     CCameraDialog m_dlg_camera;
+    CAboutDlg m_about;
     afx_msg void OnCapPic();
+    afx_msg void OnShowAbout();
 };
+
+// 用于应用程序“关于”菜单项的 CAboutDlg 对话框
+
