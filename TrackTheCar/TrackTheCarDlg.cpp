@@ -63,6 +63,7 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+    ON_COMMAND(ID_32775, &CTrackTheCarDlg::OnCapPic)
 END_MESSAGE_MAP()
 
 
@@ -151,3 +152,10 @@ HCURSOR CTrackTheCarDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CTrackTheCarDlg::OnCapPic()
+{
+    // TODO: 在此添加命令处理程序代码
+    m_dlg_camera.DoModal();
+}

@@ -4,6 +4,8 @@
 
 #pragma once
 
+// include the dialogs
+#include "CameraDialog.h"
 
 // CTrackTheCarDlg ¶Ô»°¿ò
 class CTrackTheCarDlg : public CDialogEx
@@ -29,4 +31,9 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+
+public:
+    // this is for all the function dialogs
+    CCameraDialog m_dlg_camera;
+    afx_msg void OnCapPic();
 };
