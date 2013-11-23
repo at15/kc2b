@@ -12,7 +12,7 @@ public:
     virtual bool Init(CWnd*dlg_hwnd,int nID);
     virtual IplImage* SetCurrentFrame(IplImage* new_frame);
     virtual IplImage* GetCurrentFrame();
-    void ShowBlack();
+    //void ShowBlack();
 private:
     IplImage* m_current_frame;
 

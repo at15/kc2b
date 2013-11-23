@@ -40,12 +40,18 @@ CCvPicCtrl::~CCvPicCtrl(void)
 /*virtual*/IplImage* CCvPicCtrl::GetCurrentFrame(){
     return m_current_frame;
 }
-
+/*
 void CCvPicCtrl::ShowBlack(){
     // make the pic_control black
     CDC MemDC;
-    MemDC.CreateCompatibleDC(NULL);  
+    CBitmap MemBmp;
+    MemDC.CreateCompatibleDC(NULL);
+    MemBmp.CreateCompatibleBitmap(pic_CDC,pic_rect.Width(),pic_rect.Height());
+    MemDC.SelectObject(&MemBmp);
     MemDC.FillSolidRect(pic_rect,RGB(0,0,0)); 
     HDC tDC = MemDC.GetSafeHdc();
     pic_CDC->StretchBlt(pic_rect.left,pic_rect.top,pic_rect.Width(),pic_rect.Height(),&MemDC,0,0,48,48,SRCCOPY);
-}
+    // clean up
+    MemBmp.DeleteObject();
+    MemDC.DeleteDC();
+}*/
