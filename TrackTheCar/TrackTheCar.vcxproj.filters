@@ -45,6 +45,12 @@
     <ClInclude Include="ConfigThreshold.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="CvPicCtrl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MyCvvImage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrackTheCar.cpp">
@@ -60,6 +66,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ConfigThreshold.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CvPicCtrl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MyCvvImage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
