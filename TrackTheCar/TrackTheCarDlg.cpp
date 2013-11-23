@@ -49,6 +49,7 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
     ON_COMMAND(ID_32775, &CTrackTheCarDlg::OnCapPic)
     ON_COMMAND(ID_32771, &CTrackTheCarDlg::OnShowAbout)
+    ON_COMMAND(ID_32774, &CTrackTheCarDlg::OnConfigThreshold)
 END_MESSAGE_MAP()
 
 
@@ -150,4 +151,11 @@ void CTrackTheCarDlg::OnShowAbout()
 {
     // TODO: 在此添加命令处理程序代码
     m_about.DoModal();
+}
+
+
+void CTrackTheCarDlg::OnConfigThreshold()
+{
+    // TODO: 在此添加命令处理程序代码
+    m_dlg_threshold.DoModal();
 }

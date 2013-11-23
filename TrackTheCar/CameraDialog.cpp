@@ -28,7 +28,16 @@ void CCameraDialog::DoDataExchange(CDataExchange* pDX)
 
 
 BEGIN_MESSAGE_MAP(CCameraDialog, CDialogEx)
+    ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
 // CCameraDialog 消息处理程序
+
+
+void CCameraDialog::OnTimer(UINT_PTR nIDEvent)
+{
+    // TODO: 在此添加消息处理程序代码和/或调用默认值
+
+    CDialogEx::OnTimer(nIDEvent);
+}

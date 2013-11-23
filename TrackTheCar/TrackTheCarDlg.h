@@ -6,6 +6,9 @@
 
 // include the dialogs
 #include "CameraDialog.h"
+#include "ConfigThreshold.h"
+
+// The about dialog
 class CAboutDlg : public CDialogEx
 {
 public:
@@ -48,12 +51,13 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
+    // 
+    CAboutDlg m_about;
     // this is for all the function dialogs
     CCameraDialog m_dlg_camera;
-    CAboutDlg m_about;
+    CConfigThreshold m_dlg_threshold;
+
     afx_msg void OnCapPic();
     afx_msg void OnShowAbout();
+    afx_msg void OnConfigThreshold();
 };
-
-// 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-
