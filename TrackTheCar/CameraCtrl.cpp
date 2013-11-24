@@ -125,10 +125,13 @@ bool CCameraCtrl::WriteVideo(){
 }*/
 
 bool CCameraCtrl::CloseVideo(){
-    if(capturing){
+    // the good practice of copying...
+    // if(capturing){
+    if(writing){
         cvReleaseVideoWriter(&m_video);
         m_video = NULL;
-        capturing = false;
+        //capturing = false;
+        writing = false;
         return true;
     }
     return false;
