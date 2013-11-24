@@ -6,6 +6,7 @@ CCameraCtrl::CCameraCtrl(void)
 {
     pic_ctrl_ready = false;
     capturing = false;
+    writing = false;
 }
 
 
@@ -14,6 +15,9 @@ CCameraCtrl::~CCameraCtrl(void)
     // if don't do this .. the program will not exit
     if(capturing){
         cvReleaseCapture(&m_capture);
+    }
+    if(writing){
+        cvReleaseVideoWriter(&m_video);
     }
 }
 
@@ -50,6 +54,53 @@ bool CCameraCtrl::CaptureAndShow(){
     frame=cvQueryFrame(m_capture); 
     SetCurrentFrame(frame);
     return true;
+}
+
+bool CCameraCtrl::InitVideo(const char* file_path,int fps  /*=25*/){
+    if(!capturing){
+        // start the cam if not started
+        if(!OpenCam()) return false;
+    }
+    m_video = NULL;
+    IplImage* frame=cvQueryFrame(m_capture); //get one frame to get the info
+    m_video_width = frame->width;
+    m_video_height = frame->height;
+    m_video_fps = fps;
+    m_video=cvCreateVideoWriter(file_path, CV_FOURCC('X', 'V', 'I', 'D'), fps,
+        cvSize(m_video_width,m_video_height));
+    if(!m_video)
+    {
+        // can't create video writer object
+        // video = NULL;
+        //width = 0;
+        // height = 0;
+        return false;
+    }
+    // set the path, may need it in the future
+    m_video_path = file_path;
+    writing = true;
+}
+
+bool CCameraCtrl::WriteVideo(){
+    if(!writing){
+        return false;
+    }
+    IplImage*  frame=cvQueryFrame(m_capture);
+    int n = cvWriteFrame(m_video,frame);
+    if(n == 1){
+        return true;
+    }
+    return false;
+}
+
+bool CCameraCtrl::CloseVideo(){
+    if(capturing){
+        cvReleaseVideoWriter(&m_video);
+        m_video = NULL;
+        capturing = false;
+        return true;
+    }
+    return false;
 }
 
 bool CCameraCtrl::IsCapturing(){
