@@ -7,19 +7,21 @@ public:
     ~CCameraCtrl(void);
 
 public:
+    // only use one of these two functions
+    // 1. CaptureAndShow()
+    // 2. WriteAndShow()
+
     bool Init(CWnd*dlg_hwnd,int nID);
+
     bool OpenCam(int index = -1);
     bool CloseCam();
     bool CaptureAndShow();
+
     bool InitVideo(const char* file_path,int fps = 25);
     bool InitVideoEx();// show the dialog 
     bool WriteAndShow();
-    //bool WriteVideo(); // this will lack half of screen because 
-    // you query a frame to show, but it is not stored into the video
-    // so don't use only one of the two funcs
-    // 1. CaptureAndShow()
-    // 2. WriteAndShow()
     bool CloseVideo();
+
     bool SaveImage(const char* file_path);
     bool SaveImageEx();// show the dialog
 

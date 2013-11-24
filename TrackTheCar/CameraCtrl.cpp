@@ -111,26 +111,10 @@ bool CCameraCtrl::WriteAndShow(){
     return false;
 }
 
-/*
-bool CCameraCtrl::WriteVideo(){
-    if(!writing){
-        return false;
-    }
-    IplImage*  frame=cvQueryFrame(m_capture);
-    int n = cvWriteFrame(m_video,frame);
-    if(n == 1){
-        return true;
-    }
-    return false;
-}*/
-
 bool CCameraCtrl::CloseVideo(){
-    // the good practice of copying...
-    // if(capturing){
     if(writing){
         cvReleaseVideoWriter(&m_video);
         m_video = NULL;
-        //capturing = false;
         writing = false;
         return true;
     }
