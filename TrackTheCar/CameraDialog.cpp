@@ -49,7 +49,7 @@ BOOL CCameraDialog::OnInitDialog()
     CDialogEx::OnInitDialog();
 
     // TODO:  在此添加额外的初始化
-    m_camera.Init(this,IDD_CAMERA_DIALOG);
+    m_camera.Init(this,IDC_SHOW_IMAGE); // should pass the pic ctrls id...
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
 }
@@ -59,4 +59,5 @@ void CCameraDialog::OnBnClickedOpenCam()
 {
     // TODO: 在此添加控件通知处理程序代码
     m_camera.OpenCam();
+    // now set the timer
 }
