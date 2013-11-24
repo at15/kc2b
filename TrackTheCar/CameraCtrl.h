@@ -14,11 +14,13 @@ public:
     bool WriteVideo();
     bool SaveImage(const char* file_path);
     bool SaveImage(const wchar_t* file_path);
+
+    bool IsCapturing();
+    bool IsWriting();
 private:
     //CCvPicCtrl m_pic_ctrl;
     bool pic_ctrl_ready;
-
     CvCapture* m_capture;
     bool capturing;
+    bool writing;
 };
-

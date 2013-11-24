@@ -51,3 +51,11 @@ bool CCameraCtrl::CaptureAndShow(){
     SetCurrentFrame(frame);
     return true;
 }
+
+bool CCameraCtrl::IsCapturing(){
+    return capturing;
+}
+
+bool CCameraCtrl::IsWriting(){
+    return writing;
+}

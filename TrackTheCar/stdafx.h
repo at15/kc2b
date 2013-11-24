@@ -56,3 +56,4 @@
 #endif
 
 #include "MyCvvImage.h"
+#include "StrConv.h"
