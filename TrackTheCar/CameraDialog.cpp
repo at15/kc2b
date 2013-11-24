@@ -30,6 +30,7 @@ void CCameraDialog::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CCameraDialog, CDialogEx)
     ON_WM_TIMER()
     ON_BN_CLICKED(IDC_OPEN_CAM, &CCameraDialog::OnBnClickedOpenCam)
+    ON_BN_CLICKED(IDC_CLOSE_CAM, &CCameraDialog::OnBnClickedCloseCam)
 END_MESSAGE_MAP()
 
 
@@ -39,7 +40,12 @@ END_MESSAGE_MAP()
 void CCameraDialog::OnTimer(UINT_PTR nIDEvent)
 {
     // TODO: 在此添加消息处理程序代码和/或调用默认值
+    if(SHOW_CAPTURE == nIDEvent){
+        m_camera.CaptureAndShow();
+    }
+    if(WRITE_VIDEO == nIDEvent){
 
+    }
     CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -60,4 +66,12 @@ void CCameraDialog::OnBnClickedOpenCam()
     // TODO: 在此添加控件通知处理程序代码
     m_camera.OpenCam();
     // now set the timer
+    SetTimer(SHOW_CAPTURE,20,NULL);
+}
+
+void CCameraDialog::OnBnClickedCloseCam()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    m_camera.CloseCam();
+    m_camera.ShowBlack();
 }

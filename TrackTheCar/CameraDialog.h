@@ -1,6 +1,10 @@
 #pragma once
 #include "CameraCtrl.h"
 
+// define the event ids
+#define SHOW_CAPTURE 1
+#define WRITE_VIDEO  2
+
 // CCameraDialog ¶Ô»°¿ò
 
 class CCameraDialog : public CDialogEx
@@ -25,4 +29,5 @@ public:
     // the pic ctrls
     CCameraCtrl m_camera;
     afx_msg void OnBnClickedOpenCam();
+    afx_msg void OnBnClickedCloseCam();
 };
