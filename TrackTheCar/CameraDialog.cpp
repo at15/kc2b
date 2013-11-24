@@ -29,6 +29,7 @@ void CCameraDialog::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(CCameraDialog, CDialogEx)
     ON_WM_TIMER()
+    ON_BN_CLICKED(IDC_OPEN_CAM, &CCameraDialog::OnBnClickedOpenCam)
 END_MESSAGE_MAP()
 
 
@@ -51,4 +52,11 @@ BOOL CCameraDialog::OnInitDialog()
     m_camera.Init(this,IDD_CAMERA_DIALOG);
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
+}
+
+
+void CCameraDialog::OnBnClickedOpenCam()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    m_camera.OpenCam();
 }

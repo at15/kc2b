@@ -24,4 +24,5 @@ public:
 public:
     // the pic ctrls
     CCameraCtrl m_camera;
+    afx_msg void OnBnClickedOpenCam();
 };

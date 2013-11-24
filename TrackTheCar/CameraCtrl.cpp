@@ -15,7 +15,8 @@ CCameraCtrl::~CCameraCtrl(void)
 
 bool CCameraCtrl::Init(CWnd*dlg_hwnd,int nID){
     // TODO:try to open the cam, if can't throw an error?
-    return m_pic_ctrl.Init(dlg_hwnd,nID);
+    pic_ctrl_ready = m_pic_ctrl.Init(dlg_hwnd,nID);
+    return pic_ctrl_ready;
 }
 
 bool CCameraCtrl::OpenCam(int index/*=-1*/){
