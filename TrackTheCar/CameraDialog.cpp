@@ -41,11 +41,12 @@ END_MESSAGE_MAP()
 
 void CCameraDialog::OnTimer(UINT_PTR nIDEvent)
 {
-    if(m_camera.IsCapturing()){
+    // TODO: this seems to have problem ..., will lack frame 
+    if(m_camera.IsCapturing()&& !m_camera.IsWriting()){
         m_camera.CaptureAndShow();
     }
     if(m_camera.IsWriting()){
-        m_camera.WriteVideo();
+        m_camera.WriteAndShow();
     }
     CDialogEx::OnTimer(nIDEvent);
 }
@@ -78,21 +79,11 @@ void CCameraDialog::OnBnClickedCloseCam()
 
 void CCameraDialog::OnBnClickedVideoCap()
 {
-    // open a dialog to let the user select file path 
-    CFileDialog video_file(FALSE,_T(".avi"),_T("test"),NULL,_T("AVI(*.avi)|*.avi|All Files(*.*)|*.*||"));
-    CString path;
-    if(video_file.DoModal()==IDOK){
-        path =video_file.GetPathName();
-        //AfxMessageBox(path);
+    if(m_camera.InitVideoEx()){
+        SetTimer(WRITE_VIDEO,20,NULL);
+    }else{
+        AfxMessageBox(_T("can't init video"));
     }
-    if(path.IsEmpty()) {
-        AfxMessageBox(_T("didn't specify file path!"));
-    }
-    // start capturing video
-    EZ::CStrConv sconv;
-    char* cpath = sconv.utf162utf8(path.GetBuffer());
-    m_camera.InitVideo(cpath);
-    SetTimer(WRITE_VIDEO,20,NULL);
 }
 
 

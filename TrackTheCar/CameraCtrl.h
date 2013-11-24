@@ -12,10 +12,16 @@ public:
     bool CloseCam();
     bool CaptureAndShow();
     bool InitVideo(const char* file_path,int fps = 25);
-    bool WriteVideo();
+    bool InitVideoEx();// show the dialog 
+    bool WriteAndShow();
+    //bool WriteVideo(); // this will lack half of screen because 
+    // you query a frame to show, but it is not stored into the video
+    // so don't use only one of the two funcs
+    // 1. CaptureAndShow()
+    // 2. WriteAndShow()
     bool CloseVideo();
     bool SaveImage(const char* file_path);
-    bool SaveImage(const wchar_t* file_path);
+    bool SaveImageEx();// show the dialog
 
     bool IsCapturing();
     bool IsWriting();

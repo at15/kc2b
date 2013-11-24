@@ -79,8 +79,39 @@ bool CCameraCtrl::InitVideo(const char* file_path,int fps  /*=25*/){
     // set the path, may need it in the future
     m_video_path = file_path;
     writing = true;
+    return true;
 }
 
+bool CCameraCtrl::InitVideoEx(){
+    // open a dialog to let the user select file path 
+    CFileDialog video_file(FALSE,_T(".avi"),_T("test"),NULL,_T("AVI(*.avi)|*.avi|All Files(*.*)|*.*||"));
+    CString path;
+    if(video_file.DoModal()==IDOK){
+        path =video_file.GetPathName();
+    }
+    if(path.IsEmpty()) {
+        AfxMessageBox(_T("didn't specify file path!"));
+        return false;
+    }
+    EZ::CStrConv sconv;
+    char* cpath = sconv.utf162utf8(path.GetBuffer());
+    return InitVideo(cpath);
+}
+
+bool CCameraCtrl::WriteAndShow(){
+    if(!writing){
+        return false;
+    }
+    IplImage*  frame=cvQueryFrame(m_capture);
+    SetCurrentFrame(frame);// show it
+    int n = cvWriteFrame(m_video,frame);
+    if(n == 1){
+        return true;
+    }
+    return false;
+}
+
+/*
 bool CCameraCtrl::WriteVideo(){
     if(!writing){
         return false;
@@ -91,7 +122,7 @@ bool CCameraCtrl::WriteVideo(){
         return true;
     }
     return false;
-}
+}*/
 
 bool CCameraCtrl::CloseVideo(){
     if(capturing){
