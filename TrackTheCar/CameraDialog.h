@@ -1,5 +1,5 @@
 #pragma once
-
+#include "CameraCtrl.h"
 
 // CCameraDialog ¶Ô»°¿ò
 
@@ -20,4 +20,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
     afx_msg void OnTimer(UINT_PTR nIDEvent);
+    virtual BOOL OnInitDialog();
+public:
+    // the pic ctrls
+    CCameraCtrl m_camera;
 };

@@ -40,7 +40,17 @@ CCvPicCtrl::~CCvPicCtrl(void)
 /*virtual*/IplImage* CCvPicCtrl::GetCurrentFrame(){
     return m_current_frame;
 }
-/*
+
+/*virtual*/ void CCvPicCtrl::AxisChange(){
+    // i does nothing right now
+}
+
+/* virtual */ void CCvPicCtrl::DebugImage(IplImage* frame,int delay/* = 2000*/){
+    cvNamedWindow("debug_image");
+    cvShowImage("debug_image",frame);
+    cvWaitKey(delay);
+}
+
 void CCvPicCtrl::ShowBlack(){
     // make the pic_control black
     CDC MemDC;
@@ -54,4 +64,4 @@ void CCvPicCtrl::ShowBlack(){
     // clean up
     MemBmp.DeleteObject();
     MemDC.DeleteDC();
-}*/
+}

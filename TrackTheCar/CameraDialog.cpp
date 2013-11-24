@@ -41,3 +41,14 @@ void CCameraDialog::OnTimer(UINT_PTR nIDEvent)
 
     CDialogEx::OnTimer(nIDEvent);
 }
+
+
+BOOL CCameraDialog::OnInitDialog()
+{
+    CDialogEx::OnInitDialog();
+
+    // TODO:  在此添加额外的初始化
+    m_camera.Init(this,IDD_CAMERA_DIALOG);
+    return TRUE;  // return TRUE unless you set the focus to a control
+    // 异常: OCX 属性页应返回 FALSE
+}
