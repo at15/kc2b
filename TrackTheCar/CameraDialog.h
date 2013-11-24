@@ -30,4 +30,5 @@ public:
     CCameraCtrl m_camera;
     afx_msg void OnBnClickedOpenCam();
     afx_msg void OnBnClickedCloseCam();
+    afx_msg void OnBnClickedVideoCap();
 };

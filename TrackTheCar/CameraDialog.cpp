@@ -31,6 +31,7 @@ BEGIN_MESSAGE_MAP(CCameraDialog, CDialogEx)
     ON_WM_TIMER()
     ON_BN_CLICKED(IDC_OPEN_CAM, &CCameraDialog::OnBnClickedOpenCam)
     ON_BN_CLICKED(IDC_CLOSE_CAM, &CCameraDialog::OnBnClickedCloseCam)
+    ON_BN_CLICKED(IDC_VIDEO_CAP, &CCameraDialog::OnBnClickedVideoCap)
 END_MESSAGE_MAP()
 
 
@@ -81,4 +82,20 @@ void CCameraDialog::OnBnClickedCloseCam()
     m_camera.CloseCam();
     m_camera.ShowBlack();
     KillTimer(SHOW_CAPTURE);
+}
+
+
+
+void CCameraDialog::OnBnClickedVideoCap()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    // open a dialog to let the user select file path 
+    CFileDialog video_file(FALSE,_T(".avi"),_T("test"),NULL,_T("AVI(*.avi)|*.avi|All Files(*.*)|*.*||"));
+    
+    if(video_file.DoModal()==IDOK){
+        CString path =video_file.GetPathName();
+        //path.Append(video_file.GetFileExt());
+        AfxMessageBox(path);
+        // TODO: why don't have the file extension?
+    } 
 }
