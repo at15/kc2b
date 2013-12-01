@@ -7,6 +7,7 @@ CCameraCtrl::CCameraCtrl(void)
     pic_ctrl_ready = false;
     capturing = false;
     writing = false;
+    m_pause = false;
 }
 
 
@@ -50,9 +51,11 @@ bool CCameraCtrl::CloseCam(){
 bool CCameraCtrl::CaptureAndShow(){
     if(!capturing) return false;
     // get a frame and show
-    IplImage* frame;  
-    frame=cvQueryFrame(m_capture); 
-    SetCurrentFrame(frame);
+    if(!m_pause){
+        IplImage* frame;  
+        frame=cvQueryFrame(m_capture); 
+        SetCurrentFrame(frame);
+    }
     return true;
 }
 
@@ -102,11 +105,13 @@ bool CCameraCtrl::WriteAndShow(){
     if(!writing){
         return false;
     }
-    IplImage*  frame=cvQueryFrame(m_capture);
-    SetCurrentFrame(frame);// show it
-    int n = cvWriteFrame(m_video,frame);
-    if(n == 1){
-        return true;
+    if(!m_pause){
+        IplImage*  frame=cvQueryFrame(m_capture);
+        SetCurrentFrame(frame);// show it
+        int n = cvWriteFrame(m_video,frame);
+        if(n == 1){
+            return true;
+        }
     }
     return false;
 }
@@ -134,6 +139,7 @@ bool CCameraCtrl::SaveImage(const char* file_path){
 }
 
 bool CCameraCtrl::SaveImageEx(){
+    Pause();
     // open a dialog to let the user select file path 
     CFileDialog pic_file(FALSE,_T(".jpg"),_T("test"),NULL,_T("JPG(*.jpg)|*.jpg|All Files(*.*)|*.*||"));
     CString path;
@@ -146,7 +152,16 @@ bool CCameraCtrl::SaveImageEx(){
     }
     EZ::CStrConv sconv;
     char* cpath = sconv.utf162utf8(path.GetBuffer());
+    Pause(false);
     return SaveImage(cpath);
+}
+
+void CCameraCtrl::Pause(bool stop/* = true*/){
+    if(stop){
+        m_pause = true;
+    }else{
+        m_pause = false;
+    }
 }
 
 bool CCameraCtrl::IsCapturing(){

@@ -25,6 +25,8 @@ public:
     bool SaveImage(const char* file_path);
     bool SaveImageEx();// show the dialog
 
+    void Pause(bool stop = true);// stop cap and writing 
+
     bool IsCapturing();
     bool IsWriting();
 private:
@@ -40,4 +42,7 @@ private:
     int m_video_width;
     int m_video_height;
     int m_video_fps;
+
+    // control the capture
+    bool m_pause;
 };
