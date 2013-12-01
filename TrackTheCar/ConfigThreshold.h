@@ -1,7 +1,9 @@
 #pragma once
 #include "afxcmn.h"
+#include "CvPicCtrl.h"
+#include "CameraCtrl.h"
 
-
+#define CONFIG_USE_CAM 1
 // CConfigThreshold ¶Ô»°¿ò
 
 class CConfigThreshold : public CDialogEx
@@ -20,6 +22,17 @@ protected:
 
 	DECLARE_MESSAGE_MAP()
 public:
+    CCameraCtrl m_camera;
+    CImageProc m_proc;
+
+    CCvPicCtrl m_h;
+    CCvPicCtrl m_s;
+    CCvPicCtrl m_v;
+    CCvPicCtrl m_b;
+    CCvPicCtrl m_g;
+    CCvPicCtrl m_r;
+    std::vector<CCvPicCtrl*> m_hsvbgr_ctrls;
+
     CSliderCtrl m_slider_h;
     CSliderCtrl m_slider_s;
     CSliderCtrl m_slider_v;
@@ -28,6 +41,10 @@ public:
     CSliderCtrl m_slider_r;
     std::vector<CSliderCtrl*> m_sliders;
     std::vector<int> m_threshold;// in h,s,v,b,g,r order
+
+    void CamProc();
     afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
     virtual BOOL OnInitDialog();
+    afx_msg void OnBnClickedConfigOpenCam();
+    afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
