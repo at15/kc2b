@@ -26,6 +26,8 @@ public:
     CSliderCtrl m_slider_b;
     CSliderCtrl m_slider_g;
     CSliderCtrl m_slider_r;
+    std::vector<CSliderCtrl*> m_sliders;
+    std::vector<int> m_threshold;// in h,s,v,b,g,r order
     afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
     virtual BOOL OnInitDialog();
 };

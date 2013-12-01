@@ -57,3 +57,4 @@
 
 #include "MyCvvImage.h"
 #include "StrConv.h"
+#include "ImageProc.h"
