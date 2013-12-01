@@ -35,7 +35,7 @@ CCvPicCtrl::~CCvPicCtrl(void)
     //IplImage* t = m_current_frame;
     //m_current_frame = new_frame;
    // return t;
-     cvReleaseImage(&m_current_frame);
+    // cvReleaseImage(&m_current_frame);
      m_current_frame = new_frame;
 }
 
