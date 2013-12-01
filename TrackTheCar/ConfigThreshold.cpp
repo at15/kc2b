@@ -61,6 +61,7 @@ BOOL CConfigThreshold::OnInitDialog()
 
     // TODO:  在此添加额外的初始化
     m_camera.Init(this,IDC_PIC_MAIN);
+    m_red_bin.Init(this,IDC_PIC_BINARY_RED);
 
     m_h.Init(this,IDC_PIC_H);
     m_hsvbgr_ctrls.push_back(&m_h);
@@ -130,9 +131,12 @@ void CConfigThreshold::CamProc(){
     m_camera.CaptureAndShow();
     // show h,s,v,b,g,r
     std::vector<IplImage*> hsvbgr = m_proc.GetHSVBGR(m_camera.GetCurrentFrame());
+    std::vector<IplImage*> hsvbgrBin;
     for(int i=0;i<6;i++){
-        m_hsvbgr_ctrls.at(i)->SetCurrentFrame(m_proc.ToBinary
-            (hsvbgr.at(i),m_threshold.at(i)));
+        IplImage* t_bin = m_proc.GetBinary(hsvbgr.at(i),m_threshold.at(i));
+        hsvbgrBin.push_back(t_bin);
+        m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
     }
+    m_red_bin.SetCurrentFrame(m_proc.GetRedBinary(hsvbgrBin));
     m_proc.releaseHSVBGR(hsvbgr);
 }

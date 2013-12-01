@@ -33,6 +33,8 @@ public:
     CCvPicCtrl m_r;
     std::vector<CCvPicCtrl*> m_hsvbgr_ctrls;
 
+    CCvPicCtrl m_red_bin;
+
     CSliderCtrl m_slider_h;
     CSliderCtrl m_slider_s;
     CSliderCtrl m_slider_v;

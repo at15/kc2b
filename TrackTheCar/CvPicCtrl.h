@@ -10,7 +10,7 @@ public:
 
 public:
     virtual bool Init(CWnd*dlg_hwnd,int nID);
-    virtual IplImage* SetCurrentFrame(IplImage* new_frame);
+    virtual void SetCurrentFrame(IplImage* new_frame);
     virtual IplImage* GetCurrentFrame();
     virtual void AxisChange(); // change the axis between mfc and real image
     virtual void DebugImage(IplImage* frame,int delay = 2000); // use open cv's high gui to show a image

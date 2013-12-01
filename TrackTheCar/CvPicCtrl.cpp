@@ -28,13 +28,15 @@ CCvPicCtrl::~CCvPicCtrl(void)
     return true;
 }
 
-/*virtual*/ IplImage* CCvPicCtrl::SetCurrentFrame(IplImage* new_frame){
+/*virtual*/ void CCvPicCtrl::SetCurrentFrame(IplImage* new_frame){
     CvvImage m_CvvImage;  
     m_CvvImage.CopyOf(new_frame,1);     
     m_CvvImage.DrawToHDC(pic_hDC, &pic_rect);
-    IplImage* t = m_current_frame;
-    m_current_frame = new_frame;
-    return t;
+    //IplImage* t = m_current_frame;
+    //m_current_frame = new_frame;
+   // return t;
+     cvReleaseImage(&m_current_frame);
+     m_current_frame = new_frame;
 }
 
 /*virtual*/IplImage* CCvPicCtrl::GetCurrentFrame(){
