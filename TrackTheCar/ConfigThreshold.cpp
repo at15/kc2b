@@ -62,41 +62,42 @@ BOOL CConfigThreshold::OnInitDialog()
     // TODO:  在此添加额外的初始化
     m_camera.Init(this,IDC_PIC_MAIN);
     m_red_bin.Init(this,IDC_PIC_BINARY_RED);
+    m_blue_bin.Init(this,IDC_PIC_BINARY_BLUE);
 
     m_h.Init(this,IDC_PIC_H);
     m_hsvbgr_ctrls.push_back(&m_h);
     m_slider_h.SetRange(0,255);
-    m_slider_h.SetPos(10);
+    //m_slider_h.SetPos(10);
     m_sliders.push_back(&m_slider_h);
 
     m_s.Init(this,IDC_PIC_S);
     m_hsvbgr_ctrls.push_back(&m_s);
     m_slider_s.SetRange(0,255);
-    m_slider_s.SetPos(10);
+    //m_slider_s.SetPos(10);
     m_sliders.push_back(&m_slider_s);
 
     m_v.Init(this,IDC_PIC_V);
     m_hsvbgr_ctrls.push_back(&m_v);
     m_slider_v.SetRange(0,255);
-    m_slider_v.SetPos(10);
+    //m_slider_v.SetPos(10);
     m_sliders.push_back(&m_slider_v);
 
     m_b.Init(this,IDC_PIC_B);
     m_hsvbgr_ctrls.push_back(&m_b);
     m_slider_b.SetRange(0,255);
-    m_slider_b.SetPos(10);
+    //m_slider_b.SetPos(10);
     m_sliders.push_back(&m_slider_b);
 
     m_g.Init(this,IDC_PIC_G);
     m_hsvbgr_ctrls.push_back(&m_g);
     m_slider_g.SetRange(0,255);
-    m_slider_g.SetPos(10);
+    //m_slider_g.SetPos(10);
     m_sliders.push_back(&m_slider_g);
 
     m_r.Init(this,IDC_PIC_R);
     m_hsvbgr_ctrls.push_back(&m_r);
     m_slider_r.SetRange(0,255);
-    m_slider_r.SetPos(10);
+    //m_slider_r.SetPos(10);
     m_sliders.push_back(&m_slider_r);
 
     // init the threshold value
@@ -106,6 +107,9 @@ BOOL CConfigThreshold::OnInitDialog()
     m_threshold.push_back(100);
     m_threshold.push_back(80);
     m_threshold.push_back(80);
+    for(int i=0;i<6;i++){
+        m_sliders.at(i)->SetPos(m_threshold.at(i));
+    }
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
@@ -140,7 +144,9 @@ void CConfigThreshold::CamProc(){
     IplImage* redbin = m_proc.GetRedBinary(hsvbgrBin);
     m_red_bin.SetCurrentFrame(redbin);
     IplImage* bluebin = m_proc.GetBlueBinary(hsvbgrBin);
+    m_blue_bin.SetCurrentFrame(bluebin);
     cvReleaseImage(&redbin);
+    cvReleaseImage(&bluebin);
     m_proc.releaseHSVBGR(hsvbgrBin);
     m_proc.releaseHSVBGR(hsvbgr);
 }
