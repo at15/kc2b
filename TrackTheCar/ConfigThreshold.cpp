@@ -137,7 +137,10 @@ void CConfigThreshold::CamProc(){
         hsvbgrBin.push_back(t_bin);
         m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
     }
-    m_red_bin.SetCurrentFrame(m_proc.GetRedBinary(hsvbgrBin));
+    IplImage* redbin = m_proc.GetRedBinary(hsvbgrBin);
+    m_red_bin.SetCurrentFrame(redbin);
+    IplImage* bluebin = m_proc.GetBlueBinary(hsvbgrBin);
+    cvReleaseImage(&redbin);
     m_proc.releaseHSVBGR(hsvbgrBin);
     m_proc.releaseHSVBGR(hsvbgr);
 }

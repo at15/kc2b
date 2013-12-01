@@ -34,6 +34,7 @@ public:
     std::vector<CCvPicCtrl*> m_hsvbgr_ctrls;
 
     CCvPicCtrl m_red_bin;
+    CCvPicCtrl m_blue_bin;
 
     CSliderCtrl m_slider_h;
     CSliderCtrl m_slider_s;
