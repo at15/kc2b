@@ -121,6 +121,34 @@ bool CCameraCtrl::CloseVideo(){
     return false;
 }
 
+bool CCameraCtrl::SaveImage(const char* file_path){
+
+    IplImage*  frame = GetCurrentFrame();
+    if(frame){
+        cvSaveImage(file_path,frame);
+        return true;
+    }else{
+        return false;
+    }
+
+}
+
+bool CCameraCtrl::SaveImageEx(){
+    // open a dialog to let the user select file path 
+    CFileDialog pic_file(FALSE,_T(".jpg"),_T("test"),NULL,_T("JPG(*.jpg)|*.jpg|All Files(*.*)|*.*||"));
+    CString path;
+    if(pic_file.DoModal()==IDOK){
+        path =pic_file.GetPathName();
+    }
+    if(path.IsEmpty()) {
+        AfxMessageBox(_T("didn't specify file path!"));
+        return false;
+    }
+    EZ::CStrConv sconv;
+    char* cpath = sconv.utf162utf8(path.GetBuffer());
+    return SaveImage(cpath);
+}
+
 bool CCameraCtrl::IsCapturing(){
     return capturing;
 }

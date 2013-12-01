@@ -32,4 +32,5 @@ public:
     afx_msg void OnBnClickedCloseCam();
     afx_msg void OnBnClickedVideoCap();
     afx_msg void OnBnClickedVideoCapStop();
+    afx_msg void OnBnClickedSaveImage();
 };

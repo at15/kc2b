@@ -33,6 +33,7 @@ BEGIN_MESSAGE_MAP(CCameraDialog, CDialogEx)
     ON_BN_CLICKED(IDC_CLOSE_CAM, &CCameraDialog::OnBnClickedCloseCam)
     ON_BN_CLICKED(IDC_VIDEO_CAP, &CCameraDialog::OnBnClickedVideoCap)
     ON_BN_CLICKED(IDC_VIDEO_CAP_STOP, &CCameraDialog::OnBnClickedVideoCapStop)
+    ON_BN_CLICKED(IDC_SAVE_IMAGE, &CCameraDialog::OnBnClickedSaveImage)
 END_MESSAGE_MAP()
 
 
@@ -92,4 +93,11 @@ void CCameraDialog::OnBnClickedVideoCapStop()
     // TODO: 在此添加控件通知处理程序代码
     m_camera.CloseVideo();
     KillTimer(WRITE_VIDEO);
+}
+
+
+void CCameraDialog::OnBnClickedSaveImage()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    m_camera.SaveImageEx();
 }
