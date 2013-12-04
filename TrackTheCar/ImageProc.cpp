@@ -176,6 +176,8 @@ std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img){
     int h =img->height;
     // set the roi
     CvRect left_top = cvRect(0,0,w/2,h/2);
+    CvRect right_top = cvRect(w/2,0,w/2,h/2);
+    CvRect 
     cvSetImageROI(img,left_top);
     // then calc the core
     CvPoint ltp = CalcCore(img);
