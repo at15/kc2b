@@ -152,7 +152,12 @@ void CConfigThreshold::BasicProc(){
     }
     IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
     m_red_bin.SetCurrentFrame(redbin);
-    proc.FindMapCorner(redbin);
+    // for the corners
+    std::vector<CvPoint> corners = proc.FindMapCorner(redbin);
+    for(int i = 0;i<corners.size();i++){
+        cvCircle(m_camera.GetCurrentFrame(),corners.at(i),5,CV_RGB(255,0,0),3);
+    }
+    m_camera.UpdateFrame();
     IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
     m_blue_bin.SetCurrentFrame(bluebin);
     cvReleaseImage(&redbin);
@@ -168,5 +173,6 @@ void CConfigThreshold::OnBnClickedConfigOpenImage()
     CImageProc proc;
     proc.DrawMiddleCircle(m_camera.GetCurrentFrame());// i suppose this won't work
     m_camera.UpdateFrame();// will this work?
-    SetTimer(CONFIG_USE_IMAGE,20,NULL);
+    BasicProc();
+    //SetTimer(CONFIG_USE_IMAGE,20,NULL);
 }
