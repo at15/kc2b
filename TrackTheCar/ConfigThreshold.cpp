@@ -132,31 +132,32 @@ void CConfigThreshold::OnTimer(UINT_PTR nIDEvent)
 }
 
 void CConfigThreshold::CamProc(){
-   try{ m_camera.CaptureAndShow();
-    CImageProc proc;
-    // show h,s,v,b,g,r
-    std::vector<IplImage*> hsvbgr = proc.GetHSVBGR(m_camera.GetCurrentFrame());
-    std::vector<IplImage*> hsvbgrBin;
-    for(int i=0;i<6;i++){
-        IplImage* t_bin = proc.GetBinary(hsvbgr.at(i),m_threshold.at(i));
-        hsvbgrBin.push_back(t_bin);
-        m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
+    try{
+        m_camera.CaptureAndShow();
+        CImageProc proc;
+        // show h,s,v,b,g,r
+        std::vector<IplImage*> hsvbgr = proc.GetHSVBGR(m_camera.GetCurrentFrame());
+        std::vector<IplImage*> hsvbgrBin;
+        for(int i=0;i<6;i++){
+            IplImage* t_bin = proc.GetBinary(hsvbgr.at(i),m_threshold.at(i));
+            hsvbgrBin.push_back(t_bin);
+            m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
+        }
+        IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
+        m_red_bin.SetCurrentFrame(redbin);
+        IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
+        m_blue_bin.SetCurrentFrame(bluebin);
+        //cvReleaseImage(&redbin);
+        //cvReleaseImage(&bluebin);
+        proc.releaseHSVBGR(hsvbgrBin);
+        proc.releaseHSVBGR(hsvbgr);
+        proc.CleanUp();
+        int t =1;
     }
-    IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
-    m_red_bin.SetCurrentFrame(redbin);
-    IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
-    m_blue_bin.SetCurrentFrame(bluebin);
-    //cvReleaseImage(&redbin);
-    //cvReleaseImage(&bluebin);
-    proc.releaseHSVBGR(hsvbgrBin);
-    proc.releaseHSVBGR(hsvbgr);
-    proc.CleanUp();
-    int t =1;}
-   catch(cv::Exception e){
-         const char* err_msg = e.what();
-         CString s = _T('');
-         s.Format(_T('%s'),err_msg);
-         AfxMessageBox(s);
-         
+    catch(cv::Exception e){
+        const char* err_msg = e.what();
+        CString s = _T('');
+        s.Format(_T('%s'),err_msg);
+        AfxMessageBox(s);
     }
 }
