@@ -174,19 +174,36 @@ std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img){
     // step 1 find the left one
     int w = img->width;
     int h =img->height;
-    // set the roi
+    
     CvRect left_top = cvRect(0,0,w/2,h/2);
     CvRect right_top = cvRect(w/2,0,w/2,h/2);
-    CvRect 
+    CvRect left_bottom = cvRect(0,h/2,w/2,h/2);
+    CvRect right_bottom = cvRect(w/2,h/2,w/2,h/2);
+
+    // set the roi
     cvSetImageROI(img,left_top);
-    // then calc the core
-    CvPoint ltp = CalcCore(img);
+    // then calc the core to get the point
+    CvPoint left_top_p = CalcCore(img);
+    cvResetImageROI(img);
+
+    cvSetImageROI(img,right_top);
+    CvPoint right_top_p = CalcCore(img);
+    cvResetImageROI(img);
+
+    cvSetImageROI(img,left_bottom);
+    CvPoint left_bottom_p = CalcCore(img);
+    cvResetImageROI(img);
+
+    cvSetImageROI(img,right_bottom);
+    CvPoint right_bottom_p = CalcCore(img);
+    cvResetImageROI(img);
+    
     int i = 1;
      /*    CvPoint zhong_point = m_pic_binary.CalcCore(red_bin);
      CvRect zhong = cvRect(zhong_point.x,zhong_point.y,10,10);
      // note the mask is the binary!!!
      IplImage* mask = m_pic_binary.GenMaskPoint(red_bin,zhong);*/
     std::vector<CvPoint> points;
-    points.push_back(ltp);
+    //points.push_back(ltp);
     return points;
 }
