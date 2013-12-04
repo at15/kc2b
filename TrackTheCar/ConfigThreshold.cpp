@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(CConfigThreshold, CDialogEx)
     ON_WM_HSCROLL()
     ON_BN_CLICKED(IDC_CONFIG_OPEN_CAM, &CConfigThreshold::OnBnClickedConfigOpenCam)
     ON_WM_TIMER()
+    ON_BN_CLICKED(IDC_CONFIG_OPEN_IMAGE, &CConfigThreshold::OnBnClickedConfigOpenImage)
 END_MESSAGE_MAP()
 
 
@@ -128,36 +129,40 @@ void CConfigThreshold::OnTimer(UINT_PTR nIDEvent)
 {
     // TODO: 在此添加消息处理程序代码和/或调用默认值
     if( CONFIG_USE_CAM == nIDEvent) CamProc();
+    if( CONFIG_USE_IMAGE == nIDEvent) BasicProc();
+
     CDialogEx::OnTimer(nIDEvent);
 }
 
 void CConfigThreshold::CamProc(){
-    try{
-        m_camera.CaptureAndShow();
-        CImageProc proc;
-        // show h,s,v,b,g,r
-        std::vector<IplImage*> hsvbgr = proc.GetHSVBGR(m_camera.GetCurrentFrame());
-        std::vector<IplImage*> hsvbgrBin;
-        for(int i=0;i<6;i++){
-            IplImage* t_bin = proc.GetBinary(hsvbgr.at(i),m_threshold.at(i));
-            hsvbgrBin.push_back(t_bin);
-            m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
-        }
-        IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
-        m_red_bin.SetCurrentFrame(redbin);
-        IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
-        m_blue_bin.SetCurrentFrame(bluebin);
-        //cvReleaseImage(&redbin);
-        //cvReleaseImage(&bluebin);
-        proc.releaseHSVBGR(hsvbgrBin);
-        proc.releaseHSVBGR(hsvbgr);
-        proc.CleanUp();
-        int t =1;
+   m_camera.CaptureAndShow();
+   BasicProc();
+}
+
+void CConfigThreshold::BasicProc(){
+    
+    CImageProc proc;
+    // show h,s,v,b,g,r
+    std::vector<IplImage*> hsvbgr = proc.GetHSVBGR(m_camera.GetCurrentFrame());
+    std::vector<IplImage*> hsvbgrBin;
+    for(int i=0;i<6;i++){
+        IplImage* t_bin = proc.GetBinary(hsvbgr.at(i),m_threshold.at(i));
+        hsvbgrBin.push_back(t_bin);
+        m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
     }
-    catch(cv::Exception e){
-        const char* err_msg = e.what();
-        CString s = _T('');
-        s.Format(_T('%s'),err_msg);
-        AfxMessageBox(s);
-    }
+    IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
+    m_red_bin.SetCurrentFrame(redbin);
+    IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
+    m_blue_bin.SetCurrentFrame(bluebin);
+    cvReleaseImage(&redbin);
+    cvReleaseImage(&bluebin);
+    proc.releaseHSVBGR(hsvbgrBin);
+    proc.releaseHSVBGR(hsvbgr);
+}
+
+void CConfigThreshold::OnBnClickedConfigOpenImage()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    m_camera.OpenImageEx();
+    SetTimer(CONFIG_USE_IMAGE,20,NULL);
 }

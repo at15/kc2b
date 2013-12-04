@@ -4,6 +4,7 @@
 #include "CameraCtrl.h"
 
 #define CONFIG_USE_CAM 1
+#define CONFIG_USE_IMAGE 2
 // CConfigThreshold ¶Ô»°¿ò
 
 class CConfigThreshold : public CDialogEx
@@ -45,9 +46,12 @@ public:
     std::vector<CSliderCtrl*> m_sliders;
     std::vector<int> m_threshold;// in h,s,v,b,g,r order
 
+    void BasicProc();// the only difference between cam image and video is the 
+    // frame on the main picture control... so it is ok now
     void CamProc();
     afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
     virtual BOOL OnInitDialog();
     afx_msg void OnBnClickedConfigOpenCam();
     afx_msg void OnTimer(UINT_PTR nIDEvent);
+    afx_msg void OnBnClickedConfigOpenImage();
 };

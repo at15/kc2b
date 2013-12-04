@@ -22,6 +22,8 @@ public:
     bool WriteAndShow();
     bool CloseVideo();
 
+    bool OpenImage(const char* file_path);
+    bool OpenImageEx();// show the dialog
     bool SaveImage(const char* file_path);
     bool SaveImageEx();// show the dialog
 

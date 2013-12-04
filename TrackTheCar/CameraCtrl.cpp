@@ -125,6 +125,27 @@ bool CCameraCtrl::CloseVideo(){
     }
     return false;
 }
+bool CCameraCtrl::OpenImage(const char* file_path){
+    IplImage* pSrc = cvLoadImage(file_path,CV_LOAD_IMAGE_UNCHANGED);
+    if(!pSrc) return false;
+    SetCurrentFrame(pSrc);
+    return true;
+}
+
+bool CCameraCtrl::OpenImageEx(){
+    CFileDialog pic_file(TRUE,_T(".jpg"),_T("test"),NULL,_T("JPG(*.jpg)|*.jpg|All Files(*.*)|*.*||"));
+    CString path;
+    if(pic_file.DoModal()==IDOK){
+        path =pic_file.GetPathName();
+    }
+    if(path.IsEmpty()) {
+        AfxMessageBox(_T("didn't specify file path!"));
+        return false;
+    }
+    EZ::CStrConv sconv;
+    char* cpath = sconv.utf162utf8(path.GetBuffer());
+    OpenImage(cpath);
+}
 
 bool CCameraCtrl::SaveImage(const char* file_path){
 

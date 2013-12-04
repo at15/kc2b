@@ -9,7 +9,7 @@ CImageProc::CImageProc(void)
 
 CImageProc::~CImageProc(void)
 {
-    CleanUp();
+   // CleanUp();
 }
 
 IplImage* CImageProc::GetBinary(IplImage* gary_image,int threshold)
@@ -68,9 +68,9 @@ IplImage* CImageProc::GetRedBinary(std::vector<IplImage*> hsvbgrBin){
     IplImage* img_red=cvCreateImage(cvGetSize(hsvbgrBin.at(0)),IPL_DEPTH_8U,1);//存放红色（车身）
     cvAnd(hsvbgrBin.at(C_R),hsvbgrBin.at(C_S),img_red);
     cvErode(img_red,img_red);
-    m_images.push_back(img_red);
-    return GetLastPtr();
-    //return img_red;
+    //m_images.push_back(img_red);
+    //return GetLastPtr(); // can't use now
+    return img_red;
 }
 
 IplImage* CImageProc::GetRedBinary(IplImage* pSrc,std::vector<int> threshold)
@@ -87,7 +87,7 @@ IplImage* CImageProc::GetRedBinary(IplImage* pSrc,std::vector<int> threshold)
     // TODO: why add s and r equals to red
     cvErode(img_red,img_red);
     releaseHSVBGR(hsvbgr);
-    m_images.push_back(img_red);
+    //m_images.push_back(img_red);
     return img_red;
 }
 
@@ -97,7 +97,8 @@ IplImage* CImageProc::GetBlueBinary(std::vector<IplImage*> hsvbgrBin){
     cvErode(img_blue,img_blue,0,2);
     //m_images.push_back(img_blue);
     //return img_blue;
-    return GetLastPtr();
+    //return GetLastPtr();
+    return img_blue;
 }
 
 IplImage* CImageProc::GetBlueBinary(IplImage* pSrc,std::vector<int> threshold)
@@ -113,7 +114,7 @@ IplImage* CImageProc::GetBlueBinary(IplImage* pSrc,std::vector<int> threshold)
     //cvAnd(img_b,img_s,img_blue);//TX ...?
     cvErode(img_blue,img_blue,0,2);
     releaseHSVBGR(hsvbgr);
-    m_images.push_back(img_blue);
+    //m_images.push_back(img_blue);
     return img_blue;
 }
 
@@ -144,7 +145,6 @@ IplImage* CImageProc::GenMaskPoint(IplImage* pSrc,CvRect point_rect)//,CvScalar 
     cvSet(mask,cvScalar(255,0,0,0)); 
     cvResetImageROI(mask);
     //cvSet(mask,cvScalar(255,0,0,0)); //ok which means cvRGB got problem? yes, because mask is binary!
-
     return mask;
 }
 
@@ -152,7 +152,6 @@ void CImageProc::CleanUp(){
     for(int i = 0;i<m_images.size();i++){
         if(m_images.at(i)){
             cvReleaseImage(&m_images.at(i));
-
         }
     }
 }
