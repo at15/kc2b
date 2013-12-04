@@ -170,3 +170,21 @@ void CImageProc::DrawMiddleCircle(IplImage* img,CvScalar color /* = CV_RGB(0,0,2
     cvCircle(img,cvPoint(w/2,h/2),10,color,3);
 }
 
+std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img){
+    // step 1 find the left one
+    int w = img->width;
+    int h =img->height;
+    // set the roi
+    CvRect left_top = cvRect(0,0,w/2,h/2);
+    cvSetImageROI(img,left_top);
+    // then calc the core
+    CvPoint ltp = CalcCore(img);
+    int i = 1;
+     /*    CvPoint zhong_point = m_pic_binary.CalcCore(red_bin);
+     CvRect zhong = cvRect(zhong_point.x,zhong_point.y,10,10);
+     // note the mask is the binary!!!
+     IplImage* mask = m_pic_binary.GenMaskPoint(red_bin,zhong);*/
+    std::vector<CvPoint> points;
+    points.push_back(ltp);
+    return points;
+}

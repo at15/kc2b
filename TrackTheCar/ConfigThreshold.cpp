@@ -152,6 +152,7 @@ void CConfigThreshold::BasicProc(){
     }
     IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
     m_red_bin.SetCurrentFrame(redbin);
+    proc.FindMapCorner(redbin);
     IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
     m_blue_bin.SetCurrentFrame(bluebin);
     cvReleaseImage(&redbin);
