@@ -164,5 +164,8 @@ void CConfigThreshold::OnBnClickedConfigOpenImage()
 {
     // TODO: 在此添加控件通知处理程序代码
     m_camera.OpenImageEx();
+    CImageProc proc;
+    proc.DrawMiddleCircle(m_camera.GetCurrentFrame());// i suppose this won't work
+    m_camera.UpdateFrame();// will this work?
     SetTimer(CONFIG_USE_IMAGE,20,NULL);
 }

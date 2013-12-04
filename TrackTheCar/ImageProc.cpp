@@ -164,3 +164,9 @@ IplImage* CImageProc::GetLastPtr(){
         return NULL;
     }
 }
+void CImageProc::DrawMiddleCircle(IplImage* img,CvScalar color /* = CV_RGB(0,0,255) */){
+    int w = img->width;
+    int h = img->height;
+    cvCircle(img,cvPoint(w/2,h/2),10,color,3);
+}
+

@@ -29,7 +29,9 @@ public:
     CvPoint CalcCore(IplImage* img_binary);
     IplImage* GenMaskPoint(IplImage* pSrc,CvRect point_rect);//,CvScalar bgr)
 
-   void CleanUp(); // release all the memory
+    // draw circle in the middle to let user put the map in the right pos
+    void DrawMiddleCircle(IplImage* img,CvScalar color = CV_RGB(0,0,255));
+    void CleanUp(); // release all the memory
 private:
     // so we need to construct a CImageProc in every function!
     std::vector<IplImage*> m_images; // hold the image we need,destroy when destruct

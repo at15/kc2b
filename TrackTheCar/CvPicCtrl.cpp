@@ -42,6 +42,11 @@ CCvPicCtrl::~CCvPicCtrl(void)
 /*virtual*/IplImage* CCvPicCtrl::GetCurrentFrame(){
     return m_current_frame;
 }
+void CCvPicCtrl::UpdateFrame(){
+    CvvImage m_CvvImage;  
+    m_CvvImage.CopyOf(m_current_frame,1);     
+    m_CvvImage.DrawToHDC(pic_hDC, &pic_rect);
+}
 
 /*virtual*/ void CCvPicCtrl::AxisChange(){
     // i does nothing right now
@@ -67,3 +72,10 @@ void CCvPicCtrl::ShowBlack(){
     MemBmp.DeleteObject();
     MemDC.DeleteDC();
 }
+
+/*
+void CCvPicCtrl::DrawMiddleCircle(){
+    int w = m_current_frame->width;
+    int h = m_current_frame->height;
+    cvCircle(m_current_frame,cvPoint(w/2,h/2),10,CV_RGB(255,0,0));
+}*/
