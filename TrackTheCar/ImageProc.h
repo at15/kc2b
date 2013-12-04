@@ -33,6 +33,6 @@ public:
 private:
     // so we need to construct a CImageProc in every function!
     std::vector<IplImage*> m_images; // hold the image we need,destroy when destruct
-    
+    IplImage* GetLastPtr();
 };
 

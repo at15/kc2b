@@ -69,7 +69,8 @@ IplImage* CImageProc::GetRedBinary(std::vector<IplImage*> hsvbgrBin){
     cvAnd(hsvbgrBin.at(C_R),hsvbgrBin.at(C_S),img_red);
     cvErode(img_red,img_red);
     m_images.push_back(img_red);
-    return img_red;
+    return GetLastPtr();
+    //return img_red;
 }
 
 IplImage* CImageProc::GetRedBinary(IplImage* pSrc,std::vector<int> threshold)
@@ -94,8 +95,9 @@ IplImage* CImageProc::GetBlueBinary(std::vector<IplImage*> hsvbgrBin){
     IplImage* img_blue=cvCreateImage(cvGetSize(hsvbgrBin.at(0)),IPL_DEPTH_8U,1);//´æ·Åblue
     cvAnd(hsvbgrBin.at(C_B),hsvbgrBin.at(C_S),img_blue);
     cvErode(img_blue,img_blue,0,2);
-    m_images.push_back(img_blue);
-    return img_blue;
+    //m_images.push_back(img_blue);
+    //return img_blue;
+    return GetLastPtr();
 }
 
 IplImage* CImageProc::GetBlueBinary(IplImage* pSrc,std::vector<int> threshold)
@@ -148,6 +150,18 @@ IplImage* CImageProc::GenMaskPoint(IplImage* pSrc,CvRect point_rect)//,CvScalar 
 
 void CImageProc::CleanUp(){
     for(int i = 0;i<m_images.size();i++){
-        cvReleaseImage(&m_images.at(i));
+        if(m_images.at(i)){
+            cvReleaseImage(&m_images.at(i));
+
+        }
+    }
+}
+
+IplImage* CImageProc::GetLastPtr(){
+    if(m_images.size()> 0){
+        return m_images.at(m_images.size()-1);
+    }
+    else{
+        return NULL;
     }
 }
