@@ -133,20 +133,21 @@ void CConfigThreshold::OnTimer(UINT_PTR nIDEvent)
 
 void CConfigThreshold::CamProc(){
     m_camera.CaptureAndShow();
+    CImageProc proc;
     // show h,s,v,b,g,r
-    std::vector<IplImage*> hsvbgr = m_proc.GetHSVBGR(m_camera.GetCurrentFrame());
+    std::vector<IplImage*> hsvbgr = proc.GetHSVBGR(m_camera.GetCurrentFrame());
     std::vector<IplImage*> hsvbgrBin;
     for(int i=0;i<6;i++){
-        IplImage* t_bin = m_proc.GetBinary(hsvbgr.at(i),m_threshold.at(i));
+        IplImage* t_bin = proc.GetBinary(hsvbgr.at(i),m_threshold.at(i));
         hsvbgrBin.push_back(t_bin);
         m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
     }
-    IplImage* redbin = m_proc.GetRedBinary(hsvbgrBin);
+    IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
     m_red_bin.SetCurrentFrame(redbin);
-    IplImage* bluebin = m_proc.GetBlueBinary(hsvbgrBin);
+    IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
     m_blue_bin.SetCurrentFrame(bluebin);
-    cvReleaseImage(&redbin);
-    cvReleaseImage(&bluebin);
-    m_proc.releaseHSVBGR(hsvbgrBin);
-    m_proc.releaseHSVBGR(hsvbgr);
+    //cvReleaseImage(&redbin);
+    //cvReleaseImage(&bluebin);
+    proc.releaseHSVBGR(hsvbgrBin);
+    proc.releaseHSVBGR(hsvbgr);
 }

@@ -23,7 +23,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
     CCameraCtrl m_camera;
-    CImageProc m_proc;
+    //CImageProc m_proc;
 
     CCvPicCtrl m_h;
     CCvPicCtrl m_s;
