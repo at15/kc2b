@@ -42,6 +42,7 @@ CCvPicCtrl::~CCvPicCtrl(void)
 /*virtual*/IplImage* CCvPicCtrl::GetCurrentFrame(){
     return m_current_frame;
 }
+
 void CCvPicCtrl::UpdateFrame(){
     CvvImage m_CvvImage;  
     m_CvvImage.CopyOf(m_current_frame,1);     
