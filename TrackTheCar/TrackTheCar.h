@@ -9,7 +9,8 @@
 #endif
 
 #include "resource.h"		// 主符号
-
+#include "stdafx.h"
+#include "Configs.h"
 
 // CTrackTheCarApp:
 // 有关此类的实现，请参阅 TrackTheCar.cpp
@@ -27,6 +28,16 @@ public:
 // 实现
 
 	DECLARE_MESSAGE_MAP()
+
+public:
+    /*
+    // the global vars store in the theApp;
+    struct opencv_config{
+        std::vector<int> threshold;
+        std::vector<int> map_corners;
+    }; just put it in another file
+    */
+    CConfigs global_configs;
 };
 
 extern CTrackTheCarApp theApp;

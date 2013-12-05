@@ -152,12 +152,12 @@ void CConfigThreshold::BasicProc(){
     }
     IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
     m_red_bin.SetCurrentFrame(redbin);
-    // for the corners
+  /*  // for the corners
     std::vector<CvPoint> corners = proc.FindMapCorner(redbin);
     for(int i = 0;i<corners.size();i++){
         cvCircle(m_camera.GetCurrentFrame(),corners.at(i),5,CV_RGB(255,0,0),3);
     }
-    m_camera.UpdateFrame();
+    m_camera.UpdateFrame();*/
     IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
     m_blue_bin.SetCurrentFrame(bluebin);
     cvReleaseImage(&redbin);
