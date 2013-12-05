@@ -44,16 +44,7 @@ END_MESSAGE_MAP()
 // CConfigThreshold 消息处理程序
 
 
-void CConfigThreshold::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
-{
-    // TODO: 在此添加消息处理程序代码和/或调用默认值
 
-    // set the value
-    for(int i=0;i<6;i++){
-        m_threshold.at(i) =  m_sliders.at(i)->GetPos();
-    }
-    CDialogEx::OnHScroll(nSBCode, nPos, pScrollBar);
-}
 
 
 BOOL CConfigThreshold::OnInitDialog()
@@ -112,18 +103,10 @@ BOOL CConfigThreshold::OnInitDialog()
         m_sliders.at(i)->SetPos(m_threshold.at(i));
     }
 
+    SetThreshold();// set the global config
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
 }
-
-
-void CConfigThreshold::OnBnClickedConfigOpenCam()
-{
-    // TODO: 在此添加控件通知处理程序代码
-    m_camera.OpenCam();
-    SetTimer(CONFIG_USE_CAM,20,NULL);
-}
-
 
 void CConfigThreshold::OnTimer(UINT_PTR nIDEvent)
 {
@@ -133,9 +116,27 @@ void CConfigThreshold::OnTimer(UINT_PTR nIDEvent)
 
     CDialogEx::OnTimer(nIDEvent);
 }
-void CConfigThreshold::SetThreshold(){
 
+void CConfigThreshold::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
+{
+    SetThreshold();
 }
+
+void CConfigThreshold::OnBnClickedConfigOpenCam()
+{
+    m_camera.OpenCam();
+    SetTimer(CONFIG_USE_CAM,20,NULL);
+}
+
+void CConfigThreshold::SetThreshold(){
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    // get the threshold form the sliders
+    for(int i=0;i<6;i++){
+        m_threshold.at(i) =  m_sliders.at(i)->GetPos();
+    }
+    global_configs->SetThreshold(m_threshold);
+}
+
 void CConfigThreshold::CamProc(){
    m_camera.CaptureAndShow();
    BasicProc();
@@ -154,12 +155,6 @@ void CConfigThreshold::BasicProc(){
     }
     IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
     m_red_bin.SetCurrentFrame(redbin);
-  /*  // for the corners
-    std::vector<CvPoint> corners = proc.FindMapCorner(redbin);
-    for(int i = 0;i<corners.size();i++){
-        cvCircle(m_camera.GetCurrentFrame(),corners.at(i),5,CV_RGB(255,0,0),3);
-    }
-    m_camera.UpdateFrame();*/
     IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
     m_blue_bin.SetCurrentFrame(bluebin);
     cvReleaseImage(&redbin);

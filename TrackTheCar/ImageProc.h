@@ -29,15 +29,21 @@ public:
     CvPoint CalcCore(IplImage* img_binary);
     IplImage* GenMaskPoint(IplImage* pSrc,CvRect point_rect);//,CvScalar bgr)
 
-    // draw circle in the middle to let user put the map in the right pos
-    void DrawMiddleCircle(IplImage* img,CvScalar color = CV_RGB(0,0,255));
-    void CleanUp(); // release all the memory
+    // draw green circle in the middle to let user put the map in the right pos
+    void DrawMiddleCircle(IplImage* img,CvScalar color = CV_RGB(0,255,0));
+    
 
     // find the four red point so we can transform
     std::vector<CvPoint> FindMapCorner(IplImage* img);
+    // transform!
+    IplImage* TransformImage(IplImage* pSrc,std::vector<CvPoint> corners);
 private:
     // so we need to construct a CImageProc in every function!
     std::vector<IplImage*> m_images; // hold the image we need,destroy when destruct
     IplImage* GetLastPtr();
+
+public:
+    /* abandoned func */
+    void CleanUp(); // release all the memory
 };
 

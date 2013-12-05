@@ -48,8 +48,6 @@ BOOL CTransformDlg::OnInitDialog()
 }
 
 void CTransformDlg::process(){
-   // CTrackTheCarApp theApp = AfxGetApp();
-   // ((CPWDMgrNewApp*)AfxGetApp())->m_appdata_dir;
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     CImageProc proc;
     IplImage* redbin = proc.GetRedBinary(m_input_pic.GetCurrentFrame(),global_configs->GetThreshold());
@@ -58,7 +56,10 @@ void CTransformDlg::process(){
     std::vector<CvPoint> corners = proc.FindMapCorner(redbin);
     global_configs->SetMapCorners(corners);
     // show the transformed result
+    IplImage* transformed_pic= proc.TransformImage(m_input_pic.GetCurrentFrame(),corners);
+    m_output_pic.SetCurrentFrame(transformed_pic);
     cvReleaseImage(&redbin);
+    cvReleaseImage(&transformed_pic);
 }
 
 void CTransformDlg::OnBnClickedTransformOpenImage()
@@ -71,3 +72,11 @@ void CTransformDlg::OnBnClickedTransformOpenImage()
     }
     
 }
+
+
+  /*  // for the corners
+    std::vector<CvPoint> corners = proc.FindMapCorner(redbin);
+    for(int i = 0;i<corners.size();i++){
+        cvCircle(m_camera.GetCurrentFrame(),corners.at(i),5,CV_RGB(255,0,0),3);
+    }
+    m_camera.UpdateFrame();*/

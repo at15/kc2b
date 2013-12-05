@@ -7,6 +7,7 @@
 // include the dialogs
 #include "CameraDialog.h"
 #include "ConfigThreshold.h"
+#include "TransformDlg.h";
 
 // The about dialog
 class CAboutDlg : public CDialogEx
@@ -56,8 +57,10 @@ public:
     // this is for all the function dialogs
     CCameraDialog m_dlg_camera;
     CConfigThreshold m_dlg_threshold;
+    CTransformDlg m_dlg_transform;
 
     afx_msg void OnCapPic();
     afx_msg void OnShowAbout();
     afx_msg void OnConfigThreshold();
+    afx_msg void OnConfigTransform();
 };
