@@ -177,6 +177,7 @@ void CTrackTheCarDlg::OnConfigThreshold()
 void CTrackTheCarDlg::OnConfigTransform()
 {
     // TODO: 在此添加命令处理程序代码
+    m_dlg_transform.SetMainFrame(m_main_input.GetCurrentFrame());
     m_dlg_transform.DoModal();
 }
 

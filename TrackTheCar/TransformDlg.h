@@ -26,6 +26,8 @@ public:
     CCvPicCtrl m_bin_pic; // show the binary
     CCvPicCtrl m_output_pic;
 
+    // set the main frame of this dialog
+    void SetMainFrame(IplImage* pSrc);
     // the functions for the process
     void process();
     afx_msg void OnBnClickedTransformOpenImage();

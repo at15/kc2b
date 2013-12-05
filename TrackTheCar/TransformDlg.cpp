@@ -11,8 +11,8 @@ using namespace std;
 
 IMPLEMENT_DYNAMIC(CTransformDlg, CDialogEx)
 
-CTransformDlg::CTransformDlg(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CTransformDlg::IDD, pParent)
+    CTransformDlg::CTransformDlg(CWnd* pParent /*=NULL*/)
+    : CDialogEx(CTransformDlg::IDD, pParent)
 {
 
 }
@@ -23,7 +23,7 @@ CTransformDlg::~CTransformDlg()
 
 void CTransformDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+    CDialogEx::DoDataExchange(pDX);
 }
 
 
@@ -45,6 +45,10 @@ BOOL CTransformDlg::OnInitDialog()
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
+}
+
+void CTransformDlg::SetMainFrame(IplImage* pSrc){
+    m_input_pic.SetCurrentFrame(pSrc);
 }
 
 void CTransformDlg::process(){
@@ -70,13 +74,13 @@ void CTransformDlg::OnBnClickedTransformOpenImage()
     }else{
         AfxMessageBox(_T("you didn't select file!"));
     }
-    
+
 }
 
 
-  /*  // for the corners
-    std::vector<CvPoint> corners = proc.FindMapCorner(redbin);
-    for(int i = 0;i<corners.size();i++){
-        cvCircle(m_camera.GetCurrentFrame(),corners.at(i),5,CV_RGB(255,0,0),3);
-    }
-    m_camera.UpdateFrame();*/
+/*  // for the corners
+std::vector<CvPoint> corners = proc.FindMapCorner(redbin);
+for(int i = 0;i<corners.size();i++){
+cvCircle(m_camera.GetCurrentFrame(),corners.at(i),5,CV_RGB(255,0,0),3);
+}
+m_camera.UpdateFrame();*/
