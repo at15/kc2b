@@ -40,5 +40,4 @@ std::vector<int> CConfigs::GetThreshold(){
     }else{
         return m_threshold;
     }
-
 }
