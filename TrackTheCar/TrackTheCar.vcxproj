@@ -102,6 +102,7 @@
   <ItemGroup>
     <ClInclude Include="CameraCtrl.h" />
     <ClInclude Include="CameraDialog.h" />
+    <ClInclude Include="configs.h" />
     <ClInclude Include="ConfigThreshold.h" />
     <ClInclude Include="CvPicCtrl.h" />
     <ClInclude Include="ImageProc.h" />
@@ -112,10 +113,12 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TrackTheCar.h" />
     <ClInclude Include="TrackTheCarDlg.h" />
+    <ClInclude Include="TransformDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CameraCtrl.cpp" />
     <ClCompile Include="CameraDialog.cpp" />
+    <ClCompile Include="Configs.cpp" />
     <ClCompile Include="ConfigThreshold.cpp" />
     <ClCompile Include="CvPicCtrl.cpp" />
     <ClCompile Include="ImageProc.cpp" />
@@ -127,6 +130,7 @@
     <ClCompile Include="StrConv.cpp" />
     <ClCompile Include="TrackTheCar.cpp" />
     <ClCompile Include="TrackTheCarDlg.cpp" />
+    <ClCompile Include="TransformDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TrackTheCar.rc" />

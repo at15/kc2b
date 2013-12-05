@@ -133,7 +133,9 @@ void CConfigThreshold::OnTimer(UINT_PTR nIDEvent)
 
     CDialogEx::OnTimer(nIDEvent);
 }
+void CConfigThreshold::SetThreshold(){
 
+}
 void CConfigThreshold::CamProc(){
    m_camera.CaptureAndShow();
    BasicProc();

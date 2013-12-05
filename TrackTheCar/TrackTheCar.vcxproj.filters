@@ -60,6 +60,12 @@
     <ClInclude Include="ImageProc.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="TransformDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="configs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrackTheCar.cpp">
@@ -90,6 +96,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ImageProc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Configs.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

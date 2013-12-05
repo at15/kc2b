@@ -47,6 +47,7 @@ public:
     std::vector<int> m_threshold;// in h,s,v,b,g,r order
 
     // set the threshold from the slider
+    void SetThreshold();
 
     void BasicProc();// the only difference between cam image and video is the 
     // frame on the main picture control... so it is ok now
