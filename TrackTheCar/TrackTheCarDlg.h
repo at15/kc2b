@@ -53,12 +53,15 @@ protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
-    // 
+    // the about dialog... which is kind of useless
     CAboutDlg m_about;
     // this is for all the function dialogs
     CCameraDialog m_dlg_camera;
     CConfigThreshold m_dlg_threshold;
     CTransformDlg m_dlg_transform;
+
+    // this for the main picture control 
+    CCameraCtrl m_main_input;
 
     afx_msg void OnCapPic();
     afx_msg void OnShowAbout();
@@ -68,4 +71,5 @@ public:
     CEdit m_main_console;
     // func for add message to the console
     void AddToConsole(const CString& str);
+    afx_msg void OnMainOpenImage();
 };

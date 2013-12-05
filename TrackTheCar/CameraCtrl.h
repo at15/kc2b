@@ -23,9 +23,11 @@ public:
     bool CloseVideo();
 
     bool OpenImage(const char* file_path);
-    bool OpenImageEx();// show the dialog
+    bool OpenImageEx();// show the dialog to open file
+    bool OpenImageEx(CString& opath);// save the path in opath
     bool SaveImage(const char* file_path);
-    bool SaveImageEx();// show the dialog
+    bool SaveImageEx();
+    bool SaveImageEx(CString& opath);// show the dialog
 
     void Pause(bool stop = true);// stop cap and writing 
 

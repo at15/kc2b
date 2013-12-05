@@ -144,11 +144,31 @@ bool CCameraCtrl::OpenImageEx(){
     }
     EZ::CStrConv sconv;
     char* cpath = sconv.utf162utf8(path.GetBuffer());
-    OpenImage(cpath);
+    return OpenImage(cpath);
+}
+
+bool CCameraCtrl::OpenImageEx(CString& opath){
+    CFileDialog pic_file(TRUE,_T(".jpg"),_T("test"),NULL,_T("JPG(*.jpg)|*.jpg|All Files(*.*)|*.*||"));
+    CString path;
+    if(pic_file.DoModal()==IDOK){
+        path =pic_file.GetPathName();
+    }
+    if(path.IsEmpty()) {
+        AfxMessageBox(_T("didn't specify file path!"));
+        return false;
+    }
+    EZ::CStrConv sconv;
+    char* cpath = sconv.utf162utf8(path.GetBuffer());
+    if(!OpenImage(cpath)){
+        opath = _T("ERROR:can't open image!");
+        return false;
+    }else{
+        opath.Format(_T("%s%s"),_T("successfully opened file :"),path);
+        return true;
+    }
 }
 
 bool CCameraCtrl::SaveImage(const char* file_path){
-
     IplImage*  frame = GetCurrentFrame();
     if(frame){
         cvSaveImage(file_path,frame);
@@ -156,7 +176,6 @@ bool CCameraCtrl::SaveImage(const char* file_path){
     }else{
         return false;
     }
-
 }
 
 bool CCameraCtrl::SaveImageEx(){
@@ -175,6 +194,30 @@ bool CCameraCtrl::SaveImageEx(){
     char* cpath = sconv.utf162utf8(path.GetBuffer());
     Pause(false);
     return SaveImage(cpath);
+}
+
+bool CCameraCtrl::SaveImageEx(CString& opath){
+    Pause();
+    // open a dialog to let the user select file path 
+    CFileDialog pic_file(FALSE,_T(".jpg"),_T("test"),NULL,_T("JPG(*.jpg)|*.jpg|All Files(*.*)|*.*||"));
+    CString path;
+    if(pic_file.DoModal()==IDOK){
+        path =pic_file.GetPathName();
+    }
+    if(path.IsEmpty()) {
+        AfxMessageBox(_T("didn't specify file path!"));
+        return false;
+    }
+    EZ::CStrConv sconv;
+    char* cpath = sconv.utf162utf8(path.GetBuffer());
+    Pause(false);
+    if(!SaveImage(cpath)){
+        opath = _T("ERROR:can't save image!");
+        return false;
+    }else{
+        opath.Format(_T("%s%s"),_T("successfully saved file "),path);
+        return true;
+    }
 }
 
 void CCameraCtrl::Pause(bool stop/* = true*/){

@@ -52,6 +52,7 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_COMMAND(ID_32771, &CTrackTheCarDlg::OnShowAbout)
     ON_COMMAND(ID_32774, &CTrackTheCarDlg::OnConfigThreshold)
     ON_COMMAND(ID_32773, &CTrackTheCarDlg::OnConfigTransform)
+    ON_COMMAND(ID_32778, &CTrackTheCarDlg::OnMainOpenImage)
 END_MESSAGE_MAP()
 
 
@@ -87,6 +88,9 @@ BOOL CTrackTheCarDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+    if(!m_main_input.Init(this,IDC_MAIN_INPUT)){
+        AddToConsole(_T("ERROR: can't init the main picture control!"));
+    }
     AddToConsole(_T("Track the car app init finished, waiting for orders..."));
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -174,4 +178,13 @@ void CTrackTheCarDlg::OnConfigTransform()
 {
     // TODO: 在此添加命令处理程序代码
     m_dlg_transform.DoModal();
+}
+
+
+void CTrackTheCarDlg::OnMainOpenImage()
+{
+    CString file_path;
+    m_main_input.OpenImageEx(file_path);
+    AddToConsole(file_path);
+    //this->SetFocus();// ? will this work? the focus is set to the editor automaticlly
 }
