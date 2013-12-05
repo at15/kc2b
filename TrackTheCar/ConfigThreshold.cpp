@@ -93,12 +93,8 @@ BOOL CConfigThreshold::OnInitDialog()
     m_sliders.push_back(&m_slider_r);
 
     // init the threshold value
-    m_threshold.push_back(150);
-    m_threshold.push_back(138);
-    m_threshold.push_back(40);
-    m_threshold.push_back(100);
-    m_threshold.push_back(80);
-    m_threshold.push_back(80);
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    m_threshold = global_configs->GetThreshold();
     for(int i=0;i<6;i++){
         m_sliders.at(i)->SetPos(m_threshold.at(i));
     }
@@ -138,12 +134,12 @@ void CConfigThreshold::SetThreshold(){
 }
 
 void CConfigThreshold::CamProc(){
-   m_camera.CaptureAndShow();
-   BasicProc();
+    m_camera.CaptureAndShow();
+    BasicProc();
 }
 
 void CConfigThreshold::BasicProc(){
-    
+
     CImageProc proc;
     // show h,s,v,b,g,r
     std::vector<IplImage*> hsvbgr = proc.GetHSVBGR(m_camera.GetCurrentFrame());
