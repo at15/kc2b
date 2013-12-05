@@ -41,10 +41,6 @@ BOOL CTransformDlg::OnInitDialog()
     m_input_pic.Init(this,IDC_TRANSFORM_INPUT);
     m_bin_pic.Init(this,IDC_TRANSFORM_BIN);
     m_output_pic.Init(this,IDC_TRANSFORM_OUPUT);
-    if(m_input_pic.GetCurrentFrame()){
-        m_input_pic.UpdateFrame();
-    }
-
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
 }
@@ -60,6 +56,7 @@ void CTransformDlg::process(){
     m_bin_pic.SetCurrentFrame(redbin);
     // find the corners
     std::vector<CvPoint> corners = proc.FindMapCorner(redbin);
+    // store it to the global var
     global_configs->SetMapCorners(corners);
     // show the transformed result
     IplImage* transformed_pic= proc.TransformImage(m_input_pic.GetCurrentFrame(),corners);
@@ -70,7 +67,13 @@ void CTransformDlg::process(){
 
 void CTransformDlg::OnBnClickedTransformOpenImage()
 {
-    // TODO: 在此添加控件通知处理程序代码
+    // if the main dialog has set the image to process
+    if(m_input_pic.GetCurrentFrame()){
+        m_input_pic.UpdateFrame();
+        process();
+        return;
+    }
+
     if(m_input_pic.OpenImageEx()){
         process();
     }else{
