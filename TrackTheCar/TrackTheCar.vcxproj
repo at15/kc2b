@@ -111,6 +111,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StrConv.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TempImage.h" />
     <ClInclude Include="TrackTheCar.h" />
     <ClInclude Include="TrackTheCarDlg.h" />
     <ClInclude Include="TransformDlg.h" />
@@ -128,6 +129,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="StrConv.cpp" />
+    <ClCompile Include="TempImage.cpp" />
     <ClCompile Include="TrackTheCar.cpp" />
     <ClCompile Include="TrackTheCarDlg.cpp" />
     <ClCompile Include="TransformDlg.cpp" />

@@ -1,5 +1,6 @@
 #pragma once
 #include "stdafx.h"
+#include "TempImage.h"
 #include <vector>
 // this is the base class for the picture control
 class CCvPicCtrl
@@ -19,7 +20,7 @@ public:
     void DrawMiddleCircle(); // draw a circle in the middle of the pic
 private:
     IplImage* m_current_frame;
-
+    CTempImage* m_temp_image;
     /*=========================================================*/
     /* the handles for the pic control */
     // The CWnd for the dlg, get its HWND by pic_CWnd->m_hwnd
