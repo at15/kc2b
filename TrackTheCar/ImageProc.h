@@ -37,13 +37,12 @@ public:
     std::vector<CvPoint> FindMapCorner(IplImage* img);
     // transform!
     IplImage* TransformImage(IplImage* pSrc,std::vector<CvPoint> corners);
-private:
-    // so we need to construct a CImageProc in every function!
-    std::vector<IplImage*> m_images; // hold the image we need,destroy when destruct
-    IplImage* GetLastPtr();
-
+   
+/* abandoned func */
 public:
-    /* abandoned func */
     void CleanUp(); // release all the memory
+private:
+    IplImage* GetLastPtr();
+    std::vector<IplImage*> m_images; // hold the image we need,destroy when destruct
 };
 
