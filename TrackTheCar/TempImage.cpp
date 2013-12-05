@@ -9,10 +9,7 @@ CTempImage::CTempImage(void)
 }
 
 CTempImage::CTempImage(IplImage* pSrc){
-   /* m_image = cvCloneImage(pSrc);
-    if(m_image) {
-        empty = false;
-    }*/
+
     SetImage(pSrc);
 }
 

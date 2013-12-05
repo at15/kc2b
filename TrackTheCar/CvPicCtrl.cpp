@@ -33,29 +33,13 @@ CCvPicCtrl::~CCvPicCtrl(void)
     CvvImage m_CvvImage;  
     m_CvvImage.CopyOf(new_frame,1);     
     m_CvvImage.DrawToHDC(pic_hDC, &pic_rect);
-    //IplImage* t = m_current_frame;
-   
-    //m_current_frame = new_frame;
-   // return t;
-    //cvReleaseImage(&t);
-    // m_current_frame = new_frame;
-    /*
-    if(m_current_frame){
-        IplImage* t = m_current_frame;
-        m_current_frame = cvCloneImage(new_frame);
-        cvReleaseImage(&t); // why i just can't release it?
-        return;
-    }else{
-        m_current_frame = cvCloneImage(new_frame);
-        cvCopy()
-    }*/
+
     if(m_temp_image){
         delete m_temp_image;
         m_temp_image = NULL;
     }
-    //m_temp_image = new CTempImage(new_frame);
-    m_temp_image = new CTempImage();
-    m_temp_image->SetImage(new_frame);
+    m_temp_image = new CTempImage(new_frame);
+    //m_temp_image->SetImage(new_frame);
     m_current_frame = m_temp_image->GetImage();
 }
 

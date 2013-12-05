@@ -8,6 +8,7 @@ CConfigs::CConfigs(void)
    // m_threshold.empty();
     m_map_corners.clear();
     m_threshold.clear();
+    LoadDefaultSetting();
 }
 
 
@@ -15,6 +16,17 @@ CConfigs::~CConfigs(void)
 {
 }
 
+void CConfigs::LoadDefaultSetting(){
+    // the default setting , for the threshold only at this moment
+    // init the threshold value
+    m_threshold.push_back(150);
+    m_threshold.push_back(138);
+    m_threshold.push_back(40);
+    m_threshold.push_back(100);
+    m_threshold.push_back(80);
+    m_threshold.push_back(80);
+
+}
 
 std::vector<CvPoint> CConfigs::GetMapCorner(){
     if(m_map_corners.empty()){

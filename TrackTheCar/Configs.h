@@ -13,5 +13,6 @@ public:
 private:
     std::vector<CvPoint> m_map_corners;
     std::vector<int> m_threshold;
+    void LoadDefaultSetting();
 };
 
