@@ -10,6 +10,10 @@ CCvPicCtrl::CCvPicCtrl(void)
 
 CCvPicCtrl::~CCvPicCtrl(void)
 {
+    if(m_temp_image){
+        delete m_temp_image;
+        m_temp_image = NULL;// useless...?
+    }
 }
 
 /*virtual*/ bool CCvPicCtrl::Init(CWnd*dlg_hwnd,int nID){
@@ -39,7 +43,6 @@ CCvPicCtrl::~CCvPicCtrl(void)
         m_temp_image = NULL;
     }
     m_temp_image = new CTempImage(new_frame);
-    //m_temp_image->SetImage(new_frame);
     m_current_frame = m_temp_image->GetImage();
 }
 
@@ -54,7 +57,7 @@ void CCvPicCtrl::UpdateFrame(){
 }
 
 /*virtual*/ void CCvPicCtrl::AxisChange(){
-    // i does nothing right now
+    // it does nothing right now
 }
 
 /* virtual */ void CCvPicCtrl::DebugImage(IplImage* frame,int delay/* = 2000*/){
