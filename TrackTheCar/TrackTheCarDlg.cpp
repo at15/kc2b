@@ -40,7 +40,8 @@ CTrackTheCarDlg::CTrackTheCarDlg(CWnd* pParent /*=NULL*/)
 
 void CTrackTheCarDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+    CDialogEx::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_EDIT1, m_main_console);
 }
 
 BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
@@ -86,7 +87,7 @@ BOOL CTrackTheCarDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-
+    AddToConsole(_T("Track the car app init finished, waiting for orders..."));
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -140,10 +141,16 @@ HCURSOR CTrackTheCarDlg::OnQueryDragIcon()
 }
 
 
+void CTrackTheCarDlg::AddToConsole(const CString& str){
+    CString old;
+    m_main_console.GetWindowTextW(old);
+    old.Append(str);
+    old.Append(L"\r\n");
+    m_main_console.SetWindowTextW(old);
+}
 
 void CTrackTheCarDlg::OnCapPic()
 {
-    // TODO: 在此添加命令处理程序代码
     m_dlg_camera.DoModal();
 }
 
@@ -152,6 +159,7 @@ void CTrackTheCarDlg::OnShowAbout()
 {
     // TODO: 在此添加命令处理程序代码
     m_about.DoModal();
+    AddToConsole(_T("opend the about dialog box"));
 }
 
 

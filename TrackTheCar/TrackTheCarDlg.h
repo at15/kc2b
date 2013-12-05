@@ -7,7 +7,8 @@
 // include the dialogs
 #include "CameraDialog.h"
 #include "ConfigThreshold.h"
-#include "TransformDlg.h";
+#include "TransformDlg.h"
+#include "afxwin.h"
 
 // The about dialog
 class CAboutDlg : public CDialogEx
@@ -63,4 +64,8 @@ public:
     afx_msg void OnShowAbout();
     afx_msg void OnConfigThreshold();
     afx_msg void OnConfigTransform();
+    // the console to show messages like chage the threshold and transform etc
+    CEdit m_main_console;
+    // func for add message to the console
+    void AddToConsole(const CString& str);
 };
