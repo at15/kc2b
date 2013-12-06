@@ -75,6 +75,9 @@
     <ClInclude Include="MapDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="SmallCar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrackTheCar.cpp">
@@ -117,6 +120,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MapDlg.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SmallCar.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

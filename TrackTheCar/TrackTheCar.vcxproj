@@ -110,6 +110,7 @@
     <ClInclude Include="MapDlg.h" />
     <ClInclude Include="MyCvvImage.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="SmallCar.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="StrConv.h" />
     <ClInclude Include="targetver.h" />
@@ -127,6 +128,7 @@
     <ClCompile Include="ImageProc.cpp" />
     <ClCompile Include="MapDlg.cpp" />
     <ClCompile Include="MyCvvImage.cpp" />
+    <ClCompile Include="SmallCar.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
