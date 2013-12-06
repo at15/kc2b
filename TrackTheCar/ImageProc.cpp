@@ -175,6 +175,31 @@ CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold
     return blue_p;
 }
 
+// the src is binary?? or either is ok? suppose binary
+void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners){
+    double qualityLevel=0.05;
+    double minDistance=15;
+    // Create temporary images required by cvGoodFeaturesToTrack  
+    IplImage* corners1 = cvCreateImage(cvGetSize(pSrc),IPL_DEPTH_32F,1);
+    IplImage* corners2 = cvCreateImage(cvGetSize(pSrc),IPL_DEPTH_32F,1);
+    // Create the array to store the points detected( <= 1000 )  
+    int count = 1000;  
+    CvPoint2D32f* corners = new CvPoint2D32f[count];  
+    cvGoodFeaturesToTrack(pSrc, corners1, corners2, corners, &count,qualityLevel,minDistance,0);
+    // and echo the points on the origin image
+    // i need to do the work on drawing the map ... mfker ...
+
+    //vector<CvPoint2D32f> v_corners;
+    // store it into vector, which is better than array
+    for(int i=0;i<count;i++)  
+    {  
+        //cvLine(img, cvPoint(corners[i].x, corners[i].y), cvPoint(corners[i].x, corners[i].y), CV_RGB(255,0,0), 5);
+        if(!v_corners.empty()) v_corners.clear();
+        v_corners.push_back(corners[i]);
+    }
+    delete corners;
+}
+/*
 // from M16
 //Éú³ÉÂ·¾¶
 int i;
@@ -188,7 +213,7 @@ double quality = 0.01;
 double min_distance = LINE_LEN;
 
 cvGoodFeaturesToTrack( route_img, eig, temp, points, &countnum,
-    quality, min_distance, 0, 3, 0, 0.04 );
+quality, min_distance, 0, 3, 0, 0.04 );
 cvReleaseImage( &eig );
 cvReleaseImage( &temp );
 
@@ -205,8 +230,8 @@ cvGoodFeaturesToTrack(src, corners1, corners2, corners, &num_points,qualityLevel
 
 if(num_points>0)
 {
-    for (int k=0; k <num_points;++k)
-    {cout<<corners[k].x<<' '<<corners[k].y<<endl;}
+for (int k=0; k <num_points;++k)
+{cout<<corners[k].x<<' '<<corners[k].y<<endl;}
 }
 cout<<"Find all "<<num_points<<"points\n";
 
@@ -214,22 +239,7 @@ cvReleaseImage(&corners1);
 cvReleaseImage(&corners2);
 //cvWaitKey(0);
 
-void CImageProc::CleanUp(){
-    for(int i = 0;i<m_images.size();i++){
-        if(m_images.at(i)){
-            cvReleaseImage(&m_images.at(i));
-        }
-    }
-}
-
-IplImage* CImageProc::GetLastPtr(){
-    if(m_images.size()> 0){
-        return m_images.at(m_images.size()-1);
-    }
-    else{
-        return NULL;
-    }
-}
+*/
 
 void CImageProc::DrawMiddleCircle(IplImage* img,CvScalar color /* = CV_RGB(0,255,0) */){
     int w = img->width;
@@ -345,4 +355,21 @@ void CImageProc::cvThin (IplImage* src, IplImage* dst, int iterations /*= 1*/) {
                     } 
         } 
         cvReleaseImage(&t_image); 
+}
+
+void CImageProc::CleanUp(){
+    for(int i = 0;i<m_images.size();i++){
+        if(m_images.at(i)){
+            cvReleaseImage(&m_images.at(i));
+        }
+    }
+}
+
+IplImage* CImageProc::GetLastPtr(){
+    if(m_images.size()> 0){
+        return m_images.at(m_images.size()-1);
+    }
+    else{
+        return NULL;
+    }
 }

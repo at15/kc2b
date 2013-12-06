@@ -59,6 +59,9 @@ public:
    
 
     void cvThin( IplImage* src, IplImage* dst, int iterations=1);
+
+
+    void FindMapPoints(IplImage* pSrc,std::vector<CvPoint2D32f>& v_corners);
 /* abandoned func */
 public:
     void CleanUp(); // release all the memory
