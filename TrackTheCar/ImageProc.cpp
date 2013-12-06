@@ -187,10 +187,12 @@ void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners){
     CvPoint2D32f* corners = new CvPoint2D32f[count];  
     cvGoodFeaturesToTrack(pSrc, corners1, corners2, corners, &count,qualityLevel,minDistance,0);
     
+    if(!v_corners.empty()) v_corners.clear();
     for(int i=0;i<count;i++)  
     {  
         //cvLine(img, cvPoint(corners[i].x, corners[i].y), cvPoint(corners[i].x, corners[i].y), CV_RGB(255,0,0), 5);
-        if(!v_corners.empty()) v_corners.clear();
+        //if(!v_corners.empty()) v_corners.clear();
+        // ! here is the bug!!!
         v_corners.push_back(corners[i]);
     }
     delete corners;
