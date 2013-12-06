@@ -18,10 +18,6 @@ CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
 {
 }
 
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
-{
-	CDialogEx::DoDataExchange(pDX);
-}
 
 
 
@@ -205,6 +201,11 @@ void CTrackTheCarDlg::OnConfigTransform()
     ApplyConfig();
 }
 
+void CTrackTheCarDlg::OnConfigMap()
+{
+    m_dlg_map.SetMainFrame(m_main_input.GetCurrentFrame());
+    m_dlg_map.DoModal();
+}
 
 void CTrackTheCarDlg::OnMainOpenImage()
 {
@@ -218,8 +219,4 @@ void CTrackTheCarDlg::OnMainOpenImage()
 
 
 
-void CTrackTheCarDlg::OnConfigMap()
-{
-    // TODO: 在此添加命令处理程序代码
-    m_dlg_map.DoModal();
-}
+
