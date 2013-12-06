@@ -175,6 +175,45 @@ CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold
     return blue_p;
 }
 
+// from M16
+//生成路径
+int i;
+IplImage* debug_img = 0;
+//强角点识别算法，找路径点
+int countnum = POINTS_countnum;
+CvPoint2D32f* points = (CvPoint2D32f*)cvAlloc(countnum*sizeof(points[0]));
+IplImage* eig = cvCreateImage( cvGetSize(route_img), 32, 1 );
+IplImage* temp = cvCreateImage( cvGetSize(route_img), 32, 1 );
+double quality = 0.01;
+double min_distance = LINE_LEN;
+
+cvGoodFeaturesToTrack( route_img, eig, temp, points, &countnum,
+    quality, min_distance, 0, 3, 0, 0.04 );
+cvReleaseImage( &eig );
+cvReleaseImage( &temp );
+
+double qualityLevel=0.05;
+double minDistance=15;
+IplImage *corners1=0, *corners2=0;
+
+//创建两个与原图大小相同的临时图像 　　
+corners1=cvCreateImage(cvGetSize(src),IPL_DEPTH_32F,1);
+corners2=cvCreateImage(cvGetSize(src),IPL_DEPTH_32F,1);
+
+//角点检测
+cvGoodFeaturesToTrack(src, corners1, corners2, corners, &num_points,qualityLevel,minDistance,0);
+
+if(num_points>0)
+{
+    for (int k=0; k <num_points;++k)
+    {cout<<corners[k].x<<' '<<corners[k].y<<endl;}
+}
+cout<<"Find all "<<num_points<<"points\n";
+
+cvReleaseImage(&corners1);
+cvReleaseImage(&corners2);
+//cvWaitKey(0);
+
 void CImageProc::CleanUp(){
     for(int i = 0;i<m_images.size();i++){
         if(m_images.at(i)){
