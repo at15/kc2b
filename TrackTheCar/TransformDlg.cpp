@@ -58,7 +58,7 @@ void CTransformDlg::process(int corner_size/* = 0*/){
     IplImage* redbin = proc.GetRedBinary(m_input_pic.GetCurrentFrame(),global_configs->GetThreshold());
     m_bin_pic.SetCurrentFrame(redbin);
     // find the corners
-    std::vector<CvPoint> corners = proc.FindMapCorner(redbin);
+    std::vector<CvPoint> corners = proc.FindMapCorner(redbin,global_configs->GetCornerSize());
     // store it to the global var
     global_configs->SetMapCorners(corners);
     // show the transformed result
@@ -90,6 +90,8 @@ void CTransformDlg::OnBnClickedTransformChangeCornerSize()
     // TODO: 在此添加控件通知处理程序代码
     UpdateData();
     if(m_corner_size){
-
+         CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+         global_configs->SetCornerSize(m_corner_size);
+         process();
     }
 }

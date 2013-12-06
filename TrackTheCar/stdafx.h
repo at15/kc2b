@@ -55,6 +55,7 @@
 #endif
 #endif
 
+#include "constants.h"
 #include "MyCvvImage.h"
 #include "StrConv.h"
 #include "ImageProc.h"
