@@ -243,38 +243,145 @@ IplImage* CImageProc::TransformImage(IplImage* pSrc,std::vector<CvPoint> corners
     return trans_img;
 }
 
-void cvThin (IplImage* src, IplImage* dst, int iterations) {
-    cvCopyImage(src, dst);
-    BwImage dstdat(dst);
-    IplImage* t_image = cvCloneImage(src);
-    BwImage t_dat(t_image);
-    for (int n = 0; n < iterations; n++)
-        for (int s = 0; s <= 1; s++) {
-            cvCopyImage(dst, t_image);
-            for (int i = 0; i < src->height; i++)
-                for (int j = 0; j < src->width; j++)
-                    if (t_dat[i][j]) {
-                        int a = 0, b = 0;
-                        int d[8][2] = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1},
-                        {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
-                        int p[8];
-                        p[0] = (i == 0) ? 0 : t_dat[i-1][j];
-                        for (int k = 1; k <= 8; k++) {
-                            if (i+d[k%8][0] < 0 || i+d[k%8][0] >= src->height ||
-                                j+d[k%8][1] < 0 || j+d[k%8][1] >= src->width)
-                                p[k%8] = 0;
-                            else p[k%8] = t_dat[ i+d[k%8][0] ][ j+d[k%8][1] ];
-                            if (p[k%8]) {
-                                b++;
-                                if (!p[k-1]) a++;
+void CImageProc::cvThin( IplImage* src, IplImage* dst, int iterations/*=1*/)
+{
+    CvSize size = cvGetSize(src);
+    cvCopy(src, dst);
+    int n = 0,i = 0,j = 0;
+    for(n=0; n<iterations; n++)
+    {
+        IplImage* t_image = cvCloneImage(dst);
+        for(i=0; i<size.height;  i++)
+        {
+            for(j=0; j<size.width; j++)
+            {
+                if(CV_IMAGE_ELEM(t_image,byte,i,j)==1)
+                {
+                    int ap=0;
+                    int p2 = (i==0)?0:CV_IMAGE_ELEM(t_image,byte, i-1, j);
+                    int p3 = (i==0 || j==size.width-1)?0:CV_IMAGE_ELEM(t_image,byte, i-1, j+1);
+                    if (p2==0 && p3==1)
+                    {
+                        ap++;
+                    }
+                    int p4 = (j==size.width-1)?0:CV_IMAGE_ELEM(t_image,byte,i,j+1);
+                    if(p3==0 && p4==1)
+                    {
+                        ap++;
+                    }
+                    int p5 = (i==size.height-1 || j==size.width-1)?0:CV_IMAGE_ELEM(t_image,byte,i+1,j+1);
+                    if(p4==0 && p5==1)
+                    {
+                        ap++;
+                    }
+                    int p6 = (i==size.height-1)?0:CV_IMAGE_ELEM(t_image,byte,i+1,j);
+                    if(p5==0 && p6==1)
+                    {
+                        ap++;
+                    }
+                    int p7 = (i==size.height-1 || j==0)?0:CV_IMAGE_ELEM(t_image,byte,i+1,j-1);
+                    if(p6==0 && p7==1)
+                    {
+                        ap++;
+                    }
+                    int p8 = (j==0)?0:CV_IMAGE_ELEM(t_image,byte,i,j-1);
+                    if(p7==0 && p8==1)
+                    {
+                        ap++;
+                    }
+                    int p9 = (i==0 || j==0)?0:CV_IMAGE_ELEM(t_image,byte,i-1,j-1);
+                    if(p8==0 && p9==1)
+                    {
+                        ap++;
+                    }
+                    if(p9==0 && p2==1)
+                    {
+                        ap++;
+                    }
+                    if((p2+p3+p4+p5+p6+p7+p8+p9)>1 && (p2+p3+p4+p5+p6+p7+p8+p9)<7)
+                    {
+                        if(ap==1)
+                        {
+                            if(!(p2 && p4 && p6))
+                            {
+                                if(!(p4 && p6 && p8))
+                                {
+                                    CV_IMAGE_ELEM(dst,byte,i,j)=0;
+                                }
                             }
                         }
-                        if (b >= 2 && b <= 6 && a == 1)
-                            if (!s && !(p[2] && p[4] && (p[0] || p[6])))
-                                dstdat[i][j] = 0;
-                            else if (s && !(p[0] && p[6] && (p[2] || p[4])))
-                                dstdat[i][j] = 0;
                     }
+
+                }
+            }
         }
         cvReleaseImage(&t_image);
+        t_image = cvCloneImage(dst);
+        for(i=0; i<size.height;  i++)
+        {
+            for(int j=0; j<size.width; j++)
+            {
+                if(CV_IMAGE_ELEM(t_image,byte,i,j)==1)
+                {
+                    int ap=0;
+                    int p2 = (i==0)?0:CV_IMAGE_ELEM(t_image,byte, i-1, j);
+                    int p3 = (i==0 || j==size.width-1)?0:CV_IMAGE_ELEM(t_image,byte, i-1, j+1);
+                    if (p2==0 && p3==1)
+                    {
+                        ap++;
+                    }
+                    int p4 = (j==size.width-1)?0:CV_IMAGE_ELEM(t_image,byte,i,j+1);
+                    if(p3==0 && p4==1)
+                    {
+                        ap++;
+                    }
+                    int p5 = (i==size.height-1 || j==size.width-1)?0:CV_IMAGE_ELEM(t_image,byte,i+1,j+1);
+                    if(p4==0 && p5==1)
+                    {
+                        ap++;
+                    }
+                    int p6 = (i==size.height-1)?0:CV_IMAGE_ELEM(t_image,byte,i+1,j);
+                    if(p5==0 && p6==1)
+                    {
+                        ap++;
+                    }
+                    int p7 = (i==size.height-1 || j==0)?0:CV_IMAGE_ELEM(t_image,byte,i+1,j-1);
+                    if(p6==0 && p7==1)
+                    {
+                        ap++;
+                    }
+                    int p8 = (j==0)?0:CV_IMAGE_ELEM(t_image,byte,i,j-1);
+                    if(p7==0 && p8==1)
+                    {
+                        ap++;
+                    }
+                    int p9 = (i==0 || j==0)?0:CV_IMAGE_ELEM(t_image,byte,i-1,j-1);
+                    if(p8==0 && p9==1)
+                    {
+                        ap++;
+                    }
+                    if(p9==0 && p2==1)
+                    {
+                        ap++;
+                    }
+                    if((p2+p3+p4+p5+p6+p7+p8+p9)>1 && (p2+p3+p4+p5+p6+p7+p8+p9)<7)
+                    {
+                        if(ap==1)
+                        {
+                            if(p2*p4*p8==0)
+                            {
+                                if(p2*p6*p8==0)
+                                {
+                                    CV_IMAGE_ELEM(dst, byte,i,j)=0;
+                                }
+                            }
+                        }
+                    }                   
+                }
+
+            }
+
+        }           
+        cvReleaseImage(&t_image);
+    }
 }

@@ -39,6 +39,8 @@ public:
     // transform, corner size can be specified
     IplImage* TransformImage(IplImage* pSrc,std::vector<CvPoint> corners);
    
+
+    void cvThin( IplImage* src, IplImage* dst, int iterations=1);
 /* abandoned func */
 public:
     void CleanUp(); // release all the memory
