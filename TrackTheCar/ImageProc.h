@@ -1,6 +1,18 @@
 #pragma once
 #include "constants.h"
 // deal with the image processing
+// ÕºœÒ¿‡
+template<class T> class Image {
+private:
+    IplImage* imgp;
+public:
+    Image(IplImage* img=0) {imgp=img;}
+    ~Image(){imgp=0;}
+    inline T* operator[](const int rowIndx) {
+        return ((T *)(imgp->imageData + rowIndx*imgp->widthStep));
+    }
+}; 
+typedef Image<unsigned char>  BwImage;
 class CImageProc
 {
 public:
