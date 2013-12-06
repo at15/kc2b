@@ -242,3 +242,39 @@ IplImage* CImageProc::TransformImage(IplImage* pSrc,std::vector<CvPoint> corners
     cvReleaseMat(&transmat);
     return trans_img;
 }
+
+void cvThin (IplImage* src, IplImage* dst, int iterations) {
+    cvCopyImage(src, dst);
+    BwImage dstdat(dst);
+    IplImage* t_image = cvCloneImage(src);
+    BwImage t_dat(t_image);
+    for (int n = 0; n < iterations; n++)
+        for (int s = 0; s <= 1; s++) {
+            cvCopyImage(dst, t_image);
+            for (int i = 0; i < src->height; i++)
+                for (int j = 0; j < src->width; j++)
+                    if (t_dat[i][j]) {
+                        int a = 0, b = 0;
+                        int d[8][2] = {{-1, 0}, {-1, 1}, {0, 1}, {1, 1},
+                        {1, 0}, {1, -1}, {0, -1}, {-1, -1}};
+                        int p[8];
+                        p[0] = (i == 0) ? 0 : t_dat[i-1][j];
+                        for (int k = 1; k <= 8; k++) {
+                            if (i+d[k%8][0] < 0 || i+d[k%8][0] >= src->height ||
+                                j+d[k%8][1] < 0 || j+d[k%8][1] >= src->width)
+                                p[k%8] = 0;
+                            else p[k%8] = t_dat[ i+d[k%8][0] ][ j+d[k%8][1] ];
+                            if (p[k%8]) {
+                                b++;
+                                if (!p[k-1]) a++;
+                            }
+                        }
+                        if (b >= 2 && b <= 6 && a == 1)
+                            if (!s && !(p[2] && p[4] && (p[0] || p[6])))
+                                dstdat[i][j] = 0;
+                            else if (s && !(p[0] && p[6] && (p[2] || p[4])))
+                                dstdat[i][j] = 0;
+                    }
+        }
+        cvReleaseImage(&t_image);
+}
