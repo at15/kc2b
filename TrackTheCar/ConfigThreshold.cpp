@@ -118,12 +118,6 @@ void CConfigThreshold::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar
     SetThreshold();
 }
 
-void CConfigThreshold::OnBnClickedConfigOpenCam()
-{
-    m_camera.OpenCam();
-    SetTimer(CONFIG_USE_CAM,20,NULL);
-}
-
 void CConfigThreshold::SetThreshold(){
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     // get the threshold form the sliders
@@ -157,6 +151,12 @@ void CConfigThreshold::BasicProc(){
     cvReleaseImage(&bluebin);
     proc.releaseHSVBGR(hsvbgrBin);
     proc.releaseHSVBGR(hsvbgr);
+}
+
+void CConfigThreshold::OnBnClickedConfigOpenCam()
+{
+    m_camera.OpenCam();
+    SetTimer(CONFIG_USE_CAM,20,NULL);
 }
 
 void CConfigThreshold::OnBnClickedConfigOpenImage()

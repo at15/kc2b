@@ -44,6 +44,10 @@ public:
     CvPoint CalcCore(IplImage* img_binary);
     IplImage* GenMaskPoint(IplImage* pSrc,CvRect point_rect);//,CvScalar bgr)
 
+    // The functions for get the point of red and blue
+    CvPoint GetRedCore(IplImage* color_image,std::vector<int> threshold);
+    CvPoint GetBlueCore(IplImage* color_image,std::vector<int> threshold);
+
     // draw green circle in the middle to let user put the map in the right pos
     void DrawMiddleCircle(IplImage* img,CvScalar color = CV_RGB(0,255,0));
     

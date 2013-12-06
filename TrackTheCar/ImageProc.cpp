@@ -160,6 +160,21 @@ IplImage* CImageProc::GenMaskPoint(IplImage* pSrc,CvRect point_rect)//,CvScalar 
     return mask;
 }
 
+// The functions for get the point of red and blue
+CvPoint CImageProc::GetRedCore(IplImage* color_image,std::vector<int> threshold){
+    IplImage* redbin = GetRedBinary(color_image,threshold);
+    CvPoint red_p = CalcCore(redbin);
+    cvReleaseImage(&redbin);
+    return red_p;
+}
+
+CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold){
+    IplImage* bluebin = GetBlueBinary(color_image,threshold);
+    CvPoint blue_p = CalcCore(bluebin);
+    cvReleaseImage(bluebin);
+    return blue_p;
+}
+
 void CImageProc::CleanUp(){
     for(int i = 0;i<m_images.size();i++){
         if(m_images.at(i)){
