@@ -88,6 +88,7 @@ BOOL CTrackTheCarDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+    use_config = false;
     if(!m_main_input.Init(this,IDC_MAIN_INPUT)){
         AddToConsole(_T("ERROR: can't init the main picture control!"));
     }
@@ -144,6 +145,28 @@ HCURSOR CTrackTheCarDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+// apply the config to the main frame (basically the transform...)
+void CTrackTheCarDlg::ApplyConfig(){
+    use_config = true;
+   process_input();
+}
+
+void CTrackTheCarDlg::process_input(){
+    // transform the image
+    CImageProc proc;
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+
+    IplImage* transformed_pic= proc.TransformImage(m_main_input.GetCurrentFrame(),
+        global_configs->GetMapCorner());
+    m_main_input.SetCurrentFrame(transformed_pic);
+    cvReleaseImage(&transformed_pic);
+
+    // also need to set the threshold .. but the main input only need this at this moment
+}
+
+void CTrackTheCarDlg::RestConfig(){
+    use_config = false;
+}
 
 void CTrackTheCarDlg::AddToConsole(const CString& str){
     CString old;
@@ -179,6 +202,7 @@ void CTrackTheCarDlg::OnConfigTransform()
     // TODO: 在此添加命令处理程序代码
     m_dlg_transform.SetMainFrame(m_main_input.GetCurrentFrame());
     m_dlg_transform.DoModal();
+    ApplyConfig();
 }
 
 

@@ -63,6 +63,13 @@ public:
     // this for the main picture control 
     CCameraCtrl m_main_input;
 
+    // This is for update the image in the main control after all the config setting
+    // example: transformed the image
+    void ApplyConfig();
+    void RestConfig();
+
+    void process_input();
+
     afx_msg void OnCapPic();
     afx_msg void OnShowAbout();
     afx_msg void OnConfigThreshold();
@@ -72,4 +79,6 @@ public:
     // func for add message to the console
     void AddToConsole(const CString& str);
     afx_msg void OnMainOpenImage();
+private:
+    bool use_config;
 };

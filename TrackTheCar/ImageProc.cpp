@@ -238,7 +238,7 @@ IplImage* CImageProc::TransformImage(IplImage* pSrc,std::vector<CvPoint> corners
     cvGetPerspectiveTransform(origin_points,new_points,transmat);
     IplImage* trans_img = cvCreateImage(cvSize(w, h), IPL_DEPTH_8U, 3);
 
-    // TODO: can i just do the trans on the pSrc ....
     cvWarpPerspective(pSrc, trans_img, transmat);
+    cvReleaseMat(&transmat);
     return trans_img;
 }
