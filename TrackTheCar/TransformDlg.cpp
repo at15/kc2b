@@ -13,6 +13,7 @@ IMPLEMENT_DYNAMIC(CTransformDlg, CDialogEx)
 
     CTransformDlg::CTransformDlg(CWnd* pParent /*=NULL*/)
     : CDialogEx(CTransformDlg::IDD, pParent)
+    , m_corner_size(0)
 {
 
 }
@@ -24,11 +25,13 @@ CTransformDlg::~CTransformDlg()
 void CTransformDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialogEx::DoDataExchange(pDX);
+    DDX_Text(pDX, IDC_EDIT2, m_corner_size);
 }
 
 
 BEGIN_MESSAGE_MAP(CTransformDlg, CDialogEx)
     ON_BN_CLICKED(IDC_TRANSFORM_OPEN_IMAGE, &CTransformDlg::OnBnClickedTransformOpenImage)
+    ON_BN_CLICKED(IDC_TRANSFORM_CHANGE_CORNER_SIZE, &CTransformDlg::OnBnClickedTransformChangeCornerSize)
 END_MESSAGE_MAP()
 
 
@@ -49,7 +52,7 @@ void CTransformDlg::SetMainFrame(IplImage* pSrc){
     m_input_pic.SetCurrentFrame(pSrc);
 }
 
-void CTransformDlg::process(){
+void CTransformDlg::process(int corner_size/* = 0*/){
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     CImageProc proc;
     IplImage* redbin = proc.GetRedBinary(m_input_pic.GetCurrentFrame(),global_configs->GetThreshold());
@@ -82,10 +85,11 @@ void CTransformDlg::OnBnClickedTransformOpenImage()
 
 }
 
+void CTransformDlg::OnBnClickedTransformChangeCornerSize()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    UpdateData();
+    if(m_corner_size){
 
-/*  // for the corners
-std::vector<CvPoint> corners = proc.FindMapCorner(redbin);
-for(int i = 0;i<corners.size();i++){
-cvCircle(m_camera.GetCurrentFrame(),corners.at(i),5,CV_RGB(255,0,0),3);
+    }
 }
-m_camera.UpdateFrame();*/

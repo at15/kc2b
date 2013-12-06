@@ -104,6 +104,7 @@
     <ClInclude Include="CameraDialog.h" />
     <ClInclude Include="configs.h" />
     <ClInclude Include="ConfigThreshold.h" />
+    <ClInclude Include="constants.h" />
     <ClInclude Include="CvPicCtrl.h" />
     <ClInclude Include="ImageProc.h" />
     <ClInclude Include="MyCvvImage.h" />

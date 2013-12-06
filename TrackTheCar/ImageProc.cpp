@@ -9,7 +9,7 @@ CImageProc::CImageProc(void)
 
 CImageProc::~CImageProc(void)
 {
-   // CleanUp();
+    // CleanUp();
 }
 
 IplImage* CImageProc::GetBinary(IplImage* gary_image,int threshold)
@@ -172,11 +172,11 @@ void CImageProc::DrawMiddleCircle(IplImage* img,CvScalar color /* = CV_RGB(0,255
 
 // the order of fout points is 
 // left top,right top, right bottom, left bottom
-std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img){
+std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img,int corner_size/* = CORNER_SIZE*/){
     // step 1 find the left one
     int w = img->width;
     int h =img->height;
-    
+
     CvRect left_top = cvRect(0,0,w/2,h/2);
     CvRect right_top = cvRect(w/2,0,w/2,h/2);
     CvRect left_bottom = cvRect(0,h/2,w/2,h/2);
@@ -187,29 +187,37 @@ std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img){
     // then calc the core to get the point
     CvPoint left_top_p = CalcCore(img);
     cvResetImageROI(img);
+    left_top_p.x +=  corner_size; // avoid the corner 
+    left_top_p.y += corner_size;
 
     cvSetImageROI(img,right_top);
     CvPoint right_top_p = CalcCore(img);
     cvResetImageROI(img);
     right_top_p.x += w/2 ;
+    right_top_p.x -= corner_size;
+    right_top_p.y += corner_size;
 
     cvSetImageROI(img,right_bottom);
     CvPoint right_bottom_p = CalcCore(img);
     cvResetImageROI(img);
     right_bottom_p.x += w/2;
     right_bottom_p.y += h/2;
+    right_bottom_p.x -= corner_size;
+    right_bottom_p.y -= corner_size;
 
     cvSetImageROI(img,left_bottom);
     CvPoint left_bottom_p = CalcCore(img);
     cvResetImageROI(img);
     left_bottom_p.y += h/2;
+    left_bottom_p.x += corner_size;
+    left_bottom_p.y -= corner_size;
 
-    std::vector<CvPoint> points;
+    vector<CvPoint> points;
     points.push_back(left_top_p);
     points.push_back(right_top_p);
     points.push_back(right_bottom_p);
     points.push_back(left_bottom_p);
-    
+
     return points;
 }
 
@@ -219,7 +227,7 @@ IplImage* CImageProc::TransformImage(IplImage* pSrc,std::vector<CvPoint> corners
     int h = pSrc->height;
 
     CvMat* transmat = cvCreateMat(3, 3, CV_32FC1); // the mat for transform image
-    
+
     CvPoint2D32f origin_points[4];
     for(int i=0;i<4;i++){
         origin_points[i] = cvPoint2D32f(corners.at(i).x,corners.at(i).y);
@@ -229,7 +237,7 @@ IplImage* CImageProc::TransformImage(IplImage* pSrc,std::vector<CvPoint> corners
 
     cvGetPerspectiveTransform(origin_points,new_points,transmat);
     IplImage* trans_img = cvCreateImage(cvSize(w, h), IPL_DEPTH_8U, 3);
-    
+
     // TODO: can i just do the trans on the pSrc ....
     cvWarpPerspective(pSrc, trans_img, transmat);
     return trans_img;

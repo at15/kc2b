@@ -29,6 +29,9 @@ public:
     // set the main frame of this dialog
     void SetMainFrame(IplImage* pSrc);
     // the functions for the process
-    void process();
+    void process(int corner_size = 0);
     afx_msg void OnBnClickedTransformOpenImage();
+    afx_msg void OnBnClickedTransformChangeCornerSize();
+    // the size of the corner, they are red, so need to be removed to avoid influence on the car
+    int m_corner_size;
 };

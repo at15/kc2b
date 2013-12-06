@@ -1,4 +1,5 @@
 #pragma once
+#include "constants.h"
 // deal with the image processing
 class CImageProc
 {
@@ -34,8 +35,8 @@ public:
     
 
     // find the four red point so we can transform
-    std::vector<CvPoint> FindMapCorner(IplImage* img);
-    // transform!
+    std::vector<CvPoint> FindMapCorner(IplImage* img,int corner_size = CORNER_SIZE);
+    // transform, corner size can be specified
     IplImage* TransformImage(IplImage* pSrc,std::vector<CvPoint> corners);
    
 /* abandoned func */
