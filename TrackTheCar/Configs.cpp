@@ -27,7 +27,7 @@ void CConfigs::LoadDefaultSetting(){
     m_threshold.push_back(80);
 
 
-    m_map_threshold = 40;
+    m_map_threshold = 70;
     m_thin_iteration = 20; // 20 times for the thin
 
 }

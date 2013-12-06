@@ -171,7 +171,7 @@ CvPoint CImageProc::GetRedCore(IplImage* color_image,std::vector<int> threshold)
 CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold){
     IplImage* bluebin = GetBlueBinary(color_image,threshold);
     CvPoint blue_p = CalcCore(bluebin);
-    cvReleaseImage(bluebin);
+    cvReleaseImage(&bluebin);
     return blue_p;
 }
 

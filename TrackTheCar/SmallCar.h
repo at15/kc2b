@@ -16,6 +16,7 @@ public:
     void GoRight();
     void GoBack();
     void GoForward();
+
 private:
     CImageProc m_proc;
 

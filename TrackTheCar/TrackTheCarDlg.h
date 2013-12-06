@@ -9,6 +9,7 @@
 #include "ConfigThreshold.h"
 #include "TransformDlg.h"
 #include "MapDlg.h"
+#include "SmallCar.h"
 #include "afxwin.h"
 
 // The about dialog
@@ -50,6 +51,10 @@ protected:
 public:
     // the about dialog... which is kind of useless
     CAboutDlg m_about;
+
+    // the car
+    CSmallCar m_car;
+
     // this is for all the function dialogs
     CCameraDialog m_dlg_camera;
     CConfigThreshold m_dlg_threshold;

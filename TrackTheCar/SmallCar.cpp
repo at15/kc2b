@@ -19,12 +19,14 @@ bool CSmallCar::Init(CCvPicCtrl* camera,IplImage* map,CConfigs* config){
     m_camera = camera;
     m_map.SetImage(map);
     m_config = config;
+    return true;
 }
 
 bool CSmallCar::GetCarPos(){
     IplImage* t = m_camera->GetCurrentFrame();
     m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
     m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
+    return true;
 }
 
 void CSmallCar::GoLeft(){
