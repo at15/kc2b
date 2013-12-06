@@ -23,8 +23,7 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 }
 
-BEGIN_MESSAGE_MAP(CAboutDlg, CDialogEx)
-END_MESSAGE_MAP()
+
 
 
 // CTrackTheCarDlg 对话框
@@ -53,6 +52,7 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_COMMAND(ID_32774, &CTrackTheCarDlg::OnConfigThreshold)
     ON_COMMAND(ID_32773, &CTrackTheCarDlg::OnConfigTransform)
     ON_COMMAND(ID_32778, &CTrackTheCarDlg::OnMainOpenImage)
+    ON_COMMAND(ID_32781, &CTrackTheCarDlg::OnConfigMap)
 END_MESSAGE_MAP()
 
 
@@ -212,4 +212,14 @@ void CTrackTheCarDlg::OnMainOpenImage()
     m_main_input.OpenImageEx(file_path);
     AddToConsole(file_path);
     //this->SetFocus();// ? will this work? the focus is set to the editor automaticlly
+}
+
+
+
+
+
+void CTrackTheCarDlg::OnConfigMap()
+{
+    // TODO: 在此添加命令处理程序代码
+    m_dlg_map.DoModal();
 }

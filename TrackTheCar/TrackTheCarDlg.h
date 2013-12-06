@@ -8,6 +8,7 @@
 #include "CameraDialog.h"
 #include "ConfigThreshold.h"
 #include "TransformDlg.h"
+#include "MapDlg.h"
 #include "afxwin.h"
 
 // The about dialog
@@ -25,6 +26,7 @@ protected:
     // 实现
 protected:
     DECLARE_MESSAGE_MAP()
+public:
 };
 
 // CTrackTheCarDlg 对话框
@@ -59,6 +61,7 @@ public:
     CCameraDialog m_dlg_camera;
     CConfigThreshold m_dlg_threshold;
     CTransformDlg m_dlg_transform;
+    CMapDlg m_dlg_map;
 
     // this for the main picture control 
     CCameraCtrl m_main_input;
@@ -81,4 +84,6 @@ public:
     afx_msg void OnMainOpenImage();
 private:
     bool use_config;
+public:
+    afx_msg void OnConfigMap();
 };

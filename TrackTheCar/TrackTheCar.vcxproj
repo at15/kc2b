@@ -107,6 +107,7 @@
     <ClInclude Include="constants.h" />
     <ClInclude Include="CvPicCtrl.h" />
     <ClInclude Include="ImageProc.h" />
+    <ClInclude Include="MapDlg.h" />
     <ClInclude Include="MyCvvImage.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -124,6 +125,7 @@
     <ClCompile Include="ConfigThreshold.cpp" />
     <ClCompile Include="CvPicCtrl.cpp" />
     <ClCompile Include="ImageProc.cpp" />
+    <ClCompile Include="MapDlg.cpp" />
     <ClCompile Include="MyCvvImage.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
