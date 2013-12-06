@@ -225,24 +225,18 @@ void CTrackTheCarDlg::OnCenCorner()
      CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     // TODO: typo ... should be OnGenCorner
     CImageProc proc;
-    // first get the bin image
+    m_main_output.SetCurrentFrame(m_main_input.GetCurrentFrame());
 
-    IplImage* grey = proc.GetGrey(m_main_input.GetCurrentFrame());
+    // first get the bin image
+    IplImage* grey = proc.GetGrey(m_main_output.GetCurrentFrame());
     // add true get the different type of binary image.... 
     IplImage* bin = proc.GetBinary(grey,global_configs->GetMapThreshold(),true);
     proc.cvThin(bin,bin,global_configs->GetThinIteration());
-    m_main_output.SetCurrentFrame(bin);
-
+    
     vector<CvPoint2D32f> points;
     proc.FindMapPoints(bin,points);
-    proc.DrawMapPoints(m_main_input.GetCurrentFrame(),points); // seems not work!
-    /*for (int i=0;i<points.size();i++){
-        CString s;
-        s.Format(_T("point is x %d y %d"),points.at(i).x,points.at(i).y);
-        AddToConsole(s);
-    }*/
-    //m_main_output.UpdateFrame();
-    m_main_input.UpdateFrame();
+    proc.DrawMapPoints(m_main_output.GetCurrentFrame(),points); // seems not work!
+    m_main_output.UpdateFrame();
 
     cvReleaseImage(&grey);
     cvReleaseImage(&bin);
