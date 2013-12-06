@@ -14,13 +14,18 @@ public:
     void SetThreshold(std::vector<int> threshold);
     std::vector<int> GetThreshold();
 
+    void SetMapThreshold(int threshold){m_map_threshold = threshold;}
+    int GetMapThreshold(){return m_map_threshold;}
+
 private:
     int m_corner_size;
 
     std::vector<CvPoint> m_map_corners;
-    
-    //CvMat m_transform;// just dont use it at this moment...
+    // the threshold for the red and blue
     std::vector<int> m_threshold;
+    // the threshold for the map
+    int m_map_threshold;
+
     void LoadDefaultSetting();
 };
 
