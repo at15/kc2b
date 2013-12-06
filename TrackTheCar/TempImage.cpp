@@ -26,6 +26,7 @@ void CTempImage::SetImage(IplImage* pSrc){
         empty = false;
     }*/
     m_image = cvCreateImage(cvGetSize(pSrc),pSrc->depth,pSrc->nChannels);
+    cvCopy(pSrc,m_image);
     if(m_image) {
         empty = false;
     }
