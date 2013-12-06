@@ -63,6 +63,7 @@ public:
 
     // this for the main picture control 
     CCameraCtrl m_main_input;
+    CCvPicCtrl m_main_output;
 
     // This is for update the image in the main control after all the config setting
     // example: transformed the image
@@ -84,4 +85,5 @@ private:
     bool use_config;
 public:
     afx_msg void OnConfigMap();
+    afx_msg void OnCenCorner();
 };

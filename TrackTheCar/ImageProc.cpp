@@ -177,8 +177,8 @@ CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold
 
 // the src is binary?? or either is ok? suppose binary
 void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners){
-    double qualityLevel=0.05;
-    double minDistance=15;
+    double qualityLevel=0.1;
+    double minDistance=10;
     // Create temporary images required by cvGoodFeaturesToTrack  
     IplImage* corners1 = cvCreateImage(cvGetSize(pSrc),IPL_DEPTH_32F,1);
     IplImage* corners2 = cvCreateImage(cvGetSize(pSrc),IPL_DEPTH_32F,1);
@@ -186,11 +186,7 @@ void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners){
     int count = 1000;  
     CvPoint2D32f* corners = new CvPoint2D32f[count];  
     cvGoodFeaturesToTrack(pSrc, corners1, corners2, corners, &count,qualityLevel,minDistance,0);
-    // and echo the points on the origin image
-    // i need to do the work on drawing the map ... mfker ...
-
-    //vector<CvPoint2D32f> v_corners;
-    // store it into vector, which is better than array
+    
     for(int i=0;i<count;i++)  
     {  
         //cvLine(img, cvPoint(corners[i].x, corners[i].y), cvPoint(corners[i].x, corners[i].y), CV_RGB(255,0,0), 5);
@@ -199,6 +195,14 @@ void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners){
     }
     delete corners;
 }
+
+void CImageProc::DrawMapPoints(IplImage* pSrc,const std::vector<CvPoint2D32f>& v_corners){
+    // just draw the circle on the image for the corners
+    for (int i=0;i<v_corners.size();i++){
+        cvCircle(pSrc,cvPointFrom32f(v_corners.at(i)),6, CV_RGB(255,0,0),2);
+    }
+}
+
 /*
 // from M16
 //Éú³ÉÂ·¾¶

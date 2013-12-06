@@ -62,6 +62,8 @@ public:
 
 
     void FindMapPoints(IplImage* pSrc,std::vector<CvPoint2D32f>& v_corners);
+
+    void DrawMapPoints(IplImage* pSrc,const std::vector<CvPoint2D32f>& v_corners);
 /* abandoned func */
 public:
     void CleanUp(); // release all the memory
