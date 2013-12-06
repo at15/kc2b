@@ -61,11 +61,12 @@ void CMapDlg::map_process(){
     // get the binary and then use the thin
     CImageProc proc;
     IplImage* grey = proc.GetGrey(m_map_input.GetCurrentFrame());
-    IplImage* bin = proc.GetBinary(grey,global_configs->GetMapThreshold());
+    // add true get the different type of binary image.... 
+    IplImage* bin = proc.GetBinary(grey,global_configs->GetMapThreshold(),true);
     m_map_bin.SetCurrentFrame(bin);
     // then thin
     proc.cvThin(bin,bin,global_configs->GetThinIteration());
-    m_map_bin.SetCurrentFrame(bin);
+    m_map_thin.SetCurrentFrame(bin);
     cvReleaseImage(&grey);
     cvReleaseImage(&bin);
 }

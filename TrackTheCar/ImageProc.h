@@ -31,7 +31,7 @@ public:
     };
     // you have to release the image manually ... 
     IplImage* GetGrey(IplImage* color_image);
-    IplImage* GetBinary(IplImage* gary_image,int threshold);
+    IplImage* GetBinary(IplImage* gary_image,int threshold,bool want_white = false);
     std::vector<IplImage*> GetHSVBGR(IplImage* pSrc);
     void releaseHSVBGR(std::vector<IplImage*> hsvbgr);
 

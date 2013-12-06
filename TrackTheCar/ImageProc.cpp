@@ -12,16 +12,23 @@ CImageProc::~CImageProc(void)
     // CleanUp();
 }
 
+
 IplImage* CImageProc::GetGrey(IplImage* color_image){
     IplImage* pGrayImage = cvCreateImage(cvGetSize(color_image), IPL_DEPTH_8U, 1);  
     cvCvtColor(color_image, pGrayImage, CV_BGR2GRAY);
     return pGrayImage;
 }
 
-IplImage* CImageProc::GetBinary(IplImage* gary_image,int threshold)
+IplImage* CImageProc::GetBinary(IplImage* gary_image,int threshold,bool want_white /*=false*/)
 {
     IplImage* pBinaryImage = cvCreateImage(cvGetSize(gary_image), IPL_DEPTH_8U, 1); 
-    cvThreshold(gary_image, pBinaryImage, threshold, 255, CV_THRESH_BINARY);
+    if(want_white){
+        // for the map
+        cvThreshold(gary_image, pBinaryImage, threshold,255, CV_THRESH_BINARY_INV);
+    }else{
+        // for the car
+        cvThreshold(gary_image, pBinaryImage, threshold, 255, CV_THRESH_BINARY);
+    }
     return pBinaryImage;
 }
 
@@ -256,7 +263,7 @@ void CImageProc::cvThin (IplImage* src, IplImage* dst, int iterations /*= 1*/) {
     BwImage t_dat(t_image); 
     for (int n = 0; n < iterations; n++) 
         for (int s = 0; s <= 1; s++) { 
-           // cvCopyImage(dst, t_image); 
+            // cvCopyImage(dst, t_image); 
             cvCopy(dst, t_image);
             for (int i = 0; i < src->height; i++) 
                 for (int j = 0; j < src->width; j++) 

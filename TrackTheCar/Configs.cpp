@@ -26,6 +26,10 @@ void CConfigs::LoadDefaultSetting(){
     m_threshold.push_back(80);
     m_threshold.push_back(80);
 
+
+    m_map_threshold = 40;
+    m_thin_iteration = 5;
+
 }
 
 std::vector<CvPoint> CConfigs::GetMapCorner(){
