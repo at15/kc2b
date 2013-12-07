@@ -37,8 +37,7 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D
     return true;
 }
 bool CSmallCar::StartCar(){
-    CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2); 
-    m_current_point = carPos;
+    m_current_point = GetCarPosEx();
 }
 
 bool CSmallCar::GetCarPos(){
@@ -48,9 +47,17 @@ bool CSmallCar::GetCarPos(){
     return true;
 }
 
+CvPoint CSmallCar::GetCarPosEx(){
+    IplImage* t = m_camera->GetCurrentFrame();
+    m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
+    m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
+    CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2); 
+    return carPos;
+}
+
 bool CSmallCar::MoveCarP2P(){
     //求小车中心坐标
-    CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2); 
+    CvPoint carPos = GetCarPosEx(); 
     //find the nexPoint
     CvPoint nextPoint = m_route.FindnextPoint(m_current_point,m_map_point,m_pass_point);
     //求小车向量方向
@@ -69,13 +76,13 @@ bool CSmallCar::MoveCarP2P(){
             {
                 if(direction_target>direction_car && direction_target<direction_car+180) //左转
                 {
-                   m_car_control.GoLeft();
-                   return true;
+                    m_car_control.GoLeft();
+                    return true;
                 }
                 else //右转
                 {
-                   m_car_control.GoRight();
-                   return true;
+                    m_car_control.GoRight();
+                    return true;
                 }
             }
             else

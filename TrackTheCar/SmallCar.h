@@ -28,6 +28,7 @@ private:
     CvPoint m_tail;
 
     bool GetCarPos();
+    CvPoint GetCarPosEx();
 
     std::vector<CvPoint> m_map_point;
     std::vector<bool> m_pass_point;
