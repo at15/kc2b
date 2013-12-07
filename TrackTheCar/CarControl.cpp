@@ -15,10 +15,12 @@ bool CCarControl::Init(int com_num){
     m_last_op = kStop;
     if(m_port.InitPort(com_num)){
         port_ready = true;
+        return true;
     }else{
         port_ready = false;
+        return false;
     }
-    return port_ready;
+
 }
 
 
@@ -64,7 +66,7 @@ void CCarControl::GoForward(){
 
 void CCarControl::RunCar(opcode op) 
 {
-    if(!port_ready) return;
+   // if(!port_ready) return;
 
     unsigned char* data;
 
