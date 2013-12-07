@@ -16,7 +16,7 @@
 ///
 ///  ÐÞ¶©ËµÃ÷£º
 //////////////////////////////////////////////////////////////////////////
-
+#include "stdafx.h"
 #include "SerialPort.h"
 #include <process.h>
 #include <iostream>

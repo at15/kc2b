@@ -11,8 +11,8 @@
 
 IMPLEMENT_DYNAMIC(CarControlDlg, CDialogEx)
 
-CarControlDlg::CarControlDlg(CWnd* pParent /*=NULL*/)
-	: CDialogEx(CarControlDlg::IDD, pParent)
+    CarControlDlg::CarControlDlg(CWnd* pParent /*=NULL*/)
+    : CDialogEx(CarControlDlg::IDD, pParent)
     , m_com_num(0)
 {
 
@@ -32,6 +32,9 @@ void CarControlDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CarControlDlg, CDialogEx)
     ON_BN_CLICKED(IDC_BUTTON4, &CarControlDlg::OnBnClickedInitCar)
     ON_BN_CLICKED(IDC_BUTTON6, &CarControlDlg::OnBnClickedStop)
+    ON_BN_CLICKED(IDC_BUTTON1, &CarControlDlg::OnBnClickedForward)
+    ON_BN_CLICKED(IDC_BUTTON3, &CarControlDlg::OnBnClickedLeft)
+    ON_BN_CLICKED(IDC_BUTTON5, &CarControlDlg::OnBnClickedRight)
 END_MESSAGE_MAP()
 
 
@@ -40,11 +43,15 @@ END_MESSAGE_MAP()
 
 void CarControlDlg::OnBnClickedInitCar()
 {
-   UpdateData();
-   if(!m_com_num){
-       AfxMessageBox(_T('no com num!!'));
+    UpdateData();
+    if(!m_com_num){
+        AfxMessageBox(_T('no com num!!'));
     }else{
-      m_car_ctrl.Init(m_com_num);  
+        if(m_car_ctrl.Init(m_com_num)){
+            AfxMessageBox(_T("init success!"));
+        }else{
+            AfxMessageBox(_T("init fail!"));
+        }
     }
 }
 
@@ -52,4 +59,25 @@ void CarControlDlg::OnBnClickedInitCar()
 void CarControlDlg::OnBnClickedStop()
 {
     m_car_ctrl.Stop();
+}
+
+
+void CarControlDlg::OnBnClickedForward()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    m_car_ctrl.GoForward();
+}
+
+
+void CarControlDlg::OnBnClickedLeft()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    m_car_ctrl.GoLeft();
+}
+
+
+void CarControlDlg::OnBnClickedRight()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    m_car_ctrl.GoRight();
 }

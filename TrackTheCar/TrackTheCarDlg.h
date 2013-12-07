@@ -10,6 +10,7 @@
 #include "TransformDlg.h"
 #include "MapDlg.h"
 #include "SmallCar.h"
+#include "CarControlDlg.h"
 #include "afxwin.h"
 
 // The about dialog
@@ -60,6 +61,7 @@ public:
     CConfigThreshold m_dlg_threshold;
     CTransformDlg m_dlg_transform;
     CMapDlg m_dlg_map;
+    CarControlDlg m_dlg_car;
 
     // this for the main picture control 
     CCameraCtrl m_main_input;
@@ -86,4 +88,5 @@ private:
 public:
     afx_msg void OnConfigMap();
     afx_msg void OnCenCorner();
+    afx_msg void OnCarConfig();
 };

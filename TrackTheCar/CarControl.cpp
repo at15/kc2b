@@ -13,7 +13,12 @@ CCarControl::~CCarControl(void)
 
 bool CCarControl::Init(int com_num){
     m_last_op = kStop;
-    return m_port.InitPort(com_num);
+    if(m_port.InitPort(com_num)){
+        port_ready = true;
+    }else{
+        port_ready = false;
+    }
+    return port_ready;
 }
 
 
@@ -44,12 +49,16 @@ kRFront,  // 从右转状态开始正向前进
 void CCarControl::GoForward(){
     if(kStop == m_last_op){
         RunCar(kSFront);
+        m_last_op = kSFront;
+
     }
     if(kLeft == m_last_op){
         RunCar(kLFront);
+        m_last_op = kLFront;
     }
     if(kRight == m_last_op){
         RunCar(kRFront);
+        m_last_op = kRFront;
     }
 }
 

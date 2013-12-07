@@ -50,6 +50,7 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_COMMAND(ID_32778, &CTrackTheCarDlg::OnMainOpenImage)
     ON_COMMAND(ID_32781, &CTrackTheCarDlg::OnConfigMap)
     ON_COMMAND(ID_32782, &CTrackTheCarDlg::OnCenCorner)
+    ON_COMMAND(ID_32777, &CTrackTheCarDlg::OnCarConfig)
 END_MESSAGE_MAP()
 
 
@@ -240,4 +241,11 @@ void CTrackTheCarDlg::OnCenCorner()
 
     cvReleaseImage(&grey);
     cvReleaseImage(&bin);
+}
+
+
+void CTrackTheCarDlg::OnCarConfig()
+{
+    // TODO: 在此添加命令处理程序代码
+    m_dlg_car.DoModal();
 }

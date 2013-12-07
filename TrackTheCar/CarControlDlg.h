@@ -25,4 +25,7 @@ public:
     int m_com_num;
 
     CCarControl m_car_ctrl;
+    afx_msg void OnBnClickedForward();
+    afx_msg void OnBnClickedLeft();
+    afx_msg void OnBnClickedRight();
 };
