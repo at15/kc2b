@@ -43,12 +43,14 @@ END_MESSAGE_MAP()
 
 void CarControlDlg::OnBnClickedInitCar()
 {
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     UpdateData();
     if(!m_com_num){
         AfxMessageBox(_T('no com num!!'));
     }else{
         if(m_car_ctrl.Init(m_com_num)){
             AfxMessageBox(_T("init success!"));
+            global_configs->SetCOM(m_com_num);
         }else{
             AfxMessageBox(_T("init fail!"));
         }
@@ -80,4 +82,18 @@ void CarControlDlg::OnBnClickedRight()
 {
     // TODO: 在此添加控件通知处理程序代码
     m_car_ctrl.GoRight();
+}
+
+
+BOOL CarControlDlg::OnInitDialog()
+{
+    CDialogEx::OnInitDialog();
+
+    // TODO:  在此添加额外的初始化
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    m_com_num = global_configs->GetCOM();
+    UpdateData(FALSE);
+
+    return TRUE;  // return TRUE unless you set the focus to a control
+    // 异常: OCX 属性页应返回 FALSE
 }

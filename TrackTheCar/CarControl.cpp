@@ -66,7 +66,7 @@ void CCarControl::GoForward(){
 
 void CCarControl::RunCar(opcode op) 
 {
-   // if(!port_ready) return;
+    if(!port_ready) return;
 
     unsigned char* data;
 

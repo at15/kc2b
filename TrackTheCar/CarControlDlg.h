@@ -28,4 +28,5 @@ public:
     afx_msg void OnBnClickedForward();
     afx_msg void OnBnClickedLeft();
     afx_msg void OnBnClickedRight();
+    virtual BOOL OnInitDialog();
 };

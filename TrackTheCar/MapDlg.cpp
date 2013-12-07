@@ -48,6 +48,10 @@ BOOL CMapDlg::OnInitDialog()
     m_map_input.Init(this,IDC_MAP_INPUT);
     m_map_bin.Init(this,IDC_MAP_BIN);
     m_map_thin.Init(this,IDC_MAP_THIN);
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    m_map_threshold = global_configs->GetMapThreshold();
+    m_thin_iteration = global_configs->GetThinIteration();
+    UpdateData(FALSE);
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
 }

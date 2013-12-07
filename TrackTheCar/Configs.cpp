@@ -30,6 +30,8 @@ void CConfigs::LoadDefaultSetting(){
     m_map_threshold = 70;
     m_thin_iteration = 20; // 20 times for the thin
 
+    m_com_num = 3;
+
 }
 
 std::vector<CvPoint> CConfigs::GetMapCorner(){

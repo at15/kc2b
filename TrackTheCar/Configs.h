@@ -19,6 +19,10 @@ public:
 
     void SetThinIteration(int iteration){m_thin_iteration = iteration;}
     int GetThinIteration(){return m_thin_iteration;}
+
+    void SetCOM(int com_num){m_com_num = com_num;}
+    int GetCOM(){return m_com_num;}
+
 private:
     int m_corner_size;
 
@@ -29,5 +33,8 @@ private:
     int m_map_threshold;
     // the thin time for the map
     int m_thin_iteration;
+
+    // the com num for the port
+    int m_com_num;
     void LoadDefaultSetting();
 };
