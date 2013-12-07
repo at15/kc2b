@@ -116,6 +116,12 @@ void CConfigThreshold::OnTimer(UINT_PTR nIDEvent)
 void CConfigThreshold::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
     SetThreshold();
+    BasicProc();
+}
+
+// set the main frame of this dialog
+void CConfigThreshold::SetMainFrame(IplImage* pSrc){
+    m_camera.SetCurrentFrame(pSrc);
 }
 
 void CConfigThreshold::SetThreshold(){
@@ -162,10 +168,15 @@ void CConfigThreshold::OnBnClickedConfigOpenCam()
 void CConfigThreshold::OnBnClickedConfigOpenImage()
 {
     // TODO: 在此添加控件通知处理程序代码
-    m_camera.OpenImageEx();
-    CImageProc proc;
-    proc.DrawMiddleCircle(m_camera.GetCurrentFrame());// i suppose this won't work
-    m_camera.UpdateFrame();// will this work?
-    BasicProc();
-    //SetTimer(CONFIG_USE_IMAGE,20,NULL);
+    if(m_camera.GetCurrentFrame()){
+        m_camera.UpdateFrame();
+        BasicProc();
+        return;
+    }
+
+    if(m_camera.OpenImageEx()){
+        BasicProc();
+    }else{
+        AfxMessageBox(_T("you didn't select file!"));
+    }
 }

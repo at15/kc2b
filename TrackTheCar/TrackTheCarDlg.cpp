@@ -51,6 +51,8 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_COMMAND(ID_32781, &CTrackTheCarDlg::OnConfigMap)
     ON_COMMAND(ID_32782, &CTrackTheCarDlg::OnCenCorner)
     ON_COMMAND(ID_32777, &CTrackTheCarDlg::OnCarConfig)
+    ON_COMMAND(ID_32780, &CTrackTheCarDlg::OnMainOpenCam)
+    ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -193,21 +195,25 @@ void CTrackTheCarDlg::OnShowAbout()
 
 void CTrackTheCarDlg::OnConfigThreshold()
 {
-    // TODO: 在此添加命令处理程序代码
+    m_main_input.Pause();
+    m_dlg_threshold.SetMainFrame(m_main_input.GetCurrentFrame());
     m_dlg_threshold.DoModal();
+    m_main_input.Pause(false);
 }
 
 
 void CTrackTheCarDlg::OnConfigTransform()
 {
-    // TODO: 在此添加命令处理程序代码
+    m_main_input.Pause();
     m_dlg_transform.SetMainFrame(m_main_input.GetCurrentFrame());
     m_dlg_transform.DoModal();
     ApplyConfig();
+    m_main_input.Pause(false);
 }
 
 void CTrackTheCarDlg::OnConfigMap()
 {
+    KillTimer(MAIN_CAM);
     m_dlg_map.SetMainFrame(m_main_input.GetCurrentFrame());
     m_dlg_map.DoModal();
 }
@@ -217,7 +223,7 @@ void CTrackTheCarDlg::OnMainOpenImage()
     CString file_path;
     m_main_input.OpenImageEx(file_path);
     AddToConsole(file_path);
-    //this->SetFocus();// ? will this work? the focus is set to the editor automaticlly
+   
 }
 
 
@@ -248,4 +254,30 @@ void CTrackTheCarDlg::OnCarConfig()
 {
     // TODO: 在此添加命令处理程序代码
     m_dlg_car.DoModal();
+}
+
+
+void CTrackTheCarDlg::OnMainOpenCam()
+{
+    // TODO: 在此添加命令处理程序代码
+    if(!m_main_input.OpenCam()){
+        AfxMessageBox(_T("can\'t open cam"));
+        return;
+    }
+    SetTimer(MAIN_CAM,20,NULL);
+}
+
+
+void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
+{
+   
+    if(MAIN_CAM == nIDEvent) CamProc();
+    CDialogEx::OnTimer(nIDEvent);
+}
+
+void CTrackTheCarDlg::CamProc(){
+    m_main_input.CaptureAndShow();
+    if(use_config){
+        ApplyConfig();
+    }
 }

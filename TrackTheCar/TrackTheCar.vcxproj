@@ -112,6 +112,7 @@
     <ClInclude Include="MapDlg.h" />
     <ClInclude Include="MyCvvImage.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="RouteHelper.h" />
     <ClInclude Include="SerialPort.h" />
     <ClInclude Include="SmallCar.h" />
     <ClInclude Include="stdafx.h" />
@@ -133,6 +134,7 @@
     <ClCompile Include="ImageProc.cpp" />
     <ClCompile Include="MapDlg.cpp" />
     <ClCompile Include="MyCvvImage.cpp" />
+    <ClCompile Include="RouteHelper.cpp" />
     <ClCompile Include="SerialPort.cpp" />
     <ClCompile Include="SmallCar.cpp" />
     <ClCompile Include="stdafx.cpp">

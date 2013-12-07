@@ -26,6 +26,9 @@ public:
     CCameraCtrl m_camera;
     //CImageProc m_proc;
 
+    // set the main frame of this dialog
+    void SetMainFrame(IplImage* pSrc);
+
     CCvPicCtrl m_h;
     CCvPicCtrl m_s;
     CCvPicCtrl m_v;

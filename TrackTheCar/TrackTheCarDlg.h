@@ -3,7 +3,7 @@
 //
 
 #pragma once
-
+#define MAIN_CAM 1 
 // include the dialogs
 #include "CameraDialog.h"
 #include "ConfigThreshold.h"
@@ -89,4 +89,9 @@ public:
     afx_msg void OnConfigMap();
     afx_msg void OnCenCorner();
     afx_msg void OnCarConfig();
+    afx_msg void OnMainOpenCam();
+    afx_msg void OnTimer(UINT_PTR nIDEvent);
+
+public:
+    void CamProc();
 };

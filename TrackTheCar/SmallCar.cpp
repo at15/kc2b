@@ -38,6 +38,7 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D
 }
 bool CSmallCar::StartCar(){
     m_current_point = GetCarPosEx();
+    return true;
 }
 
 bool CSmallCar::GetCarPos(){
