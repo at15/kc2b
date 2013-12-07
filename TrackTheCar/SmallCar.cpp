@@ -11,6 +11,7 @@ CSmallCar::~CSmallCar(void)
 {
 }
 
+/*
 // we need 
 // 1 a picture control that can always give us the map
 //   PS: we only need a processed image now
@@ -20,6 +21,22 @@ bool CSmallCar::Init(CCvPicCtrl* camera,IplImage* map,CConfigs* config){
     m_map.SetImage(map);
     m_config = config;
     return true;
+}*/
+
+bool CSmallCar::Init(CCvPicCtrl* camera,std::vector<CvPoint2D32f> map_point,CConfigs* config){
+    m_camera = camera;
+
+    m_map_point.clear();
+    m_pass_point.clear();
+    for(int i=0;i<map_point.size();i++){
+        m_map_point.push_back(cvPointFrom32f(map_point.at(i)));
+        m_pass_point.push_back(false);
+    }
+    m_config = config;
+    return true;
+}
+bool CSmallCar::StartCar(){
+
 }
 
 bool CSmallCar::GetCarPos(){

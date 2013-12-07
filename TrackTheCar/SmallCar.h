@@ -11,13 +11,15 @@ public:
     CSmallCar(void);
     ~CSmallCar(void);
 public:
-    bool Init(CCvPicCtrl* camera,IplImage* map,CConfigs* config);
+    //bool Init(CCvPicCtrl* camera,IplImage* map,CConfigs* config);
+    bool Init(CCvPicCtrl* camera,std::vector<CvPoint2D32f> map_point,CConfigs* config);
+    bool StartCar();
 private:
     CImageProc m_proc;
 
     CCvPicCtrl* m_camera;
     CConfigs* m_config;
-    CTempImage m_map;
+    //CTempImage m_map;
 
     CvPoint m_head;
     CvPoint m_tail;
@@ -26,5 +28,7 @@ private:
 
     CCarControl m_car_control;
 
+    std::vector<CvPoint> m_map_point;
+    std::vector<bool> m_pass_point;
 };
 
