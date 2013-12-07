@@ -78,6 +78,15 @@
     <ClInclude Include="SmallCar.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="SerialPort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CarControl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CarControlDlg.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrackTheCar.cpp">
@@ -123,6 +132,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="SmallCar.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SerialPort.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CarControl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CarControlDlg.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

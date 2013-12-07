@@ -2,6 +2,8 @@
 #include "CameraCtrl.h"
 #include "Configs.h"
 #include "TempImage.h"
+#include "CarControl.h"
+
 
 class CSmallCar
 {
@@ -10,13 +12,6 @@ public:
     ~CSmallCar(void);
 public:
     bool Init(CCvPicCtrl* camera,IplImage* map,CConfigs* config);
-
-    // control the small car
-    void GoLeft();
-    void GoRight();
-    void GoBack();
-    void GoForward();
-
 private:
     CImageProc m_proc;
 
@@ -28,5 +23,8 @@ private:
     CvPoint m_tail;
 
     bool GetCarPos();
+
+    CCarControl m_car_control;
+
 };
 

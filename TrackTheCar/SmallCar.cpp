@@ -29,18 +29,5 @@ bool CSmallCar::GetCarPos(){
     return true;
 }
 
-void CSmallCar::GoLeft(){
 
-}
 
-void CSmallCar::GoRight(){
-
-}
-
-void CSmallCar::GoBack(){
-
-}
-
-void CSmallCar::GoForward(){
-
-}
