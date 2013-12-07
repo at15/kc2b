@@ -40,6 +40,7 @@ void CCarControl::GoBack(){
 }
 
 void CCarControl::Stop(){
+    m_last_op = kStop;
     RunCar(kStop);
 }
 
