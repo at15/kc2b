@@ -148,28 +148,22 @@ HCURSOR CTrackTheCarDlg::OnQueryDragIcon()
     return static_cast<HCURSOR>(m_hIcon);
 }
 
-// apply the config to the main frame (basically the transform...)
-void CTrackTheCarDlg::ApplyConfig(){
-    use_config = true;
-    process_input();
-}
 
-void CTrackTheCarDlg::process_input(){
+
+void CTrackTheCarDlg::process_input(CCvPicCtrl pic_ctrl){
     // transform the image
     CImageProc proc;
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
 
-    IplImage* transformed_pic= proc.TransformImage(m_main_input.GetCurrentFrame(),
+    IplImage* transformed_pic= proc.TransformImage(pic_ctrl.GetCurrentFrame(),
         global_configs->GetMapCorner());
-    m_main_input.SetCurrentFrame(transformed_pic);
+    pic_ctrl.SetCurrentFrame(transformed_pic);
     cvReleaseImage(&transformed_pic);
 
     // also need to set the threshold .. but the main input only need this at this moment
 }
 
-void CTrackTheCarDlg::RestConfig(){
-    use_config = false;
-}
+
 
 void CTrackTheCarDlg::AddToConsole(const CString& str){
     CString old;
@@ -207,13 +201,12 @@ void CTrackTheCarDlg::OnConfigTransform()
     m_main_input.Pause();
     m_dlg_transform.SetMainFrame(m_main_input.GetCurrentFrame());
     m_dlg_transform.DoModal();
-    ApplyConfig();
     m_main_input.Pause(false);
 }
 
 void CTrackTheCarDlg::OnConfigMap()
 {
-    KillTimer(MAIN_CAM);
+    
     m_dlg_map.SetMainFrame(m_main_input.GetCurrentFrame());
     m_dlg_map.DoModal();
 }
@@ -277,7 +270,5 @@ void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
 
 void CTrackTheCarDlg::CamProc(){
     m_main_input.CaptureAndShow();
-    if(use_config){
-        ApplyConfig();
-    }
+
 }

@@ -66,13 +66,8 @@ public:
     // this for the main picture control 
     CCameraCtrl m_main_input;
     CCvPicCtrl m_main_output;
-
-    // This is for update the image in the main control after all the config setting
-    // example: transformed the image
-    void ApplyConfig();
-    void RestConfig();
-
-    void process_input();
+    
+    void process_input(CCvPicCtrl pic_ctrl);// process the input,used for the little car
 
     afx_msg void OnCapPic();
     afx_msg void OnShowAbout();
