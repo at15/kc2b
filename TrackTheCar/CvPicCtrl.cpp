@@ -5,6 +5,7 @@
 CCvPicCtrl::CCvPicCtrl(void)
 {
     m_temp_image = NULL;
+    m_current_frame = NULL;
 }
 
 
@@ -56,9 +57,6 @@ void CCvPicCtrl::UpdateFrame(){
     m_CvvImage.DrawToHDC(pic_hDC, &pic_rect);
 }
 
-/*virtual*/ void CCvPicCtrl::AxisChange(){
-    // it does nothing right now
-}
 
 /* virtual */ void CCvPicCtrl::DebugImage(IplImage* frame,int delay/* = 2000*/){
     cvNamedWindow("debug_image");
@@ -80,10 +78,3 @@ void CCvPicCtrl::ShowBlack(){
     MemBmp.DeleteObject();
     MemDC.DeleteDC();
 }
-
-/*
-void CCvPicCtrl::DrawMiddleCircle(){
-    int w = m_current_frame->width;
-    int h = m_current_frame->height;
-    cvCircle(m_current_frame,cvPoint(w/2,h/2),10,CV_RGB(255,0,0));
-}*/

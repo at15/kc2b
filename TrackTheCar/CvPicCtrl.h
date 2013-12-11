@@ -14,10 +14,8 @@ public:
     virtual void SetCurrentFrame(IplImage* new_frame);
     virtual void UpdateFrame();
     virtual IplImage* GetCurrentFrame();
-    virtual void AxisChange(); // change the axis between mfc and real image
     virtual void DebugImage(IplImage* frame,int delay = 2000); // use open cv's high gui to show a image
     void ShowBlack();
-    void DrawMiddleCircle(); // draw a circle in the middle of the pic
 private:
     IplImage* m_current_frame;
     CTempImage* m_temp_image;

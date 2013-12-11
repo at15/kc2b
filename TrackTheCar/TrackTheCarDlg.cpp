@@ -190,7 +190,9 @@ void CTrackTheCarDlg::OnShowAbout()
 void CTrackTheCarDlg::OnConfigThreshold()
 {
     m_main_input.Pause();
-    m_dlg_threshold.SetMainFrame(m_main_input.GetCurrentFrame());
+    if(m_main_input.GetCurrentFrame()){
+        m_dlg_threshold.SetMainFrame(m_main_input.GetCurrentFrame());
+    }
     m_dlg_threshold.DoModal();
     m_main_input.Pause(false);
 }
@@ -199,16 +201,21 @@ void CTrackTheCarDlg::OnConfigThreshold()
 void CTrackTheCarDlg::OnConfigTransform()
 {
     m_main_input.Pause();
-    m_dlg_transform.SetMainFrame(m_main_input.GetCurrentFrame());
+    if(m_main_input.GetCurrentFrame()){
+        m_dlg_transform.SetMainFrame(m_main_input.GetCurrentFrame());
+    }
     m_dlg_transform.DoModal();
     m_main_input.Pause(false);
 }
 
 void CTrackTheCarDlg::OnConfigMap()
 {
-    
-    m_dlg_map.SetMainFrame(m_main_input.GetCurrentFrame());
+    m_main_input.Pause();
+    if(m_main_input.GetCurrentFrame()){
+        m_dlg_map.SetMainFrame(m_main_input.GetCurrentFrame());
+    }
     m_dlg_map.DoModal();
+    m_main_input.Pause(false);
 }
 
 void CTrackTheCarDlg::OnMainOpenImage()
@@ -216,13 +223,13 @@ void CTrackTheCarDlg::OnMainOpenImage()
     CString file_path;
     m_main_input.OpenImageEx(file_path);
     AddToConsole(file_path);
-   
+
 }
 
 
 void CTrackTheCarDlg::OnCenCorner()
 {
-     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     // TODO: typo ... should be OnGenCorner
     CImageProc proc;
     m_main_output.SetCurrentFrame(m_main_input.GetCurrentFrame());
@@ -232,7 +239,7 @@ void CTrackTheCarDlg::OnCenCorner()
     // add true get the different type of binary image.... 
     IplImage* bin = proc.GetBinary(grey,global_configs->GetMapThreshold(),true);
     proc.cvThin(bin,bin,global_configs->GetThinIteration());
-    
+
     vector<CvPoint2D32f> points;
     proc.FindMapPoints(bin,points);
     proc.DrawMapPoints(m_main_output.GetCurrentFrame(),points); // seems not work!
@@ -263,7 +270,7 @@ void CTrackTheCarDlg::OnMainOpenCam()
 
 void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
 {
-   
+
     if(MAIN_CAM == nIDEvent) CamProc();
     CDialogEx::OnTimer(nIDEvent);
 }
