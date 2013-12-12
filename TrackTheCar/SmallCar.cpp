@@ -4,6 +4,7 @@
 
 CSmallCar::CSmallCar(void)
 {
+    init_success = false;
 }
 
 

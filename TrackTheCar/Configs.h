@@ -23,10 +23,15 @@ public:
     void SetCOM(int com_num){m_com_num = com_num;}
     int GetCOM(){return m_com_num;}
 
+
+    void SetMapPoint(std::vector<CvPoint2D32f> map_point){m_map_point = map_point;}
+    std::vector<CvPoint2D32f> GetMapPoint();
 private:
     int m_corner_size;
 
     std::vector<CvPoint> m_map_corners;
+
+    std::vector<CvPoint2D32f> m_map_point;
     // the threshold for the red and blue
     std::vector<int> m_threshold;
     // the threshold for the map

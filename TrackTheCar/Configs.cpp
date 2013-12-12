@@ -5,6 +5,7 @@ using namespace std;
 CConfigs::CConfigs(void)
 {
     m_map_corners.clear();
+    m_map_point.clear();
     m_threshold.clear();
     LoadDefaultSetting();
 }
@@ -57,5 +58,13 @@ std::vector<int> CConfigs::GetThreshold(){
         throw logic_error("threshold not set!");
     }else{
         return m_threshold;
+    }
+}
+
+std::vector<CvPoint2D32f> CConfigs::GetMapPoint(){
+    if(m_map_point.empty()){
+        throw logic_error("map point not set!");
+    }else{
+        return m_map_point;
     }
 }

@@ -37,6 +37,7 @@ void CTrackTheCarDlg::DoDataExchange(CDataExchange* pDX)
 {
     CDialogEx::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_EDIT1, m_main_console);
+    DDX_Control(pDX, IDC_LIST1, m_list_config);
 }
 
 BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
@@ -96,6 +97,14 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     if(!m_main_output.Init(this,IDC_MAIN_OUTPUT)){
         AddToConsole(_T("ERROR: can't init the output picture control!"));
     }
+
+    // show the configs in the listctrl
+    m_list_config.InsertColumn(0,L"Prop", LVCFMT_CENTER,100);
+    m_list_config.InsertColumn(1,L"Value", LVCFMT_CENTER,100);
+    int index = m_list_config.GetItemCount();
+    m_list_config.InsertItem(index, L"file name");
+    m_list_config.SetItemText(index,1,L"sob");
+    m_list_config.DeleteAllItems();
     AddToConsole(_T("Track the car app init finished, waiting for orders..."));
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -301,7 +310,8 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
     }else{
         AddToConsole("cam opened,please set the map and the car");
     }
-    // the set all the config
+
+    // then set all the config
 
     // check if all the config is done
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
@@ -312,7 +322,7 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
         AddToConsole(e.what());
         return;
     }
-    AddToConsole("all config loaded!");
-    
+    AddToConsole("all config loaded!,start the car");
+    //m_car.Init(m_main_input,m_main_output,global_configs);
     
 }

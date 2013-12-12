@@ -12,6 +12,7 @@
 #include "SmallCar.h"
 #include "CarControlDlg.h"
 #include "afxwin.h"
+#include "afxcmn.h"
 
 // The about dialog
 class CAboutDlg : public CDialogEx
@@ -91,4 +92,6 @@ public:
 public:
     void CamProc();
     afx_msg void OnBnClickedStartCar();
+    // show all the config in the list ctrl
+    CListCtrl m_list_config;
 };
