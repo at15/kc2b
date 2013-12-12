@@ -300,6 +300,7 @@ void CTrackTheCarDlg::CamProc(){
     m_main_input.CaptureDontShow();
     process_input(&m_main_input);
     m_main_input.UpdateFrame();
+
 }
 
 void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
