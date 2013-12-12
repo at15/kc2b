@@ -4,8 +4,6 @@ using namespace std;
 
 CConfigs::CConfigs(void)
 {
-   // m_map_corners.empty();
-   // m_threshold.empty();
     m_map_corners.clear();
     m_threshold.clear();
     LoadDefaultSetting();
@@ -26,10 +24,12 @@ void CConfigs::LoadDefaultSetting(){
     m_threshold.push_back(80);
     m_threshold.push_back(80);
 
-
+    // for finding point in the map
     m_map_threshold = 70;
     m_thin_iteration = 20; // 20 times for the thin
 
+
+    // the com port for blue tooth
     m_com_num = 3;
 
 }

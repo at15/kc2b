@@ -77,6 +77,7 @@ public:
     CEdit m_main_console;
     // func for add message to the console
     void AddToConsole(const CString& str);
+    void AddToConsole(const char* str);
     afx_msg void OnMainOpenImage();
 private:
     bool use_config;
@@ -89,4 +90,5 @@ public:
 
 public:
     void CamProc();
+    afx_msg void OnBnClickedStartCar();
 };

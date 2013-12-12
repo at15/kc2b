@@ -53,6 +53,7 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_COMMAND(ID_32777, &CTrackTheCarDlg::OnCarConfig)
     ON_COMMAND(ID_32780, &CTrackTheCarDlg::OnMainOpenCam)
     ON_WM_TIMER()
+    ON_BN_CLICKED(IDC_BUTTON2, &CTrackTheCarDlg::OnBnClickedStartCar)
 END_MESSAGE_MAP()
 
 
@@ -173,6 +174,15 @@ void CTrackTheCarDlg::AddToConsole(const CString& str){
     m_main_console.SetWindowTextW(old);
 }
 
+void CTrackTheCarDlg::AddToConsole(const char* str){
+    CString old;
+    m_main_console.GetWindowTextW(old);
+    wchar_t* wstr = EZ::CStrConv::ansi2utf16(str);
+    old.Append(wstr);
+    delete wstr;
+    old.Append(L"\r\n");
+    m_main_console.SetWindowTextW(old);
+}
 void CTrackTheCarDlg::OnCapPic()
 {
     m_dlg_camera.DoModal();
@@ -278,4 +288,31 @@ void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
 void CTrackTheCarDlg::CamProc(){
     m_main_input.CaptureAndShow();
 
+}
+
+
+
+void CTrackTheCarDlg::OnBnClickedStartCar()
+{
+    if(!m_main_input.OpenCam()){
+        AfxMessageBox(L"can't open cam");
+        AddToConsole("start_car_error:can't open cam");
+        return;
+    }else{
+        AddToConsole("cam opened,please set the map and the car");
+    }
+    // the set all the config
+
+    // check if all the config is done
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    try{
+        global_configs->GetMapCorner();
+    }catch(logic_error e){
+        AfxMessageBox(L"didn't set the corner for the map!");
+        AddToConsole(e.what());
+        return;
+    }
+    AddToConsole("all config loaded!");
+    
+    
 }
