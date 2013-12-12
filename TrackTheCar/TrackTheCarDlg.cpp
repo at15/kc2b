@@ -103,6 +103,7 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     m_list_config.InsertColumn(1,L"Value", LVCFMT_CENTER,100);
     ShowConfig();
 
+
     AddToConsole(_T("Track the car app init finished, waiting for orders..."));
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -189,6 +190,9 @@ void CTrackTheCarDlg::ShowConfig(){
     index++;
     m_list_config.InsertItem(index, L"红蓝阀值");
     m_list_config.SetItemText(index,1,L"默认");
+    index++;
+    m_list_config.InsertItem(index, L"蓝牙端口");
+    m_list_config.SetItemText(index,1,L"默认(3)  ");
 }
 
 void CTrackTheCarDlg::OnCapPic()
@@ -292,6 +296,7 @@ void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
 {
 
     if(MAIN_CAM == nIDEvent) CamProc();
+    if(CAR_PROC == nIDEvent) CarProc();
     CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -300,7 +305,11 @@ void CTrackTheCarDlg::CamProc(){
     m_main_input.CaptureDontShow();
     process_input(&m_main_input);
     m_main_input.UpdateFrame();
+}
 
+void CTrackTheCarDlg::CarProc(){
+    CamProc();
+    m_car.MoveCarP2P();
 }
 
 void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
@@ -355,6 +364,14 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
     AddToConsole("map point generated!");
 
     AddToConsole("all config loaded!,start the car");
-    //m_car.Init(m_main_input,m_main_output,global_configs);
+
+    // Note: the car will control camera now, you don't have call a timer
+    // really? no .... you can't set timer in cpp....so this is just init...
+    if(m_car.Init(&m_main_input,&m_main_output,global_configs)){
+        AddToConsole("car initialized!");
+        m_car.StartCar();
+        KillTimer(MAIN_CAM);
+        SetTimer(CAR_PROC,20,NULL);
+    }
     
 }

@@ -40,6 +40,7 @@ private:
     CRouteHelper m_route;
 
     CvPoint m_current_point; // the current point we have
+public:
     bool MoveCarP2P();
 };
 

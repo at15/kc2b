@@ -3,7 +3,8 @@
 //
 
 #pragma once
-#define MAIN_CAM 1 
+#define MAIN_CAM 1  
+#define CAR_PROC 2
 // include the dialogs
 #include "CameraDialog.h"
 #include "ConfigThreshold.h"
@@ -96,6 +97,8 @@ public:
 
 public:
     void CamProc();
+    void CarProc();
+public:
     afx_msg void OnBnClickedStartCar();
     // show all the config in the list ctrl
     CListCtrl m_list_config;

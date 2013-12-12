@@ -35,8 +35,16 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D
         m_pass_point.push_back(false);
     }
     m_config = config;
+
+    if(!m_car_control.Init(m_config->GetCOM())) return false;
+
     return true;
 }
+
+bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
+    return Init(camera,output,config->GetMapPoint(),config);
+}
+
 bool CSmallCar::StartCar(){
     m_current_point = GetCarPosEx();
     return true;
