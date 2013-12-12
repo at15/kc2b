@@ -28,27 +28,27 @@ public:
 // CTrackTheCarDlg 对话框
 class CTrackTheCarDlg : public CDialogEx
 {
-// 构造
+    // 构造
 public:
-	CTrackTheCarDlg(CWnd* pParent = NULL);	// 标准构造函数
+    CTrackTheCarDlg(CWnd* pParent = NULL);	// 标准构造函数
 
-// 对话框数据
-	enum { IDD = IDD_TRACKTHECAR_DIALOG };
+    // 对话框数据
+    enum { IDD = IDD_TRACKTHECAR_DIALOG };
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
-
-
-// 实现
 protected:
-	HICON m_hIcon;
+    virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
 
-	// 生成的消息映射函数
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
-	DECLARE_MESSAGE_MAP()
+
+    // 实现
+protected:
+    HICON m_hIcon;
+
+    // 生成的消息映射函数
+    virtual BOOL OnInitDialog();
+    afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+    afx_msg void OnPaint();
+    afx_msg HCURSOR OnQueryDragIcon();
+    DECLARE_MESSAGE_MAP()
 
 public:
     // the about dialog... which is kind of useless
@@ -67,19 +67,24 @@ public:
     // this for the main picture control 
     CCameraCtrl m_main_input;
     CCvPicCtrl m_main_output;
-    
-    void process_input(CCvPicCtrl pic_ctrl);// process the input,used for the little car
 
+    // transform the image in the main input
+    void process_input(CCvPicCtrl* pic_ctrl);
     afx_msg void OnCapPic();
     afx_msg void OnShowAbout();
     afx_msg void OnConfigThreshold();
     afx_msg void OnConfigTransform();
-    // the console to show messages like chage the threshold and transform etc
+    afx_msg void OnMainOpenImage();
+
+    // the console to show messages like change the threshold and transform etc
     CEdit m_main_console;
     // func for add message to the console
     void AddToConsole(const CString& str);
     void AddToConsole(const char* str);
-    afx_msg void OnMainOpenImage();
+
+    // show the config in list
+    void ShowConfig();
+
 private:
     bool use_config;
 public:

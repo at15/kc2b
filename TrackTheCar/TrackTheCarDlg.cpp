@@ -101,10 +101,8 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     // show the configs in the listctrl
     m_list_config.InsertColumn(0,L"Prop", LVCFMT_CENTER,100);
     m_list_config.InsertColumn(1,L"Value", LVCFMT_CENTER,100);
-    int index = m_list_config.GetItemCount();
-    m_list_config.InsertItem(index, L"file name");
-    m_list_config.SetItemText(index,1,L"sob");
-    m_list_config.DeleteAllItems();
+    ShowConfig();
+
     AddToConsole(_T("Track the car app init finished, waiting for orders..."));
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -159,22 +157,6 @@ HCURSOR CTrackTheCarDlg::OnQueryDragIcon()
 }
 
 
-
-void CTrackTheCarDlg::process_input(CCvPicCtrl pic_ctrl){
-    // transform the image
-    CImageProc proc;
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-
-    IplImage* transformed_pic= proc.TransformImage(pic_ctrl.GetCurrentFrame(),
-        global_configs->GetMapCorner());
-    pic_ctrl.SetCurrentFrame(transformed_pic);
-    cvReleaseImage(&transformed_pic);
-
-    // also need to set the threshold .. but the main input only need this at this moment
-}
-
-
-
 void CTrackTheCarDlg::AddToConsole(const CString& str){
     CString old;
     m_main_console.GetWindowTextW(old);
@@ -192,6 +174,23 @@ void CTrackTheCarDlg::AddToConsole(const char* str){
     old.Append(L"\r\n");
     m_main_console.SetWindowTextW(old);
 }
+
+void CTrackTheCarDlg::ShowConfig(){
+    m_list_config.DeleteAllItems();
+    int index = m_list_config.GetItemCount();
+    m_list_config.InsertItem(index, L"地图变形");
+    m_list_config.SetItemText(index,1,L"未设置");
+    index++;
+    m_list_config.InsertItem(index, L"地图阀值");
+    m_list_config.SetItemText(index,1,L"默认");
+    index++;
+    m_list_config.InsertItem(index, L"地图点");
+    m_list_config.SetItemText(index,1,L"未生成");
+    index++;
+    m_list_config.InsertItem(index, L"红蓝阀值");
+    m_list_config.SetItemText(index,1,L"默认");
+}
+
 void CTrackTheCarDlg::OnCapPic()
 {
     m_dlg_camera.DoModal();
@@ -261,7 +260,9 @@ void CTrackTheCarDlg::OnCenCorner()
 
     vector<CvPoint2D32f> points;
     proc.FindMapPoints(bin,points);
-    proc.DrawMapPoints(m_main_output.GetCurrentFrame(),points); // seems not work!
+    // set the map point in global
+    global_configs->SetMapPoint(points);
+    proc.DrawMapPoints(m_main_output.GetCurrentFrame(),points); 
     m_main_output.UpdateFrame();
 
     cvReleaseImage(&grey);
@@ -295,10 +296,27 @@ void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
 }
 
 void CTrackTheCarDlg::CamProc(){
-    m_main_input.CaptureAndShow();
-
+    if(m_main_input.IsPause()) return;
+    m_main_input.CaptureDontShow();
+    process_input(&m_main_input);
+    m_main_input.UpdateFrame();
 }
 
+void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
+    // transform the image
+    CImageProc proc;
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    try{
+        global_configs->GetMapCorner();
+    }catch(logic_error e){
+        // don't echo error,there will be too many
+        return;
+    }
+    IplImage* transformed_pic= proc.TransformImage(pic_ctrl->GetCurrentFrame(),
+        global_configs->GetMapCorner());
+    pic_ctrl->SetCurrentFrame(transformed_pic);
+    cvReleaseImage(&transformed_pic);
+}
 
 
 void CTrackTheCarDlg::OnBnClickedStartCar()
@@ -322,6 +340,19 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
         AddToConsole(e.what());
         return;
     }
+    AddToConsole("map corner set!");
+
+    OnCenCorner();// gen the map point
+
+    try{
+        global_configs->GetMapPoint();
+    }catch(logic_error e){
+        AfxMessageBox(L"can't get the map point!");
+        AddToConsole(e.what());
+        return;
+    }
+    AddToConsole("map point generated!");
+
     AddToConsole("all config loaded!,start the car");
     //m_car.Init(m_main_input,m_main_output,global_configs);
     

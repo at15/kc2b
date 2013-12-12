@@ -60,6 +60,17 @@ bool CCameraCtrl::CaptureAndShow(){
     return true;
 }
 
+bool CCameraCtrl::CaptureDontShow(){
+    if(!capturing) return false;
+    // get a frame and show
+    if(!m_pause){
+        IplImage* frame;  
+        frame=cvQueryFrame(m_capture); 
+        SetCurrentFrame(frame,false);
+    }
+    return true;
+}
+
 bool CCameraCtrl::InitVideo(const char* file_path,int fps  /*=25*/){
     if(!capturing){
         // start the cam if not started

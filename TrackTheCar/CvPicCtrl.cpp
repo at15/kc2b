@@ -34,10 +34,12 @@ CCvPicCtrl::~CCvPicCtrl(void)
     return true;
 }
 
-/*virtual*/ void CCvPicCtrl::SetCurrentFrame(IplImage* new_frame){
-    CvvImage m_CvvImage;  
-    m_CvvImage.CopyOf(new_frame,1);     
-    m_CvvImage.DrawToHDC(pic_hDC, &pic_rect);
+/*virtual*/ void CCvPicCtrl::SetCurrentFrame(IplImage* new_frame,bool show /*= true*/){
+    if(show){
+        CvvImage m_CvvImage;  
+        m_CvvImage.CopyOf(new_frame,1);     
+        m_CvvImage.DrawToHDC(pic_hDC, &pic_rect);
+    }
 
     if(m_temp_image){
         delete m_temp_image;

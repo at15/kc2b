@@ -16,6 +16,7 @@ public:
     bool OpenCam(int index = -1);
     bool CloseCam();
     bool CaptureAndShow();
+    bool CaptureDontShow();
 
     bool InitVideo(const char* file_path,int fps = 25);
     bool InitVideoEx();// show the dialog 
@@ -33,6 +34,7 @@ public:
 
     bool IsCapturing();
     bool IsWriting();
+    bool IsPause(){return m_pause;}
 private:
     //CCvPicCtrl m_pic_ctrl;
     bool pic_ctrl_ready;

@@ -11,7 +11,7 @@ public:
 
 public:
     virtual bool Init(CWnd*dlg_hwnd,int nID);
-    virtual void SetCurrentFrame(IplImage* new_frame);
+    virtual void SetCurrentFrame(IplImage* new_frame,bool show = true);
     virtual void UpdateFrame();
     virtual IplImage* GetCurrentFrame();
     virtual void DebugImage(IplImage* frame,int delay = 2000); // use open cv's high gui to show a image
