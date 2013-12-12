@@ -22,7 +22,6 @@ private:
     CCvPicCtrl* m_output;// show what the car is doing now
 
     CConfigs* m_config;
-    //CTempImage m_map;
 
     CvPoint m_head;
     CvPoint m_tail;

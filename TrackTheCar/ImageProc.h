@@ -13,6 +13,7 @@ public:
     }
 }; 
 typedef Image<unsigned char>  BwImage;
+
 class CImageProc
 {
 public:
