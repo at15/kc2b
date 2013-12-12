@@ -38,6 +38,7 @@ bool CCameraCtrl::OpenCam(int index/*=-1*/){
     return true;
 }
 
+
 bool CCameraCtrl::CloseCam(){
     if(capturing){
         cvReleaseCapture(&m_capture);

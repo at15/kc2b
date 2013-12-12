@@ -294,9 +294,9 @@ void CTrackTheCarDlg::CamProc(){
 
 void CTrackTheCarDlg::OnBnClickedStartCar()
 {
-    if(!m_main_input.OpenCam()){
-        AfxMessageBox(L"can't open cam");
-        AddToConsole("start_car_error:can't open cam");
+    if(!m_main_input.IsCapturing()){
+        AfxMessageBox(L"Open the cam please");
+        AddToConsole("start_car_error:the cam is not opened");
         return;
     }else{
         AddToConsole("cam opened,please set the map and the car");
