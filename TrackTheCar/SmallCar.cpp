@@ -37,7 +37,7 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D
     m_config = config;
 
     // check if we can start the car, if we can, then lets go
-    if(!m_car_control.Init(m_config->GetCOM())) return false;
+    //if(!m_car_control.Init(m_config->GetCOM())) return false;
 
     return true;
 }
