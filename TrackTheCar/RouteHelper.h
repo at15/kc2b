@@ -14,7 +14,9 @@ public:
     double Angle(CvPoint src,CvPoint dst);
 
     //寻找下一个点，即返回与当前点最近的点
-    CvPoint FindnextPoint(CvPoint current,std::vector<CvPoint> map_points,std::vector<bool> mask);
+    //CvPoint FindnextPoint(CvPoint current,std::vector<CvPoint> map_points,std::vector<bool> mask);
+    // !!pass by ref!!!!
+    CvPoint FindnextPoint(CvPoint current,std::vector<CvPoint> map_points,std::vector<bool>& mask);
 
 };
 

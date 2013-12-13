@@ -33,7 +33,7 @@ double CRouteHelper::Angle(CvPoint src,CvPoint dst)//返回向量极坐标方向角，0～36
 }
 
 
-CvPoint CRouteHelper::FindnextPoint(CvPoint current,vector<CvPoint> map_points,vector<bool> mask) //寻找下一个点，即返回与当前点最近的点
+CvPoint CRouteHelper::FindnextPoint(CvPoint current,vector<CvPoint> map_points,vector<bool>& mask) //寻找下一个点，即返回与当前点最近的点
 {
     double min_distance=1000.0;// just make it big enough
     int nearest_num=-1;
