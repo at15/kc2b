@@ -323,7 +323,7 @@ void CTrackTheCarDlg::CarProc(){
     CvPoint from;
     CvPoint to;
     try{
-        while(m_car.MoveCarP2P(from,to)){
+        while(CSmallCar::REACH_POINT != m_car.MoveCarP2P(from,to)){
             AddToConsole("move ok");
             CString str;
             str.Format(L"Move from x=%d y=%d to x=%d y=%d",

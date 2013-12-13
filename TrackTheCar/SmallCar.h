@@ -39,8 +39,14 @@ private:
 
     CRouteHelper m_route;
 
-    CvPoint m_current_point; // the current point we have
+    CvPoint m_current_point; // the current point we have,which is also the car pos
 public:
-    bool MoveCarP2P(CvPoint& from,CvPoint& to);// move from one to another
+    enum MOVE_RESULT{
+        REACH_POINT,
+        TURN_LEFT,
+        TURN_RIGHT,
+        GO_FORWARD
+    };
+    MOVE_RESULT MoveCarP2P(CvPoint& from,CvPoint& to);// move from one to another
 };
 
