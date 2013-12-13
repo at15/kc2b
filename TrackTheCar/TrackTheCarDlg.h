@@ -63,7 +63,7 @@ public:
     CConfigThreshold m_dlg_threshold;
     CTransformDlg m_dlg_transform;
     CMapDlg m_dlg_map;
-    CarControlDlg m_dlg_car;
+    CarControlDlg* m_dlg_car;
 
     // this for the main picture control 
     CCameraCtrl m_main_input;

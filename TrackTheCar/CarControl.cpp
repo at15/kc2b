@@ -10,10 +10,7 @@ CCarControl::CCarControl(void)
 
 CCarControl::~CCarControl(void)
 {
-    if(m_port){
-        delete m_port;
-        m_port = NULL;
-    }
+    ClosePort();
 }
 
 bool CCarControl::Init(int com_num){
@@ -36,6 +33,12 @@ bool CCarControl::Init(int com_num){
 
 }
 
+void CCarControl::ClosePort(){
+    if(m_port){
+        delete m_port;
+        m_port = NULL;
+    }
+}
 
 void CCarControl::GoLeft(){
     m_last_op = kLeft;

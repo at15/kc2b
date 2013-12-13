@@ -8,6 +8,7 @@ public:
 public:
     // init it with the com number
     bool Init(int com_num);
+    void ClosePort();
     // control the small car
     void GoLeft();
     void GoRight();

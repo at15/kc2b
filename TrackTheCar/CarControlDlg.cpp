@@ -20,6 +20,7 @@ IMPLEMENT_DYNAMIC(CarControlDlg, CDialogEx)
 
 CarControlDlg::~CarControlDlg()
 {
+    m_car_ctrl.ClosePort();
 }
 
 void CarControlDlg::DoDataExchange(CDataExchange* pDX)
@@ -96,4 +97,20 @@ BOOL CarControlDlg::OnInitDialog()
 
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
+}
+
+
+void CarControlDlg::OnOK()
+{
+    // TODO: 在此添加专用代码和/或调用基类
+
+    CDialogEx::OnOK();
+}
+
+
+void CarControlDlg::OnCancel()
+{
+    // TODO: 在此添加专用代码和/或调用基类
+
+    CDialogEx::OnCancel();
 }

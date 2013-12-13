@@ -276,9 +276,12 @@ void CTrackTheCarDlg::OnCenCorner()
 
 void CTrackTheCarDlg::OnCarConfig()
 {
+    m_dlg_car = new CarControlDlg;
     m_main_input.Pause();
-    m_dlg_car.DoModal();
+    m_dlg_car->DoModal();
     m_main_input.Pause(false);
+    delete m_dlg_car;
+    m_dlg_car = NULL;
 }
 
 

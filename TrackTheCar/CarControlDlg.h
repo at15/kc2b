@@ -29,4 +29,6 @@ public:
     afx_msg void OnBnClickedLeft();
     afx_msg void OnBnClickedRight();
     virtual BOOL OnInitDialog();
+    virtual void OnOK();
+    virtual void OnCancel();
 };
