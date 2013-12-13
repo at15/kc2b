@@ -326,10 +326,8 @@ void CTrackTheCarDlg::CarProc(){
     CString op;
     try{
         do{
-            CamProc(); // have to capture the frame??!!!
-            // should not do the loop here
-
-            re = m_car.MoveCarP2P(from,to);
+            CamProc();// cap a new frame
+            m_car.FindNextPoint();
 
             switch(re){
             case CSmallCar::GO_FORWARD:{

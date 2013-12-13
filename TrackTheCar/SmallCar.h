@@ -26,20 +26,22 @@ private:
 
     CConfigs* m_config;
 
+    CRouteHelper m_route;
     CvPoint m_head;
     CvPoint m_tail;
 
     bool GetCarPos();
-    CvPoint GetCarPosEx();
+    
 
     std::vector<CvPoint> m_map_point;
     std::vector<bool> m_pass_point;
 
     CCarControl m_car_control;
 
-    CRouteHelper m_route;
+    
 
-    CvPoint m_current_point; // the current point we have,which is also the car pos
+    CvPoint m_current_car_pos; //the car's current pos
+    CvPoint m_next_point;//the point that the car is trying to move to
 public:
     enum MOVE_RESULT{
         REACH_POINT,
@@ -47,7 +49,10 @@ public:
         TURN_RIGHT,
         GO_FORWARD
     };
-    MOVE_RESULT CSmallCar::MoveCar2Point(CvPoint dst);// move to destination point
+    
+    bool FindNextPoint();
+    CvPoint GetCarPosEx();
+    MOVE_RESULT CSmallCar::MoveCar2Point();// move to destination point
     // MoveCarP2P is wrong .... 
     MOVE_RESULT MoveCarP2P(CvPoint& from,CvPoint& to);// move from one to another
 };

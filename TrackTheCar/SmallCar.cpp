@@ -47,7 +47,7 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
 }
 
 bool CSmallCar::StartCar(){
-    m_current_point = GetCarPosEx();
+    m_current_car_pos = GetCarPosEx();
     return true;
 }
 
@@ -63,25 +63,29 @@ CvPoint CSmallCar::GetCarPosEx(){
     m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
     m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
     CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2); 
-    m_current_point = carPos;
+    m_current_car_pos = carPos;
     return carPos;
 }
 
-CSmallCar::MOVE_RESULT CSmallCar::MoveCar2Point(CvPoint dst){
+bool CSmallCar::FindNextPoint(){
+     CvPoint nextPoint = m_route.FindnextPoint(m_current_car_pos,m_map_point,m_pass_point);
+}
+
+CSmallCar::MOVE_RESULT CSmallCar::MoveCar2Point(){
     CImageProc proc;
     m_output->SetCurrentFrame(m_camera->GetCurrentFrame(),false);
-    CvPoint carPos = GetCarPosEx();
+   
     // a green circle to show the car pos
-    cvCircle(m_output->GetCurrentFrame(),carPos,10,CV_RGB(0,255,0),3);
+    cvCircle(m_output->GetCurrentFrame(),m_current_car_pos,10,CV_RGB(0,255,0),3);
     // a yellow circle for the dst
-    cvCircle(m_output->GetCurrentFrame(),dst,10,CV_RGB(255,255,50),3);
+    cvCircle(m_output->GetCurrentFrame(),m_next_point,10,CV_RGB(255,255,50),3);
 
     //求小车向量方向
     double direction_car=m_route.Angle(m_tail,m_head); 
     //小车中心到下一个目标点的向量方向
-    double direction_target=m_route.Angle(carPos,nextPoint); 
+    double direction_target=m_route.Angle(m_current_car_pos,m_next_point); 
     //小车中心到目标点的距离
-    double distance=m_route.Distance(carPos,nextPoint); 
+    double distance=m_route.Distance(m_current_car_pos,m_next_point); 
 
     // 达到目标
     if(distance <= DISTANCE_ERROR) {
@@ -138,12 +142,12 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCarP2P(CvPoint& from,CvPoint& to){
     // keep doing this until the car reach the point!
     cvCircle(m_output->GetCurrentFrame(),carPos,10,CV_RGB(0,255,0),3);// a green circle for the pos
     //m_output->UpdateFrame();// show it
-    //m_current_point = carPos;
+    //m_current_car_pos = carPos;
 
     from = carPos;// for log
 
     //找下个点，画个黄圈
-    CvPoint nextPoint = m_route.FindnextPoint(m_current_point,m_map_point,m_pass_point);
+    CvPoint nextPoint = m_route.FindnextPoint(m_current_car_pos,m_map_point,m_pass_point);
     cvCircle(m_output->GetCurrentFrame(),nextPoint,10,CV_RGB(255,255,50),3);// a green circle for the pos
     m_output->UpdateFrame();// show it
 
