@@ -319,13 +319,16 @@ void CTrackTheCarDlg::CamProc(){
 
 void CTrackTheCarDlg::CarProc(){
     car_working = true;
-    CamProc();
+    //CamProc();
     CvPoint from;
     CvPoint to;
     CSmallCar::MOVE_RESULT re;
     CString op;
     try{
         do{
+            CamProc(); // have to capture the frame??!!!
+            // should not do the loop here
+
             re = m_car.MoveCarP2P(from,to);
 
             switch(re){

@@ -72,7 +72,12 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCarP2P(CvPoint& from,CvPoint& to){
     m_output->SetCurrentFrame(m_camera->GetCurrentFrame(),false);
 
     //求小车中心坐标,并画个绿圈
-    CvPoint carPos = GetCarPosEx();
+    CvPoint carPos = GetCarPosEx();// we should do the loop in side this
+    // function
+    // for example
+    // 1 get a new frame form camera
+    // 2 get the new carpos and decide what the car should
+    // keep doing this until the car reach the point!
     cvCircle(m_output->GetCurrentFrame(),carPos,10,CV_RGB(0,255,0),3);// a green circle for the pos
     //m_output->UpdateFrame();// show it
     //m_current_point = carPos;
