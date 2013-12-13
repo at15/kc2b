@@ -63,8 +63,6 @@ CvPoint CSmallCar::GetCarPosEx(){
     m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
     m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
     CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2); 
-
-
     return carPos;
 }
 

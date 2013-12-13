@@ -57,6 +57,7 @@ public:
 
     // the car
     CSmallCar m_car;
+    bool car_working;// the car proc is working,don't call it
 
     // this is for all the function dialogs
     CCameraDialog m_dlg_camera;

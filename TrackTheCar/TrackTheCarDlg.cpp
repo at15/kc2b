@@ -106,6 +106,7 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     m_list_config.InsertColumn(1,L"Value", LVCFMT_CENTER,100);
     ShowConfig();
 
+    car_working = false;
 
     AddToConsole(_T("Track the car app init finished, waiting for orders..."));
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -305,7 +306,7 @@ void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
 {
 
     if(MAIN_CAM == nIDEvent) CamProc();
-    if(CAR_PROC == nIDEvent) CarProc();
+    if(CAR_PROC == nIDEvent && !car_working) CarProc();
     CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -317,19 +318,27 @@ void CTrackTheCarDlg::CamProc(){
 }
 
 void CTrackTheCarDlg::CarProc(){
+    car_working = true;
     CamProc();
     CvPoint from;
     CvPoint to;
-    if(m_car.MoveCarP2P(from,to)){
-        AddToConsole("move ok");
-    }else{
-        AddToConsole("oh can't move wtf!");
+    try{
+        while(m_car.MoveCarP2P(from,to)){
+            AddToConsole("move ok");
+            CString str;
+            str.Format(L"Move from x=%d y=%d to x=%d y=%d",
+                from.x,from.y,
+                to.x,to.y);
+            AddToConsole(str);
+        }
+        AddToConsole("this point finished!");
     }
-    CString str;
-    str.Format(L"Move from x=%d y=%d to x=%d y=%d",
-        from.x,from.y,
-        to.x,to.y);
-    AddToConsole(str);
+    catch(logic_error e){
+        AddToConsole("reach last point or error occurred");
+        AddToConsole(e.what());
+    }
+    
+    car_working = false;
 }
 
 void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
