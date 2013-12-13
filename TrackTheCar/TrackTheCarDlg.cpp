@@ -322,22 +322,44 @@ void CTrackTheCarDlg::CarProc(){
     CamProc();
     CvPoint from;
     CvPoint to;
+    CSmallCar::MOVE_RESULT re;
+    CString op;
     try{
-        while(CSmallCar::REACH_POINT != m_car.MoveCarP2P(from,to)){
-            AddToConsole("move ok");
+        do{
+            re = m_car.MoveCarP2P(from,to);
+
+            switch(re){
+            case CSmallCar::GO_FORWARD:{
+                op = L"go forward";
+                break;
+                                       }
+            case CSmallCar::TURN_LEFT:{
+                op = L"go left";
+                break;
+                                      }
+            case CSmallCar::TURN_RIGHT:{
+                op = L"go right";
+                break;
+                                       }
+            case CSmallCar::REACH_POINT:{
+                op = L"reach point";
+                break;
+                                        }
+            }
             CString str;
-            str.Format(L"Move from x=%d y=%d to x=%d y=%d",
+            str.Format(L"Op=%s Move from x=%d y=%d to x=%d y=%d",
+                op,
                 from.x,from.y,
                 to.x,to.y);
             AddToConsole(str);
-        }
-        AddToConsole("this point finished!");
+        }while(re != CSmallCar::REACH_POINT);
+        AddToConsole("reach point");
     }
     catch(logic_error e){
         AddToConsole("reach last point or error occurred");
         AddToConsole(e.what());
     }
-    
+
     car_working = false;
 }
 
