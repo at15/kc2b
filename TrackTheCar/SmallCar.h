@@ -47,6 +47,8 @@ public:
         TURN_RIGHT,
         GO_FORWARD
     };
+    MOVE_RESULT CSmallCar::MoveCar2Point(CvPoint dst);// move to destination point
+    // MoveCarP2P is wrong .... 
     MOVE_RESULT MoveCarP2P(CvPoint& from,CvPoint& to);// move from one to another
 };
 
