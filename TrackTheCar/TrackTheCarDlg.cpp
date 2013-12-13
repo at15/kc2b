@@ -276,8 +276,9 @@ void CTrackTheCarDlg::OnCenCorner()
 
 void CTrackTheCarDlg::OnCarConfig()
 {
-    // TODO: 在此添加命令处理程序代码
+    m_main_input.Pause();
     m_dlg_car.DoModal();
+    m_main_input.Pause(false);
 }
 
 
@@ -309,7 +310,7 @@ void CTrackTheCarDlg::CamProc(){
 
 void CTrackTheCarDlg::CarProc(){
     CamProc();
-    m_car.MoveCarP2P();
+    //m_car.MoveCarP2P();
 }
 
 void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){

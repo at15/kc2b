@@ -15,7 +15,7 @@ public:
     void GoForward();
     void Stop();
 private:
-    CSerialPort m_port;
+    CSerialPort* m_port;
     bool port_ready;
     // 发送的指令类型
     enum opcode { 
