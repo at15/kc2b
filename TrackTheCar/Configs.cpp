@@ -26,12 +26,12 @@ void CConfigs::LoadDefaultSetting(){
     m_threshold.push_back(80);
 
     // for finding point in the map
-    m_map_threshold = 70;
+    m_map_threshold = 99;
     m_thin_iteration = 20; // 20 times for the thin
 
 
     // the com port for blue tooth
-    m_com_num = 3;
+    m_com_num = 7;
 
 }
 
