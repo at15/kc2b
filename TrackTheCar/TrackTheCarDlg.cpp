@@ -91,6 +91,9 @@ BOOL CTrackTheCarDlg::OnInitDialog()
 
     // TODO: 在此添加额外的初始化代码
     use_config = false;
+
+    m_log_file.Open( L"C:\\Users\\W7_64\\Desktop\\car_log.txt", CFile::modeWrite|CFile::modeCreate, &m_log_error);
+
     if(!m_main_input.Init(this,IDC_MAIN_INPUT)){
         AddToConsole(_T("ERROR: can't init the main picture control!"));
     }
@@ -164,6 +167,7 @@ void CTrackTheCarDlg::AddToConsole(const CString& str){
     old.Append(str);
     old.Append(L"\r\n");
     m_main_console.SetWindowTextW(old);
+    m_log_file.WriteString(old);// write to log file;
 }
 
 void CTrackTheCarDlg::AddToConsole(const char* str){
@@ -174,6 +178,7 @@ void CTrackTheCarDlg::AddToConsole(const char* str){
     delete wstr;
     old.Append(L"\r\n");
     m_main_console.SetWindowTextW(old);
+    m_log_file.WriteString(old);// write to log file;
 }
 
 void CTrackTheCarDlg::ShowConfig(){
@@ -393,4 +398,12 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
         AddToConsole("Car init failed!");
     }
 
+}
+
+
+void CTrackTheCarDlg::PostNcDestroy()
+{
+    // TODO: 在此添加专用代码和/或调用基类
+    m_log_file.Close();
+    CDialogEx::PostNcDestroy();
 }

@@ -82,6 +82,9 @@ public:
     // func for add message to the console
     void AddToConsole(const CString& str);
     void AddToConsole(const char* str);
+    // save the console to log file
+    CStdioFile m_log_file;
+    CFileException m_log_error;
 
     // show the config in list
     void ShowConfig();
@@ -102,4 +105,5 @@ public:
     afx_msg void OnBnClickedStartCar();
     // show all the config in the list ctrl
     CListCtrl m_list_config;
+    virtual void PostNcDestroy();
 };
