@@ -63,12 +63,12 @@ CvPoint CSmallCar::GetCarPosEx(){
     m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
     m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
     CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2); 
-   
+
 
     return carPos;
 }
 
-bool CSmallCar::MoveCarP2P(){
+bool CSmallCar::MoveCarP2P(CvPoint& from,CvPoint& to){
     CImageProc proc;
     m_output->SetCurrentFrame(m_camera->GetCurrentFrame(),false);
 
@@ -76,11 +76,13 @@ bool CSmallCar::MoveCarP2P(){
     CvPoint carPos = GetCarPosEx();
     cvCircle(m_output->GetCurrentFrame(),carPos,10,CV_RGB(0,255,0),3);// a green circle for the pos
     m_output->UpdateFrame();// show it
+    from = carPos;
 
     //找下个点，画个黄圈
     CvPoint nextPoint = m_route.FindnextPoint(m_current_point,m_map_point,m_pass_point);
     cvCircle(m_output->GetCurrentFrame(),nextPoint,10,CV_RGB(255,255,50),3);// a green circle for the pos
     m_output->UpdateFrame();// show it
+    to = nextPoint;
 
     //求小车向量方向
     double direction_car=m_route.Angle(m_tail,m_head); 

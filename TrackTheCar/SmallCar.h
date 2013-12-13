@@ -15,7 +15,7 @@ public:
     //bool Init(CCvPicCtrl* camera,IplImage* map,CConfigs* config);
     bool Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D32f> map_point,CConfigs* config);
     bool Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);
-    
+
     bool StartCar();
 private:
     bool init_success;
@@ -34,13 +34,13 @@ private:
 
     std::vector<CvPoint> m_map_point;
     std::vector<bool> m_pass_point;
-    
+
     CCarControl m_car_control;
 
     CRouteHelper m_route;
 
     CvPoint m_current_point; // the current point we have
 public:
-    bool MoveCarP2P();
+    bool MoveCarP2P(CvPoint& from,CvPoint& to);// move from one to another
 };
 

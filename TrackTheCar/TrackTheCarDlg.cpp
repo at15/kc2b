@@ -313,9 +313,18 @@ void CTrackTheCarDlg::CamProc(){
 
 void CTrackTheCarDlg::CarProc(){
     CamProc();
-    if(m_car.MoveCarP2P()){
-        AddToConsole("moved the car");
+    CvPoint from;
+    CvPoint to;
+    if(m_car.MoveCarP2P(from,to)){
+        AddToConsole("move ok");
+    }else{
+        AddToConsole("oh can't move wtf!");
     }
+    CString str;
+    str.Format(L"Move from x=%d y=%d to x=%d y=%d",
+        from.x,from.y,
+        to.x,to.y);
+    AddToConsole(str);
 }
 
 void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
@@ -383,5 +392,5 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
         AfxMessageBox(L"Please open the car and set the right com port!");
         AddToConsole("Car init failed!");
     }
-    
+
 }
