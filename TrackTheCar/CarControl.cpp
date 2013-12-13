@@ -4,12 +4,17 @@
 
 CCarControl::CCarControl(void)
 {
+    port_ready = false;
     m_port = NULL;
 }
 
 
 CCarControl::~CCarControl(void)
 {
+    if(port_ready){
+        // stop the fking car!
+        Stop();
+    }
     ClosePort();
 }
 

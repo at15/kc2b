@@ -47,6 +47,10 @@ CvPoint CRouteHelper::FindnextPoint(CvPoint current,vector<CvPoint> map_points,v
             nearest_num=i;
         }
     }
+    if(-1 ==  nearest_num){
+        throw logic_error("can't find nearest point!"); // that's why the
+        // vector is out of range
+    }
     mask.at(nearest_num)=true;
     return map_points.at(nearest_num);
 }
