@@ -310,7 +310,9 @@ void CTrackTheCarDlg::CamProc(){
 
 void CTrackTheCarDlg::CarProc(){
     CamProc();
-    //m_car.MoveCarP2P();
+    if(m_car.MoveCarP2P()){
+        AddToConsole("moved the car");
+    }
 }
 
 void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
@@ -353,7 +355,8 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
     }
     AddToConsole("map corner set!");
 
-    OnCenCorner();// gen the map point
+    // OnCenCorner();// gen the map point, NO! the map point should be done 
+    // without putting the car on the map
 
     try{
         global_configs->GetMapPoint();
@@ -373,6 +376,9 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
         m_car.StartCar();
         KillTimer(MAIN_CAM);
         SetTimer(CAR_PROC,20,NULL);
+    }else{
+        AfxMessageBox(L"Please open the car and set the right com port!");
+        AddToConsole("Car init failed!");
     }
     
 }
