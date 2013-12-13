@@ -76,13 +76,17 @@ bool CSmallCar::MoveCarP2P(CvPoint& from,CvPoint& to){
     CvPoint carPos = GetCarPosEx();
     cvCircle(m_output->GetCurrentFrame(),carPos,10,CV_RGB(0,255,0),3);// a green circle for the pos
     m_output->UpdateFrame();// show it
-    from = carPos;
+    m_current_point = carPos;
+
+    from = carPos;// for log
 
     //找下个点，画个黄圈
+    // The to has never changed!
     CvPoint nextPoint = m_route.FindnextPoint(m_current_point,m_map_point,m_pass_point);
     cvCircle(m_output->GetCurrentFrame(),nextPoint,10,CV_RGB(255,255,50),3);// a green circle for the pos
     m_output->UpdateFrame();// show it
-    to = nextPoint;
+
+    to = nextPoint;// for log
 
     //求小车向量方向
     double direction_car=m_route.Angle(m_tail,m_head); 
