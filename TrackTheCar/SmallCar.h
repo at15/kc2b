@@ -31,7 +31,7 @@ private:
     CvPoint m_tail;
 
     bool GetCarPos();
-    
+    CvPoint GetCarPosEx();
 
     std::vector<CvPoint> m_map_point;
     std::vector<bool> m_pass_point;
@@ -43,16 +43,21 @@ private:
     CvPoint m_current_car_pos; //the car's current pos
     CvPoint m_next_point;//the point that the car is trying to move to
 public:
+    enum FIND_POINT{
+       OK,
+       FAIL,
+       NO_MORE_POINT
+    };
     enum MOVE_RESULT{
         REACH_POINT,
         TURN_LEFT,
         TURN_RIGHT,
         GO_FORWARD
     };
+    FIND_POINT GetCarPosEx();
+    FIND_POINT FindNextPoint();
     
-    bool FindNextPoint();
-    CvPoint GetCarPosEx();
-    MOVE_RESULT CSmallCar::MoveCar2Point();// move to destination point
+    MOVE_RESULT CSmallCar::Move2NextPoint();// move to destination point
     // MoveCarP2P is wrong .... 
     MOVE_RESULT MoveCarP2P(CvPoint& from,CvPoint& to);// move from one to another
 };

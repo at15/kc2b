@@ -1,6 +1,6 @@
 #include "StdAfx.h"
 #include "SmallCar.h"
-
+using namespace std;
 
 CSmallCar::CSmallCar(void)
 {
@@ -68,10 +68,14 @@ CvPoint CSmallCar::GetCarPosEx(){
 }
 
 bool CSmallCar::FindNextPoint(){
-     CvPoint nextPoint = m_route.FindnextPoint(m_current_car_pos,m_map_point,m_pass_point);
+     try{
+         m_next_point = m_route.FindnextPoint(m_current_car_pos,m_map_point,m_pass_point);
+    }catch(logic_error e){
+
+    }
 }
 
-CSmallCar::MOVE_RESULT CSmallCar::MoveCar2Point(){
+CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(){
     CImageProc proc;
     m_output->SetCurrentFrame(m_camera->GetCurrentFrame(),false);
    
