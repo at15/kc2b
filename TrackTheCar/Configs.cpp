@@ -4,6 +4,8 @@ using namespace std;
 
 CConfigs::CConfigs(void)
 {
+    m_btransform_set = false;
+    m_bmap_point_set = false;
     m_map_corners.clear();
     m_map_point.clear();
     m_threshold.clear();
@@ -41,11 +43,6 @@ std::vector<CvPoint> CConfigs::GetMapCorner(){
     }else{
         return m_map_corners;
     }
-}
-
-void CConfigs::SetMapCorners(std::vector<CvPoint> corners){
-    // TODO:check the value
-    m_map_corners = corners;
 }
 
 void CConfigs::SetThreshold(std::vector<int> threshold){

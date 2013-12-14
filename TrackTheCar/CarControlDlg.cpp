@@ -47,7 +47,7 @@ void CarControlDlg::OnBnClickedInitCar()
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     UpdateData();
     if(!m_com_num){
-        AfxMessageBox(_T('no com num!!'));
+        AfxMessageBox(_T("no com num!!"));
     }else{
         if(m_car_ctrl.Init(m_com_num)){
             AfxMessageBox(_T("init success!"));

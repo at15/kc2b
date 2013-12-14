@@ -5,41 +5,58 @@ public:
     CConfigs(void);
     ~CConfigs(void);
 public:
+    // for transform the map
+    bool IsTransfromSet(){return m_btransform_set;}
     void SetCornerSize(int corner_size){m_corner_size = corner_size;}
     int GetCornerSize(){return m_corner_size;}
-
-    void SetMapCorners(std::vector<CvPoint> corners);
+    void SetMapCorners(std::vector<CvPoint> corners){
+        m_btransform_set = true;
+        m_map_corners = corners;
+    }
     std::vector<CvPoint> GetMapCorner(); // get the corner of the map to transform
 
-    void SetThreshold(std::vector<int> threshold);
-    std::vector<int> GetThreshold();
-
+    // the threshold,and thin times for map
     void SetMapThreshold(int threshold){m_map_threshold = threshold;}
     int GetMapThreshold(){return m_map_threshold;}
-
     void SetThinIteration(int iteration){m_thin_iteration = iteration;}
     int GetThinIteration(){return m_thin_iteration;}
 
+    // if the map point has been generated
+    bool IsMapPointSet(){return m_bmap_point_set;}
+    void SetMapPoint(std::vector<CvPoint2D32f> map_point){
+        m_bmap_point_set = true;
+        m_map_point = map_point;
+    }
+    std::vector<CvPoint2D32f> GetMapPoint();
+
+    // the threshold for red and blue, to get the map corner and the car position
+    void SetThreshold(std::vector<int> threshold);
+    std::vector<int> GetThreshold();
+
+
+
+    // the com port for blue tooth
     void SetCOM(int com_num){m_com_num = com_num;}
     int GetCOM(){return m_com_num;}
 
 
-    void SetMapPoint(std::vector<CvPoint2D32f> map_point){m_map_point = map_point;}
-    std::vector<CvPoint2D32f> GetMapPoint();
 private:
+    bool m_btransform_set;
     int m_corner_size;
-
     std::vector<CvPoint> m_map_corners;
 
-    std::vector<CvPoint2D32f> m_map_point;
-    // the threshold for the red and blue
-    std::vector<int> m_threshold;
     // the threshold for the map
     int m_map_threshold;
     // the thin time for the map
     int m_thin_iteration;
 
-    // the com num for the port
+    bool m_bmap_point_set;
+    std::vector<CvPoint2D32f> m_map_point;
+
+    // the threshold for the red and blue
+    std::vector<int> m_threshold;
+
+    // the com port number for the port
     int m_com_num;
     void LoadDefaultSetting();
 };

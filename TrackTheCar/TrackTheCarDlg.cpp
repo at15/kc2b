@@ -183,22 +183,39 @@ void CTrackTheCarDlg::AddToConsole(const char* str){
 }
 
 void CTrackTheCarDlg::ShowConfig(){
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     m_list_config.DeleteAllItems();
+    CString str;
     int index = m_list_config.GetItemCount();
     m_list_config.InsertItem(index, L"地图变形");
-    m_list_config.SetItemText(index,1,L"未设置");
+    if(global_configs->IsTransfromSet()){
+        m_list_config.SetItemText(index,1,L"已设置");
+    }else{
+        m_list_config.SetItemText(index,1,L"未设置");
+    }
+    
     index++;
     m_list_config.InsertItem(index, L"地图阀值");
-    m_list_config.SetItemText(index,1,L"默认");
+    str.Format(L"%d",global_configs->GetMapThreshold());
+    m_list_config.SetItemText(index,1,str);
+
     index++;
     m_list_config.InsertItem(index, L"地图点");
-    m_list_config.SetItemText(index,1,L"未生成");
+    if(global_configs->IsMapPointSet()){
+        m_list_config.SetItemText(index,1,L"已生成");
+    }else{
+        m_list_config.SetItemText(index,1,L"未生成");
+    }
+    
     index++;
     m_list_config.InsertItem(index, L"红蓝阀值");
     m_list_config.SetItemText(index,1,L"默认");
+
     index++;
     m_list_config.InsertItem(index, L"蓝牙端口");
-    m_list_config.SetItemText(index,1,L"默认(3)  ");
+    str.Format(L"%d",global_configs->GetCOM());
+    m_list_config.SetItemText(index,1,str);
+
 }
 
 void CTrackTheCarDlg::OnCapPic()
