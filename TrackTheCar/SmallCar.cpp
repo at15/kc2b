@@ -47,7 +47,7 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
 }
 
 bool CSmallCar::StartCar(){
-    m_current_car_pos = GetCarPosEx();
+    GetCarPosEx();
     return true;
 }
 
@@ -58,27 +58,34 @@ bool CSmallCar::GetCarPos(){
     return true;
 }
 
-CvPoint CSmallCar::GetCarPosEx(){
+CSmallCar::FIND_POINT CSmallCar::GetCarPosEx(CvPoint* car_pos /*= NULL*/){
     IplImage* t = m_camera->GetCurrentFrame();
     m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
     m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
     CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2); 
     m_current_car_pos = carPos;
-    return carPos;
+    if(car_pos){
+        *car_pos = carPos;
+    }
+    return FIND_POINT::OK;
 }
 
-bool CSmallCar::FindNextPoint(){
-     try{
-         m_next_point = m_route.FindnextPoint(m_current_car_pos,m_map_point,m_pass_point);
+CSmallCar::FIND_POINT CSmallCar::FindNextPoint(CvPoint* nex_point /*= NULL*/){
+    try{
+        m_next_point = m_route.FindnextPoint(m_current_car_pos,m_map_point,m_pass_point);
+        if(nex_point){
+            *nex_point = m_next_point;
+        }
+        return FIND_POINT::OK;
     }catch(logic_error e){
-
+        return FIND_POINT::NO_MORE_POINT;
     }
 }
 
 CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(){
     CImageProc proc;
     m_output->SetCurrentFrame(m_camera->GetCurrentFrame(),false);
-   
+
     // a green circle to show the car pos
     cvCircle(m_output->GetCurrentFrame(),m_current_car_pos,10,CV_RGB(0,255,0),3);
     // a yellow circle for the dst
@@ -94,78 +101,6 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(){
     // 达到目标
     if(distance <= DISTANCE_ERROR) {
         // TODO:should i stop the car?
-        return REACH_POINT;
-    }
-
-    if(fabs(direction_car - direction_target) > ANGLE_ERROR) //小车与目标不在同一方向，则转向
-    {
-        if(direction_car<180)
-        {
-            if(direction_target>direction_car && direction_target<direction_car+180) //左转
-            {
-                m_car_control.GoLeft();
-                return TURN_LEFT;
-            }
-            else //右转
-            {
-                m_car_control.GoRight();
-                return TURN_RIGHT;
-            }
-        }
-        else
-        {
-            if(direction_target>direction_car-180 && direction_target<direction_car) //右转
-            {
-                m_car_control.GoRight();
-                return TURN_RIGHT;
-            }
-            else //左转
-            {
-                m_car_control.GoLeft();
-                return TURN_LEFT;
-            }
-        }
-    }
-    else //小车与目标已在同一方向，则向前开
-    {
-        m_car_control.GoForward();// 应该会把头转回来
-        return GO_FORWARD;
-    }
-}
-
-CSmallCar::MOVE_RESULT CSmallCar::MoveCarP2P(CvPoint& from,CvPoint& to){
-    CImageProc proc;
-    m_output->SetCurrentFrame(m_camera->GetCurrentFrame(),false);
-
-    //求小车中心坐标,并画个绿圈
-    CvPoint carPos = GetCarPosEx();// we should do the loop in side this
-    // function
-    // for example
-    // 1 get a new frame form camera
-    // 2 get the new carpos and decide what the car should
-    // keep doing this until the car reach the point!
-    cvCircle(m_output->GetCurrentFrame(),carPos,10,CV_RGB(0,255,0),3);// a green circle for the pos
-    //m_output->UpdateFrame();// show it
-    //m_current_car_pos = carPos;
-
-    from = carPos;// for log
-
-    //找下个点，画个黄圈
-    CvPoint nextPoint = m_route.FindnextPoint(m_current_car_pos,m_map_point,m_pass_point);
-    cvCircle(m_output->GetCurrentFrame(),nextPoint,10,CV_RGB(255,255,50),3);// a green circle for the pos
-    m_output->UpdateFrame();// show it
-
-    to = nextPoint;// for log
-
-    //求小车向量方向
-    double direction_car=m_route.Angle(m_tail,m_head); 
-    //小车中心到下一个目标点的向量方向
-    double direction_target=m_route.Angle(carPos,nextPoint); 
-    //小车中心到目标点的距离
-    double distance=m_route.Distance(carPos,nextPoint); 
-
-    // 达到目标
-    if(distance <= DISTANCE_ERROR) {
         return REACH_POINT;
     }
 

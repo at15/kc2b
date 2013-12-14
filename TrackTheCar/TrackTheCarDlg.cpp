@@ -310,60 +310,6 @@ void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
     CDialogEx::OnTimer(nIDEvent);
 }
 
-void CTrackTheCarDlg::CamProc(){
-    if(m_main_input.IsPause()) return;
-    m_main_input.CaptureDontShow();
-    process_input(&m_main_input);
-    m_main_input.UpdateFrame();
-}
-
-void CTrackTheCarDlg::CarProc(){
-    car_working = true;
-    //CamProc();
-    CvPoint from;
-    CvPoint to;
-    CSmallCar::MOVE_RESULT re;
-    CString op;
-    try{
-        do{
-            CamProc();// cap a new frame
-            m_car.FindNextPoint();
-
-            switch(re){
-            case CSmallCar::GO_FORWARD:{
-                op = L"go forward";
-                break;
-                                       }
-            case CSmallCar::TURN_LEFT:{
-                op = L"go left";
-                break;
-                                      }
-            case CSmallCar::TURN_RIGHT:{
-                op = L"go right";
-                break;
-                                       }
-            case CSmallCar::REACH_POINT:{
-                op = L"reach point";
-                break;
-                                        }
-            }
-            CString str;
-            str.Format(L"Op=%s Move from x=%d y=%d to x=%d y=%d",
-                op,
-                from.x,from.y,
-                to.x,to.y);
-            AddToConsole(str);
-        }while(re != CSmallCar::REACH_POINT);
-        AddToConsole("reach point");
-    }
-    catch(logic_error e){
-        AddToConsole("reach last point or error occurred");
-        AddToConsole(e.what());
-    }
-
-    car_working = false;
-}
-
 void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
     // transform the image
     CImageProc proc;
@@ -438,4 +384,65 @@ void CTrackTheCarDlg::PostNcDestroy()
     // TODO: 在此添加专用代码和/或调用基类
     m_log_file.Close();
     CDialogEx::PostNcDestroy();
+}
+
+
+void CTrackTheCarDlg::CamProc(){
+    if(m_main_input.IsPause()) return;
+    m_main_input.CaptureDontShow();
+    process_input(&m_main_input);
+    m_main_input.UpdateFrame();
+}
+
+void CTrackTheCarDlg::CarProc(){
+    car_working = true;
+
+    CvPoint from;
+    CvPoint to;
+    CSmallCar::MOVE_RESULT re;
+    CString op;
+    CSmallCar::FIND_POINT pre = m_car.FindNextPoint(&to);
+    if(pre == CSmallCar::NO_MORE_POINT){
+        AddToConsole("reach last point!");
+        AfxMessageBox(L"The car has reached last point!");
+        KillTimer(CAR_PROC);
+        return;
+    }
+
+    do{
+        CamProc();// cap a new frame
+        m_car.GetCarPosEx(&from);
+        re = m_car.Move2NextPoint();
+        switch(re){
+        case CSmallCar::GO_FORWARD:{
+            op = L"go forward";
+            break;
+                                   }
+        case CSmallCar::TURN_LEFT:{
+            op = L"go left";
+            break;
+                                  }
+        case CSmallCar::TURN_RIGHT:{
+            op = L"go right";
+            break;
+                                   }
+        case CSmallCar::REACH_POINT:{
+            op = L"reach point";
+            break;
+                                    }
+        }
+
+        CString str;
+        str.Format(L"Op=%s Move from x=%d y=%d to x=%d y=%d",
+            op,
+            from.x,from.y,
+            to.x,to.y);
+        AddToConsole(str);
+
+    }while(re != CSmallCar::REACH_POINT);
+
+    AddToConsole("reach point");
+
+
+    car_working = false;
 }
