@@ -5,7 +5,7 @@ using namespace std;
 CConfigs::CConfigs(void)
 {
     RestConfig();
-    LoadDefaultSetting();
+   // LoadDefaultSetting();
 }
 
 
@@ -39,6 +39,7 @@ void CConfigs::RestConfig(){
     m_map_corners.clear();
     m_map_point.clear();
     m_threshold.clear();
+    LoadDefaultSetting();
 }
 
 std::vector<CvPoint> CConfigs::GetMapCorner(){

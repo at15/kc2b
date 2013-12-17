@@ -241,6 +241,7 @@ void CTrackTheCarDlg::OnConfigThreshold()
     }
     m_dlg_threshold.DoModal();
     m_main_input.Pause(false);
+    ShowConfig();
 }
 
 
@@ -252,6 +253,7 @@ void CTrackTheCarDlg::OnConfigTransform()
     }
     m_dlg_transform.DoModal();
     m_main_input.Pause(false);
+    ShowConfig();
 }
 
 void CTrackTheCarDlg::OnConfigMap()
@@ -262,6 +264,7 @@ void CTrackTheCarDlg::OnConfigMap()
     }
     m_dlg_map.DoModal();
     m_main_input.Pause(false);
+    ShowConfig();
 }
 
 void CTrackTheCarDlg::OnMainOpenImage()
@@ -295,6 +298,7 @@ void CTrackTheCarDlg::OnCenCorner()
 
     cvReleaseImage(&grey);
     cvReleaseImage(&bin);
+    ShowConfig();
 }
 
 
@@ -306,6 +310,7 @@ void CTrackTheCarDlg::OnCarConfig()
     m_main_input.Pause(false);
     delete m_dlg_car;
     m_dlg_car = NULL;
+    ShowConfig();
 }
 
 
@@ -332,12 +337,8 @@ void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
     // transform the image
     CImageProc proc;
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    try{
-        global_configs->GetMapCorner();
-    }catch(logic_error e){
-        // don't echo error,there will be too many
-        return;
-    }
+    // return if the transform is not set
+    if(!global_configs->IsTransfromSet()) return; 
     IplImage* transformed_pic= proc.TransformImage(pic_ctrl->GetCurrentFrame(),
         global_configs->GetMapCorner());
     pic_ctrl->SetCurrentFrame(transformed_pic);
@@ -469,4 +470,5 @@ void CTrackTheCarDlg::OnRestConfig()
 {
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     global_configs->RestConfig();
+    ShowConfig();
 }
