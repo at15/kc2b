@@ -68,6 +68,9 @@ CSmallCar::FIND_POINT CSmallCar::GetCarPosEx(CvPoint* car_pos /*= NULL*/){
     IplImage* t = m_camera->GetCurrentFrame();
     m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
     m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
+    if(m_head.x < 0 || m_head.y <0 || m_tail.x < 0 || m_tail.y < 0 ){
+        throw logic_error("can't find car position");
+    }
     CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2); 
     m_current_car_pos = carPos;
     if(car_pos){
