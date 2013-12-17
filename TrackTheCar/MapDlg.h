@@ -39,7 +39,7 @@ public:
     // the time for the thin
     int m_thin_iteration;
     // used in cvgoodfeaturetrack
-    int m_quality_level;
+    double m_quality_level;
     // used in cvgoodfeature track,the min distance between two points
     int m_min_distance;
     afx_msg void OnBnClickedMapPointGen();

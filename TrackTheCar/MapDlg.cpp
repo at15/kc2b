@@ -58,7 +58,8 @@ BOOL CMapDlg::OnInitDialog()
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     m_map_threshold = global_configs->GetMapThreshold();
     m_thin_iteration = global_configs->GetThinIteration();
-    m_quality_level = global_configs->get
+    m_quality_level = global_configs->GetQualityLevel();
+    m_min_distance = global_configs->GetMinDistance();
     UpdateData(FALSE);
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
