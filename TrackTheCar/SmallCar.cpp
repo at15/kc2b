@@ -103,6 +103,7 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(){
     cvCircle(m_output->GetCurrentFrame(),m_current_car_pos,10,CV_RGB(0,255,0),3);
     // a yellow circle for the dst
     cvCircle(m_output->GetCurrentFrame(),m_next_point,10,CV_RGB(255,255,50),3);
+    m_output->UpdateFrame();// why the hell i deleted this?
 
     //求小车向量方向
     double direction_car=m_route.Angle(m_tail,m_head); 
