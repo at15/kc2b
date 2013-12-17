@@ -416,6 +416,8 @@ void CTrackTheCarDlg::CamProc(){
 void CTrackTheCarDlg::CarProc(){
     car_working = true;
 
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    
     CvPoint from;
     CvPoint to;
     CSmallCar::MOVE_RESULT re;
@@ -430,11 +432,19 @@ void CTrackTheCarDlg::CarProc(){
         return;
     }
 
+    // the counters, to avoid the car stuck in one place
+    int c_same_op = 0;
+    int c_error_modify = 0; // 自动修改过几次误差值
+    CSmallCar::MOVE_RESULT last_op = CSmallCar::REACH_POINT;// 上一次操作
+
+    // the temp value for the small car distance
+    int t_distance_e = global_configs->GetDistanceError();
+    int t_angle_e = global_configs->GetAngleError();
+
     do{
-        // the counters, to avoid the car stuck in one place
-        int c_
+        
         CamProc();// cap a new frame
-        if(CSmallCar::FIND_POINT::FAIL == m_car.GetCarPosEx(&from)){
+        if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
            AddToConsole(L"can't find the car pos!");
            AfxMessageBox(L"Can't find the car pos! exiting now...");
            // stop the car
@@ -442,7 +452,27 @@ void CTrackTheCarDlg::CarProc(){
            KillTimer(CAR_PROC);
            return;
         }
-        re = m_car.Move2NextPoint();
+        re = m_car.Move2NextPoint(t_distance_e,t_angle_e);
+        if(re != last_op){
+            c_same_op = 0;
+            last_op = re;
+        }else if(re != CSmallCar::GO_FORWARD){
+            c_same_op++;// 可以一直向前
+        }
+        if(MAX_ERROR_MODIFY_TIME < c_error_modify){
+            // stop the car
+            m_car.StopCar();
+            KillTimer(CAR_PROC);
+
+            // too much modify!
+            throw logic_error("too much modify");
+        }
+        if(MAX_OP_TIME < c_same_op){
+            c_same_op = 0;
+            t_distance_e += ERROR_MODIFY_VALUE;
+            t_distance_e += ERROR_MODIFY_VALUE;
+            c_error_modify++;
+        }
         switch(re){
         case CSmallCar::GO_FORWARD:{
             op = L"go forward";

@@ -95,8 +95,8 @@ CSmallCar::FIND_POINT CSmallCar::FindNextPoint(CvPoint* nex_point /*= NULL*/){
     }
 }
 
-CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error = DISTANCE_ERROR,
-    int angle_error = ANGLE_ERROR){
+CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE_ERROR*/,
+    int angle_error/* = ANGLE_ERROR*/){
     CImageProc proc;
     m_output->SetCurrentFrame(m_camera->GetCurrentFrame(),false);
 
@@ -115,7 +115,7 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error = DISTANCE_E
 
     // 达到目标
     if(distance <= distance_error) {
-        // TODO:should i stop the car?
+        // TODO:should i stop the car? no ?
         return REACH_POINT;
     }
 
