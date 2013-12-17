@@ -7,22 +7,9 @@ CSmallCar::CSmallCar(void)
     init_success = false;
 }
 
-
 CSmallCar::~CSmallCar(void)
 {
 }
-
-/*
-// we need 
-// 1 a picture control that can always give us the map
-//   PS: we only need a processed image now
-// 2 the camera that can get the latest image, so we can know where the car is
-bool CSmallCar::Init(CCvPicCtrl* camera,IplImage* map,CConfigs* config){
-m_camera = camera;
-m_map.SetImage(map);
-m_config = config;
-return true;
-}*/
 
 bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D32f> map_point,CConfigs* config){
     // check if we can start the car, if we can, then lets go
@@ -38,7 +25,6 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D
         m_pass_point.push_back(false);
     }
     m_config = config;
-
     return true;
 }
 
@@ -75,7 +61,7 @@ CSmallCar::FIND_POINT CSmallCar::GetCarPosEx(CvPoint* car_pos /*= NULL*/){
         //throw logic_error("can't find car position");
         return FIND_POINT::FAIL;
     }
-    CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2); 
+    CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2);
     m_current_car_pos = carPos;
     if(car_pos){
         *car_pos = carPos;
@@ -97,60 +83,60 @@ CSmallCar::FIND_POINT CSmallCar::FindNextPoint(CvPoint* nex_point /*= NULL*/){
 
 CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE_ERROR*/,
     int angle_error/* = ANGLE_ERROR*/){
-    CImageProc proc;
-    m_output->SetCurrentFrame(m_camera->GetCurrentFrame(),false);
+        CImageProc proc;
+        m_output->SetCurrentFrame(m_camera->GetCurrentFrame(),false);
 
-    // a green circle to show the car pos
-    cvCircle(m_output->GetCurrentFrame(),m_current_car_pos,10,CV_RGB(0,255,0),3);
-    // a yellow circle for the dst
-    cvCircle(m_output->GetCurrentFrame(),m_next_point,10,CV_RGB(255,255,50),3);
-    m_output->UpdateFrame();// why the hell i deleted this?
+        // a green circle to show the car pos
+        cvCircle(m_output->GetCurrentFrame(),m_current_car_pos,10,CV_RGB(0,255,0),3);
+        // a yellow circle for the dst
+        cvCircle(m_output->GetCurrentFrame(),m_next_point,10,CV_RGB(255,255,50),3);
+        m_output->UpdateFrame();// why the hell i deleted this?
 
-    //求小车向量方向
-    double direction_car=m_route.Angle(m_tail,m_head); 
-    //小车中心到下一个目标点的向量方向
-    double direction_target=m_route.Angle(m_current_car_pos,m_next_point); 
-    //小车中心到目标点的距离
-    double distance=m_route.Distance(m_current_car_pos,m_next_point); 
+        //求小车向量方向
+        double direction_car=m_route.Angle(m_tail,m_head);
+        //小车中心到下一个目标点的向量方向
+        double direction_target=m_route.Angle(m_current_car_pos,m_next_point);
+        //小车中心到目标点的距离
+        double distance=m_route.Distance(m_current_car_pos,m_next_point);
 
-    // 达到目标
-    if(distance <= distance_error) {
-        // TODO:should i stop the car? no ?
-        return REACH_POINT;
-    }
+        // 达到目标
+        if(distance <= distance_error) {
+            // TODO:should i stop the car? no ?
+            return REACH_POINT;
+        }
 
-    if(fabs(direction_car - direction_target) > angle_error) //小车与目标不在同一方向，则转向
-    {
-        if(direction_car<180)
+        if(fabs(direction_car - direction_target) > angle_error) //小车与目标不在同一方向，则转向
         {
-            if(direction_target>direction_car && direction_target<direction_car+180) //左转
+            if(direction_car<180)
             {
-                m_car_control.GoLeft();
-                return TURN_LEFT;
+                if(direction_target>direction_car && direction_target<direction_car+180) //左转
+                {
+                    m_car_control.GoLeft();
+                    return TURN_LEFT;
+                }
+                else //右转
+                {
+                    m_car_control.GoRight();
+                    return TURN_RIGHT;
+                }
             }
-            else //右转
+            else
             {
-                m_car_control.GoRight();
-                return TURN_RIGHT;
+                if(direction_target>direction_car-180 && direction_target<direction_car) //右转
+                {
+                    m_car_control.GoRight();
+                    return TURN_RIGHT;
+                }
+                else //左转
+                {
+                    m_car_control.GoLeft();
+                    return TURN_LEFT;
+                }
             }
         }
-        else
+        else //小车与目标已在同一方向，则向前开
         {
-            if(direction_target>direction_car-180 && direction_target<direction_car) //右转
-            {
-                m_car_control.GoRight();
-                return TURN_RIGHT;
-            }
-            else //左转
-            {
-                m_car_control.GoLeft();
-                return TURN_LEFT;
-            }
+            m_car_control.GoForward();// 应该会把头转回来
+            return GO_FORWARD;
         }
-    }
-    else //小车与目标已在同一方向，则向前开
-    {
-        m_car_control.GoForward();// 应该会把头转回来
-        return GO_FORWARD;
-    }
 }

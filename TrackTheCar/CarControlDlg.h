@@ -21,7 +21,7 @@ protected:
 public:
     afx_msg void OnBnClickedInitCar();
     afx_msg void OnBnClickedStop();
-    // the num of the com 
+    // the num of the com
     int m_com_num;
 
     CCarControl m_car_ctrl;

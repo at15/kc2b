@@ -5,7 +5,6 @@
 #include "CarControl.h"
 #include "RouteHelper.h"
 
-
 class CSmallCar
 {
 public:
@@ -38,8 +37,6 @@ private:
 
     CCarControl m_car_control;
 
-    
-
     CvPoint m_current_car_pos; //the car's current pos
     CvPoint m_next_point;//the point that the car is trying to move to
 public:
@@ -59,4 +56,3 @@ public:
     MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error = DISTANCE_ERROR,
         int angle_error = ANGLE_ERROR);// move to destination point
 };
-

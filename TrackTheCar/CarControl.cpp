@@ -1,13 +1,11 @@
 #include "StdAfx.h"
 #include "CarControl.h"
 
-
 CCarControl::CCarControl(void)
 {
     port_ready = false;
     m_port = NULL;
 }
-
 
 CCarControl::~CCarControl(void)
 {
@@ -35,7 +33,6 @@ bool CCarControl::Init(int com_num){
         m_port = NULL;
         return false;
     }
-
 }
 
 void CCarControl::ClosePort(){
@@ -57,7 +54,6 @@ void CCarControl::GoRight(){
 
 // not achieved yet
 void CCarControl::GoBack(){
-
 }
 
 void CCarControl::Stop(){
@@ -70,14 +66,14 @@ The command string recived from PC has 6 bit(chars):
 Bit 0 is '$' as start bit
 Bit 1 is direction bit : forwad or backward
 Bit 2 is direction bit : left or right
-Bit 3 is angle value bit 
+Bit 3 is angle value bit
 Bit 4 is speed value bit
 Bit 5 is change flag bit (record the changed iterm)
 Bit 6 is '#' :stop bit
 */
 
 /*
-kSFront,  // 从停止开始前进 
+kSFront,  // 从停止开始前进
 kLFront,  // 从左转状态开始正向前进
 kRFront,  // 从右转状态开始正向前进
 */
@@ -85,7 +81,6 @@ void CCarControl::GoForward(){
     if(kStop == m_last_op){
         RunCar(kSFront);
         m_last_op = kSFront;
-
     }
     if(kLeft == m_last_op){
         RunCar(kLFront);
@@ -97,7 +92,7 @@ void CCarControl::GoForward(){
     }
 }
 
-void CCarControl::RunCar(opcode op) 
+void CCarControl::RunCar(opcode op)
 {
     if(!port_ready) return;
 
@@ -122,7 +117,6 @@ void CCarControl::RunCar(opcode op)
         data =(unsigned char*)"$00134#";
         m_port->WriteData(data, 7);
         break;
-
 
     case kLeft:
         data =(unsigned char*)"$00503#";
