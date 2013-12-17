@@ -26,7 +26,7 @@ return true;
 
 bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D32f> map_point,CConfigs* config){
     // check if we can start the car, if we can, then lets go
-    if(!m_car_control.Init(m_config->GetCOM())) return false;
+    if(!m_car_control.Init(config->GetCOM())) return false;
 
     m_camera = camera;
     m_output = output;
