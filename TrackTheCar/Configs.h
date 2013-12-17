@@ -39,7 +39,7 @@ public:
     void SetCOM(int com_num){m_com_num = com_num;}
     int GetCOM(){return m_com_num;}
 
-
+    void RestConfig();
 private:
     bool m_btransform_set;
     int m_corner_size;

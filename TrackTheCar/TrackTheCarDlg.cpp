@@ -55,6 +55,7 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_COMMAND(ID_32780, &CTrackTheCarDlg::OnMainOpenCam)
     ON_WM_TIMER()
     ON_BN_CLICKED(IDC_BUTTON2, &CTrackTheCarDlg::OnBnClickedStartCar)
+    ON_COMMAND(ID_32783, &CTrackTheCarDlg::OnRestConfig)
 END_MESSAGE_MAP()
 
 
@@ -462,4 +463,10 @@ void CTrackTheCarDlg::CarProc(){
 
 
     car_working = false;
+}
+
+void CTrackTheCarDlg::OnRestConfig()
+{
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    global_configs->RestConfig();
 }

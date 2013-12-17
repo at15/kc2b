@@ -4,11 +4,7 @@ using namespace std;
 
 CConfigs::CConfigs(void)
 {
-    m_btransform_set = false;
-    m_bmap_point_set = false;
-    m_map_corners.clear();
-    m_map_point.clear();
-    m_threshold.clear();
+    RestConfig();
     LoadDefaultSetting();
 }
 
@@ -35,6 +31,14 @@ void CConfigs::LoadDefaultSetting(){
     // the com port for blue tooth
     m_com_num = 7;
 
+}
+
+void CConfigs::RestConfig(){
+    m_btransform_set = false;
+    m_bmap_point_set = false;
+    m_map_corners.clear();
+    m_map_point.clear();
+    m_threshold.clear();
 }
 
 std::vector<CvPoint> CConfigs::GetMapCorner(){

@@ -107,4 +107,5 @@ public:
     // show all the config in the list ctrl
     CListCtrl m_list_config;
     virtual void PostNcDestroy();
+    afx_msg void OnRestConfig();
 };
