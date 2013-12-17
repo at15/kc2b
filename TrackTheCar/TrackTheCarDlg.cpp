@@ -194,7 +194,7 @@ void CTrackTheCarDlg::ShowConfig(){
     }else{
         m_list_config.SetItemText(index,1,L"未设置");
     }
-    
+
     index++;
     m_list_config.InsertItem(index, L"地图阀值");
     str.Format(L"%d",global_configs->GetMapThreshold());
@@ -207,7 +207,7 @@ void CTrackTheCarDlg::ShowConfig(){
     }else{
         m_list_config.SetItemText(index,1,L"未生成");
     }
-    
+
     index++;
     m_list_config.InsertItem(index, L"红蓝阀值");
     m_list_config.SetItemText(index,1,L"默认");
@@ -424,6 +424,8 @@ void CTrackTheCarDlg::CarProc(){
     if(pre == CSmallCar::NO_MORE_POINT){
         AddToConsole("reach last point!");
         AfxMessageBox(L"The car has reached last point!");
+        // stop the car
+        m_car.StopCar();
         KillTimer(CAR_PROC);
         return;
     }

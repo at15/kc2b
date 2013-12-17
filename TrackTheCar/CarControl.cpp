@@ -24,7 +24,7 @@ bool CCarControl::Init(int com_num){
         m_port = NULL;
     }
     m_port = new CSerialPort;
-    
+
     if(m_port->InitPort(com_num)){
         port_ready = true;
         m_last_op = kStop;

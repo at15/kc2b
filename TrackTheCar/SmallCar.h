@@ -17,6 +17,7 @@ public:
     bool Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);
 
     bool StartCar();
+    bool StopCar();
 private:
     bool init_success;
     CImageProc m_proc;

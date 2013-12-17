@@ -51,6 +51,12 @@ bool CSmallCar::StartCar(){
     return true;
 }
 
+bool CSmallCar::StopCar(){
+    // stop the car
+    m_car_control.Stop();
+    return true;
+}
+
 bool CSmallCar::GetCarPos(){
     IplImage* t = m_camera->GetCurrentFrame();
     m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
