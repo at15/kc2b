@@ -51,21 +51,23 @@ public:
 
     // draw green circle in the middle to let user put the map in the right pos
     void DrawMiddleCircle(IplImage* img,CvScalar color = CV_RGB(0,255,0));
-    
+
 
     // find the four red point so we can transform
     std::vector<CvPoint> FindMapCorner(IplImage* img,int corner_size = CORNER_SIZE);
     // transform, corner size can be specified
     IplImage* TransformImage(IplImage* pSrc,std::vector<CvPoint> corners);
-   
+
 
     void cvThin( IplImage* src, IplImage* dst, int iterations=1);
 
 
-    void FindMapPoints(IplImage* pSrc,std::vector<CvPoint2D32f>& v_corners);
+    void FindMapPoints(IplImage* pSrc,std::vector<CvPoint2D32f>& v_corners,
+        double qualityLevel=MCV_QUALITY_LEVEL,
+        double minDistance=MCV_MIN_DISTANCE);
 
     void DrawMapPoints(IplImage* pSrc,const std::vector<CvPoint2D32f>& v_corners);
-/* abandoned func */
+    /* abandoned func */
 public:
     void CleanUp(); // release all the memory
 private:
