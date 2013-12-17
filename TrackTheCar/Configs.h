@@ -39,6 +39,11 @@ public:
     void SetCOM(int com_num){m_com_num = com_num;}
     int GetCOM(){return m_com_num;}
 
+    // the distance error and angle error
+    void SetDistanceError(int length){m_distance_error = length;}
+    int GetDistanceError(){return m_distance_error;}
+    void SetAngleError(int angle){m_angle_error = angle;}
+    int GetAngleError() {return m_angle_error;}
     void RestConfig();
 private:
     bool m_btransform_set;
@@ -58,5 +63,9 @@ private:
 
     // the com port number for the port
     int m_com_num;
+
+    // the distance error and angle error
+    int m_distance_error;
+    int m_angle_error;
     void LoadDefaultSetting();
 };

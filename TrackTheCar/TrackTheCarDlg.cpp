@@ -431,6 +431,8 @@ void CTrackTheCarDlg::CarProc(){
     }
 
     do{
+        // the counters, to avoid the car stuck in one place
+        int c_
         CamProc();// cap a new frame
         if(CSmallCar::FIND_POINT::FAIL == m_car.GetCarPosEx(&from)){
            AddToConsole(L"can't find the car pos!");

@@ -31,6 +31,10 @@ void CConfigs::LoadDefaultSetting(){
     // the com port for blue tooth
     m_com_num = 7;
 
+    // distance error and angle error
+    m_distance_error = DISTANCE_ERROR;
+    m_angle_error = ANGLE_ERROR;
+
 }
 
 void CConfigs::RestConfig(){

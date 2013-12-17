@@ -56,6 +56,7 @@ public:
     };
     FIND_POINT GetCarPosEx(CvPoint* car_pos = NULL);
     FIND_POINT FindNextPoint(CvPoint* nex_point = NULL);
-    MOVE_RESULT CSmallCar::Move2NextPoint();// move to destination point
+    MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error = DISTANCE_ERROR,
+        int angle_error = ANGLE_ERROR);// move to destination point
 };
 
