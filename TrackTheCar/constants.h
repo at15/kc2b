@@ -3,7 +3,7 @@
 #define CORNER_SIZE 10 // the size of the red corner
 #define PI 3.1415926 // PI
 // for opencv functions
-#define MCV_QUALITY_LEVEL 0.1
+#define MCV_QUALITY_LEVEL 0.10
 #define MCV_MIN_DISTANCE 10
 
 // for route helper functions

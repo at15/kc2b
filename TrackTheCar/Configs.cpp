@@ -27,6 +27,8 @@ void CConfigs::LoadDefaultSetting(){
     m_map_threshold = 99;
     m_thin_iteration = 20; // 20 times for the thin
 
+    m_mcv_quality_level = MCV_QUALITY_LEVEL;
+    m_mcv_min_distance = MCV_MIN_DISTANCE;
 
     // the com port for blue tooth
     m_com_num = 7;

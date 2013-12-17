@@ -58,6 +58,7 @@ BOOL CMapDlg::OnInitDialog()
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     m_map_threshold = global_configs->GetMapThreshold();
     m_thin_iteration = global_configs->GetThinIteration();
+    m_quality_level = global_configs->get
     UpdateData(FALSE);
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
@@ -127,11 +128,13 @@ void CMapDlg::OnBnClickedMapPointGen()
         AfxMessageBox(L"请先生成地图！");
         return;
     }
+    // get the binary map and the config
+    UpdateData();
 
     IplImage* bin = m_map_thin.GetCurrentFrame();
 
     vector<CvPoint2D32f> points;
-    proc.FindMapPoints(bin,points);
+    proc.FindMapPoints(bin,points,m_quality_level,m_min_distance);
     // set the map point in global
     global_configs->SetMapPoint(points);
     // show it in the dialog

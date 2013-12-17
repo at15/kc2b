@@ -21,6 +21,12 @@ public:
     void SetThinIteration(int iteration){m_thin_iteration = iteration;}
     int GetThinIteration(){return m_thin_iteration;}
 
+    // the config for map point gen
+    void SetQualityLevel(double ql){m_mcv_quality_level = ql;}
+    double GetQualityLevel(){return m_mcv_quality_level;}
+    void SetMinDistance(int ds){m_mcv_min_distance = ds;}
+    int GetMinDistance(){return m_mcv_min_distance;}
+
     // if the map point has been generated
     bool IsMapPointSet(){return m_bmap_point_set;}
     void SetMapPoint(std::vector<CvPoint2D32f> map_point){
@@ -44,6 +50,7 @@ public:
     int GetDistanceError(){return m_distance_error;}
     void SetAngleError(int angle){m_angle_error = angle;}
     int GetAngleError() {return m_angle_error;}
+
     void RestConfig();
 private:
     bool m_btransform_set;
@@ -54,7 +61,9 @@ private:
     int m_map_threshold;
     // the thin time for the map
     int m_thin_iteration;
-
+    // the config for cvtrackgoodfeatures
+    double m_mcv_quality_level;
+    int m_mcv_min_distance;
     bool m_bmap_point_set;
     std::vector<CvPoint2D32f> m_map_point;
 
