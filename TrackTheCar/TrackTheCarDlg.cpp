@@ -446,10 +446,10 @@ void CTrackTheCarDlg::CarProc(){
         CamProc();// cap a new frame
         if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
            AddToConsole(L"can't find the car pos!");
-           AfxMessageBox(L"Can't find the car pos! exiting now...");
+           AfxMessageBox(L"Can't find the car pos! Stop the car now!");
            // stop the car
            m_car.StopCar();
-           KillTimer(CAR_PROC);
+           //KillTimer(CAR_PROC);// don't kill timer,just wait for another chance
            return;
         }
         re = m_car.Move2NextPoint(t_distance_e,t_angle_e);

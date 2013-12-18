@@ -43,6 +43,7 @@ bool CSmallCar::StartCar(){
         m_config->SetDistanceError(dist_e);
     }
     return true;
+
 }
 
 bool CSmallCar::StopCar(){
