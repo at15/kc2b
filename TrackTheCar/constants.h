@@ -2,6 +2,11 @@
 // define some vars
 #define CORNER_SIZE 10 // the size of the red corner
 #define PI 3.1415926 // PI
+
+// the param for the little car
+#define CAR_LENGTH 15
+#define HEADTAIL_DISTANCE 8.5 
+
 // for opencv functions
 #define MCV_QUALITY_LEVEL 0.10
 #define MCV_MIN_DISTANCE 10

@@ -35,9 +35,14 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
 bool CSmallCar::StartCar(){
     if(FIND_POINT::FAIL == GetCarPosEx()){
         return false;
-    }else{
-        return true;
     }
+    // calc the new distance error,this should avoid the points 
+    // that are "indiside the car"
+    int dist_e = CalcDistanceError();
+    if(dist_e > m_config->GetDistanceError()){
+        m_config->SetDistanceError(dist_e);
+    }
+    return true;
 }
 
 bool CSmallCar::StopCar(){
@@ -51,6 +56,15 @@ bool CSmallCar::GetCarPos(){
     m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
     m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
     return true;
+}
+
+// TODO: this should in route helper.. anyway,we don't have time for detail
+int CSmallCar::CalcDistanceError(){
+    double head_tail_dist = m_route.Distance(m_head,m_tail);
+    int new_min_distance_error = head_tail_dist / HEADTAIL_DISTANCE * CAR_LENGTH;
+    // the half length of the car should be the distance error
+    new_min_distance_error = new_min_distance_error / 2;
+    return new_min_distance_error;
 }
 
 CSmallCar::FIND_POINT CSmallCar::GetCarPosEx(CvPoint* car_pos /*= NULL*/){
