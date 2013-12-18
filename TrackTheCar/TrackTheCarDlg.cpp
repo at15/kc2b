@@ -98,7 +98,7 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     CString log_path; 
     log_path.Format(L"%s%s.txt",L"C:\\Users\\W7_64\\Desktop\\",c_time);
     m_log_file.Open(log_path , CFile::modeWrite|CFile::modeCreate, &m_log_error);
-    AddToConsole(L">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");// start the log
+    AddToConsole(L">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");// start the log
     if(!m_main_input.Init(this,IDC_MAIN_INPUT)){
         AddToConsole(_T("ERROR: can't init the main picture control!"));
     }
