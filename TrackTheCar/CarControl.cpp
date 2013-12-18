@@ -46,11 +46,13 @@ void CCarControl::ClosePort(){
 void CCarControl::GoLeft(){
     m_last_op = kLeft;
     RunCar(kLeft);
+    RunCar(kSFront);
 }
 
 void CCarControl::GoRight(){
     m_last_op = kRight;
     RunCar(kRight);
+    RunCar(kSFront);
 }
 
 // not achieved yet

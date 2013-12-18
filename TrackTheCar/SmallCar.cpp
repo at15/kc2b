@@ -128,13 +128,13 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
                 if(direction_target>direction_car && direction_target<direction_car+180) //左转
                 {
                     m_car_control.GoLeft();
-                    m_car_control.GoForward();
+                    //m_car_control.GoForward();
                     return TURN_LEFT;
                 }
                 else //右转
                 {
                     m_car_control.GoRight();
-                    m_car_control.GoForward();
+                    //m_car_control.GoForward();
                     return TURN_RIGHT;
                 }
             }
@@ -143,13 +143,13 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
                 if(direction_target>direction_car-180 && direction_target<direction_car) //右转
                 {
                     m_car_control.GoRight();
-                    m_car_control.GoForward();
+                    //m_car_control.GoForward();
                     return TURN_RIGHT;
                 }
                 else //左转
                 {
                     m_car_control.GoLeft();
-                    m_car_control.GoForward();
+                    //m_car_control.GoForward();
                     return TURN_LEFT;
                 }
             }
