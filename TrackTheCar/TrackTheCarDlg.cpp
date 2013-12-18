@@ -425,10 +425,8 @@ void CTrackTheCarDlg::CarProc(){
     CSmallCar::FIND_POINT pre = m_car.FindNextPoint(&to);
     if(pre == CSmallCar::NO_MORE_POINT){
         AddToConsole("reach last point!");
+        ExitCarProc(true);
         AfxMessageBox(L"The car has reached last point!");
-        // stop the car
-        m_car.StopCar();
-        KillTimer(CAR_PROC);
         return;
     }
 
@@ -446,10 +444,8 @@ void CTrackTheCarDlg::CarProc(){
         CamProc();// cap a new frame
         if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
            AddToConsole(L"can't find the car pos!");
-           AfxMessageBox(L"Can't find the car pos! Stop the car now!");
-           // stop the car
-           m_car.StopCar();
-           //KillTimer(CAR_PROC);// don't kill timer,just wait for another chance
+           ExitCarProc(false);
+           AfxMessageBox(L"找不到小车，把摄像头前障碍物移开后点确定！");
            return;
         }
         re = m_car.Move2NextPoint(t_distance_e,t_angle_e);
@@ -460,12 +456,12 @@ void CTrackTheCarDlg::CarProc(){
             c_same_op++;// 可以一直向前
         }
         if(MAX_ERROR_MODIFY_TIME < c_error_modify){
-            // stop the car
-            m_car.StopCar();
-            KillTimer(CAR_PROC);
-
             // too much modify!
-            throw logic_error("too much modify");
+            CString str;
+            str.Format(L"ERROR:too much modify! %d times",c_error_modify);
+            AddToConsole(str);
+            ExitCarProc(true);
+            AfxMessageBox(L"自动修改次数过多！角点生成有误");
         }
         if(MAX_OP_TIME < c_same_op){
             c_same_op = 0;
@@ -505,6 +501,14 @@ void CTrackTheCarDlg::CarProc(){
 
 
     car_working = false;
+}
+
+void CTrackTheCarDlg::ExitCarProc(bool forever /*= true*/){
+    m_car.StopCar();
+    car_working = false;
+    if(forever){
+        KillTimer(CAR_PROC);
+    }
 }
 
 void CTrackTheCarDlg::OnRestConfig()

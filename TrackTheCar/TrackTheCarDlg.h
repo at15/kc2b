@@ -102,6 +102,7 @@ public:
 public:
     void CamProc();
     void CarProc();
+    void ExitCarProc(bool forever = true);// 出现问题,关闭处理图像计时器
 public:
     afx_msg void OnBnClickedStartCar();
     // show all the config in the list ctrl

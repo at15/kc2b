@@ -115,6 +115,7 @@ void CMapDlg::OnBnClickedMapChange()
         global_configs->SetThinIteration(m_thin_iteration);
     }
     map_process();
+    OnBnClickedMapPointGen();
 }
 
 
@@ -126,7 +127,12 @@ void CMapDlg::OnBnClickedMapPointGen()
     CImageProc proc;
     // get the bin image form other control
     if(!map_gened){
-        AfxMessageBox(L"请先生成地图！");
+        //AfxMessageBox(L"请先生成地图！");
+        //return;
+        OnBnClickedMapChange();
+    }
+    if(!map_gened){
+        AfxMessageBox(L"无法生成地图！");
         return;
     }
     // get the binary map and the config
