@@ -133,7 +133,9 @@ void CMapDlg::OnBnClickedMapPointGen()
     UpdateData();
 
     IplImage* bin = m_map_thin.GetCurrentFrame();
-
+    // set the map point config in global 
+    global_configs->SetQualityLevel(m_quality_level);
+    global_configs->SetMinDistance(m_min_distance);
     vector<CvPoint2D32f> points;
     proc.FindMapPoints(bin,points,m_quality_level,m_min_distance);
     // set the map point in global
