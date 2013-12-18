@@ -81,15 +81,20 @@ void CCarControl::GoForward(){
     if(kStop == m_last_op){
         RunCar(kSFront);
         m_last_op = kSFront;
+        return;
     }
     if(kLeft == m_last_op){
         RunCar(kLFront);
         m_last_op = kLFront;
+        return;
     }
     if(kRight == m_last_op){
         RunCar(kRFront);
         m_last_op = kRFront;
+        return;
     }
+    RunCar(kSFront);
+    m_last_op = kSFront;
 }
 
 void CCarControl::RunCar(opcode op)
