@@ -90,10 +90,14 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     SetIcon(m_hIcon, TRUE);			// 设置大图标
     SetIcon(m_hIcon, FALSE);		// 设置小图标
 
-    // TODO: 在此添加额外的初始化代码
-    use_config = false;
+    // TODO: The init code
 
-    m_log_file.Open( L"C:\\Users\\W7_64\\Desktop\\car_log.txt", CFile::modeWrite|CFile::modeCreate, &m_log_error);
+    // the log file
+    CTime tm = CTime::GetCurrentTime();
+    CString c_time =tm.Format("%d-%H-%M-%S");
+    CString log_path; 
+    log_path.Format(L"%s%s.txt",L"C:\\Users\\W7_64\\Desktop\\",c_time);
+    m_log_file.Open(log_path , CFile::modeWrite|CFile::modeCreate, &m_log_error);
     AddToConsole(L">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");// start the log
     if(!m_main_input.Init(this,IDC_MAIN_INPUT)){
         AddToConsole(_T("ERROR: can't init the main picture control!"));
@@ -417,7 +421,7 @@ void CTrackTheCarDlg::CarProc(){
     car_working = true;
 
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    
+
     CvPoint from;
     CvPoint to;
     CSmallCar::MOVE_RESULT re;
@@ -440,13 +444,13 @@ void CTrackTheCarDlg::CarProc(){
     int t_angle_e = global_configs->GetAngleError();
 
     do{
-        
+
         CamProc();// cap a new frame
         if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
-           AddToConsole(L"can't find the car pos!");
-           ExitCarProc(false);
-           AfxMessageBox(L"找不到小车，把摄像头前障碍物移开后点确定！");
-           return;
+            AddToConsole(L"can't find the car pos!");
+            ExitCarProc(false);
+            AfxMessageBox(L"找不到小车，把摄像头前障碍物移开后点确定！");
+            return;
         }
         re = m_car.Move2NextPoint(t_distance_e,t_angle_e);
         if(re != last_op){
