@@ -391,13 +391,20 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
     // really? no .... you can't set timer in cpp....so this is just init...
     if(m_car.Init(&m_main_input,&m_main_output,global_configs)){
         AddToConsole("car initialized!");
-        m_car.StartCar();
-        KillTimer(MAIN_CAM);
-        SetTimer(CAR_PROC,20,NULL);
     }else{
         AfxMessageBox(L"Please open the car and set the right com port!");
         AddToConsole("Car init failed!");
+        return;
     }
+    if(m_car.StartCar()){
+        KillTimer(MAIN_CAM);
+        SetTimer(CAR_PROC,20,NULL);
+    }else{
+        AfxMessageBox(L"无法找到小车，请调节阀值！");
+        OnConfigThreshold();
+        return;
+    }
+    
 
 }
 
@@ -449,7 +456,7 @@ void CTrackTheCarDlg::CarProc(){
         if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
             AddToConsole(L"can't find the car pos!");
             ExitCarProc(false);
-            AfxMessageBox(L"找不到小车，把摄像头前障碍物移开后点确定！");
+            //AfxMessageBox(L"找不到小车，把摄像头前障碍物移开后点确定！");
             return;
         }
         re = m_car.Move2NextPoint(t_distance_e,t_angle_e);

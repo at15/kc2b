@@ -118,6 +118,7 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
         if(distance <= distance_error) {
             // TODO:should i stop the car? no ?
             // m_car_control.GoForward();
+            m_car_control.Stop();// should stop the little car
             return REACH_POINT;
         }
         // 转弯之后必须向前走，否则就一直卡那了
