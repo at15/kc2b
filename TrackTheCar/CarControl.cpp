@@ -26,6 +26,7 @@ bool CCarControl::Init(int com_num){
     if(m_port->InitPort(com_num)){
         port_ready = true;
         m_last_op = kStop;
+
         return true;
     }else{
         port_ready = false;

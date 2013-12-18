@@ -117,9 +117,10 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
         // 达到目标
         if(distance <= distance_error) {
             // TODO:should i stop the car? no ?
+            // m_car_control.GoForward();
             return REACH_POINT;
         }
-
+        // 转弯之后必须向前走，否则就一直卡那了
         if(fabs(direction_car - direction_target) > angle_error) //小车与目标不在同一方向，则转向
         {
             if(direction_car<180)
@@ -127,11 +128,13 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
                 if(direction_target>direction_car && direction_target<direction_car+180) //左转
                 {
                     m_car_control.GoLeft();
+                    m_car_control.GoForward();
                     return TURN_LEFT;
                 }
                 else //右转
                 {
                     m_car_control.GoRight();
+                    m_car_control.GoForward();
                     return TURN_RIGHT;
                 }
             }
@@ -140,11 +143,13 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
                 if(direction_target>direction_car-180 && direction_target<direction_car) //右转
                 {
                     m_car_control.GoRight();
+                    m_car_control.GoForward();
                     return TURN_RIGHT;
                 }
                 else //左转
                 {
                     m_car_control.GoLeft();
+                    m_car_control.GoForward();
                     return TURN_LEFT;
                 }
             }
