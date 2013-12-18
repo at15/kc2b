@@ -175,6 +175,10 @@ CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold
     return blue_p;
 }
 
+void CImageProc::FindLines(){
+    // 还是tm找直线吧，角点太不靠谱了有木有
+
+}
 
 void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners,
     double qualityLevel/*=MCV_QUALITY_LEVEL*/,
