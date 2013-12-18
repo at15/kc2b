@@ -36,12 +36,14 @@ bool CSmallCar::StartCar(){
     if(FIND_POINT::FAIL == GetCarPosEx()){
         return false;
     }
+    /* the new distance error is just too big to use
     // calc the new distance error,this should avoid the points 
     // that are "indiside the car"
     int dist_e = CalcDistanceError();
     if(dist_e > m_config->GetDistanceError()){
         m_config->SetDistanceError(dist_e);
     }
+    */
     return true;
 
 }
@@ -59,13 +61,10 @@ bool CSmallCar::GetCarPos(){
     return true;
 }
 
-// TODO: this should in route helper.. anyway,we don't have time for detail
-int CSmallCar::CalcDistanceError(){
+int CSmallCar::CalcCarLength(){
     double head_tail_dist = m_route.Distance(m_head,m_tail);
-    int new_min_distance_error = head_tail_dist / HEADTAIL_DISTANCE * CAR_LENGTH;
-    // the half length of the car should be the distance error
-    new_min_distance_error = new_min_distance_error / 2;
-    return new_min_distance_error;
+    int car_length = head_tail_dist / HEADTAIL_DISTANCE * CAR_LENGTH;
+    return car_length;
 }
 
 CSmallCar::FIND_POINT CSmallCar::GetCarPosEx(CvPoint* car_pos /*= NULL*/){
@@ -117,7 +116,6 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
         // 达到目标
         if(distance <= distance_error) {
             // TODO:should i stop the car? no ?
-            // m_car_control.GoForward();
             m_car_control.Stop();// should stop the little car
             return REACH_POINT;
         }

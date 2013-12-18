@@ -51,6 +51,10 @@ public:
     void SetAngleError(int angle){m_angle_error = angle;}
     int GetAngleError() {return m_angle_error;}
 
+    // the length of the car, in the transformed image
+    void SetCarLength(int length){m_car_length = length;}
+    int GetCarLength(){return m_car_length;}
+
     void RestConfig();
 private:
     bool m_btransform_set;
@@ -76,5 +80,8 @@ private:
     // the distance error and angle error
     int m_distance_error;
     int m_angle_error;
+
+    // the length of the car in the transformed image
+    int m_car_length;
     void LoadDefaultSetting();
 };
