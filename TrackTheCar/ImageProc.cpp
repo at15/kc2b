@@ -185,17 +185,15 @@ vector<CLine> CImageProc::FindLines(IplImage* binary_image){
     for(int i=0;i<total_found;i++){
         all_lines.push_back(CLine(lines,i));
     }
-   // return all_lines;// for debug ...
+    //return all_lines;// for debug ...
     vector<CLine> final_lines;// 存储去除重复后的直线
     double line_distance_error = 2;// 线段距离小于它将被认为共线
-    // PS细化后地图应该很细，所以估计不会有重复的？？
-    // TODO:这侧算法太tm花时间了。。。半天跑不出来啊
-    // j++ 写成 i++ 了
     for(int i=0;i<all_lines.size();i++){
        CLine current = all_lines.at(i);
        bool is_child = false;
-       // wtf!!!!!
        for(int j=0;j<all_lines.size();j++){
+           // ！！！ 忘记了跳过自己。。。
+           if(i == j) continue;
            if(current.IsChildLine(all_lines.at(j),line_distance_error)){
                is_child = true;
                break;
