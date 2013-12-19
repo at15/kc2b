@@ -61,7 +61,8 @@ public:
 
     void cvThin( IplImage* src, IplImage* dst, int iterations=1);
 
-    void FindLines(IplImage* binary_image);
+    std::vector<CLine> FindLines(IplImage* binary_image);
+    void DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines);
 
     void FindMapPoints(IplImage* pSrc,std::vector<CvPoint2D32f>& v_corners,
         double qualityLevel=MCV_QUALITY_LEVEL,

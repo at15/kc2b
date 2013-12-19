@@ -175,13 +175,40 @@ CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold
     return blue_p;
 }
 
-void CImageProc::FindLines(IplImage* binary_image){
+vector<CLine> CImageProc::FindLines(IplImage* binary_image){
     CvMemStorage* storage = cvCreateMemStorage(); //创建一片内存区域存储线段数据
     CvSeq* lines = cvHoughLines2(binary_image, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 
         MCV_LINE_EXIST, MCV_MIN_LINE_LENGTH, MCV_MAX_LINE_DISTANCE);
     // 去除重复的线段
+    int total_found = lines->total;
+    vector<CLine> all_lines;// 存储所有找到的直线
+    for(int i=0;i<total_found;i++){
+        all_lines.push_back(CLine(lines,i));
+    }
 
+    vector<CLine> final_lines;// 存储去除重复后的直线
+    double line_distance_error = 2;// 线段距离小于它将被认为共线
+    // PS细化后地图应该很细，所以估计不会有重复的？？
+    for(int i=0;i<all_lines.size();i++){
+       CLine current = all_lines.at(i);
+       bool is_child = false;
+       for(int j=0;j<all_lines.size();i++){
+           if(current.IsChildLine(all_lines.at(j),line_distance_error)){
+               is_child = true;
+               break;
+            }
+        }
+       if(!is_child){
+           final_lines.push_back(current);
+        }
+    }
 
+    return final_lines;
+}
+void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines){
+    for(int i=0;i<v_lines.size();i++){
+        cvLine(pSrc,v_lines.at(i).start(),v_lines.at(i).end(),cvScalar(255));
+    }
 }
 
 void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners,

@@ -58,4 +58,5 @@
 #include "constants.h"
 #include "MyCvvImage.h"
 #include "StrConv.h"
+#include "RouteHelper.h"
 #include "ImageProc.h"
