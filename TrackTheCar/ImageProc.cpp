@@ -185,10 +185,11 @@ vector<CLine> CImageProc::FindLines(IplImage* binary_image){
     for(int i=0;i<total_found;i++){
         all_lines.push_back(CLine(lines,i));
     }
-
+    return all_lines;// for debug ...
     vector<CLine> final_lines;// 存储去除重复后的直线
     double line_distance_error = 2;// 线段距离小于它将被认为共线
     // PS细化后地图应该很细，所以估计不会有重复的？？
+    // TODO:这侧算法太tm花时间了。。。半天跑不出来啊
     for(int i=0;i<all_lines.size();i++){
        CLine current = all_lines.at(i);
        bool is_child = false;
@@ -206,8 +207,9 @@ vector<CLine> CImageProc::FindLines(IplImage* binary_image){
     return final_lines;
 }
 void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines){
+    cvSetZero(pSrc);
     for(int i=0;i<v_lines.size();i++){
-        cvLine(pSrc,v_lines.at(i).start(),v_lines.at(i).end(),cvScalar(255));
+        cvLine(pSrc,v_lines.at(i).start(),v_lines.at(i).end(),cvScalar(255,0,0));
     }
 }
 

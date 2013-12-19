@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CMapDlg, CDialogEx)
     ON_BN_CLICKED(IDC_MAP_OPEN_IMAGE, &CMapDlg::OnBnClickedMapOpenImage)
     ON_BN_CLICKED(IDC_MAP_CHANGE, &CMapDlg::OnBnClickedMapChange)
     ON_BN_CLICKED(IDC_MAP_POINT_GEN, &CMapDlg::OnBnClickedMapPointGen)
+    ON_BN_CLICKED(IDC_MAP_LINE_GEN, &CMapDlg::OnBnClickedMapLineGen)
 END_MESSAGE_MAP()
 
 
@@ -55,6 +56,8 @@ BOOL CMapDlg::OnInitDialog()
     m_map_bin.Init(this,IDC_MAP_BIN);
     m_map_thin.Init(this,IDC_MAP_THIN);
     m_map_point_gened.Init(this,IDC_MAP_PONIT_GENED);
+    m_map_line_gened.Init(this,IDC_MAP_LINE_GENED);
+
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     m_map_threshold = global_configs->GetMapThreshold();
     m_thin_iteration = global_configs->GetThinIteration();
@@ -152,4 +155,30 @@ void CMapDlg::OnBnClickedMapPointGen()
     m_map_point_gened.UpdateFrame();
 
     map_point_gened = true;
+}
+
+
+void CMapDlg::OnBnClickedMapLineGen()
+{
+    // 生成地图线段
+    CImageProc proc;
+    // get the bin image form other control
+    if(!map_gened){
+        //AfxMessageBox(L"请先生成地图！");
+        //return;
+        OnBnClickedMapChange();
+    }
+    if(!map_gened){
+        AfxMessageBox(L"无法生成地图！");
+        return;
+    }
+    IplImage* bin = m_map_thin.GetCurrentFrame();
+    vector<CLine> v_lines = proc.FindLines(bin);
+
+    // show it in the dialog
+    m_map_line_gened.SetCurrentFrame(m_map_thin.GetCurrentFrame(),false);
+    proc.DrawLines(m_map_line_gened.GetCurrentFrame(),v_lines); 
+    m_map_line_gened.UpdateFrame();
+
+
 }

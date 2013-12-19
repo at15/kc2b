@@ -31,6 +31,7 @@ private:
     CCvPicCtrl m_map_bin;
     CCvPicCtrl m_map_thin;
     CCvPicCtrl m_map_point_gened;
+    CCvPicCtrl m_map_line_gened;
 public:
     afx_msg void OnBnClickedMapOpenImage();
     afx_msg void OnBnClickedMapChange();
@@ -46,4 +47,6 @@ public:
 private:
     bool map_gened;
     bool map_point_gened;
+public:
+    afx_msg void OnBnClickedMapLineGen();
 };
