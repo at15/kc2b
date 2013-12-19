@@ -187,7 +187,7 @@ vector<CLine> CImageProc::FindLines(IplImage* binary_image){
     }
     //return all_lines;// for debug ...
     vector<CLine> final_lines;// 存储去除重复后的直线
-    double line_distance_error = 2;// 线段距离小于它将被认为共线
+    double line_distance_error = 10;// 线段距离小于它将被认为共线
     for(int i=0;i<all_lines.size();i++){
        CLine current = all_lines.at(i);
        bool is_child = false;
