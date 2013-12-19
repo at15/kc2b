@@ -56,7 +56,6 @@ public:
     }
     CLine(CvSeq* lines,int i){
         CvPoint* line = (CvPoint*) cvGetSeqElem(lines,i);
-        //CLine(line);// will this work? no!
         m_start = line[0];
         m_end = line[1];
         m_empty = false;
@@ -83,9 +82,18 @@ public:
         CVector v2(m_start,point);// b
         // |a x b| / |a|
         return v1.CrossABS(v2)/v1.ABS();
-    } 
-    bool IsChildLine(CLine ){
-
+    }
+    // 是否是某条线段的子线段
+    bool IsChildLine(const CLine& line,double distance_error = 0){
+        // 如果本线段的头和尾都跟新线段距离小于error，且更短，它就是
+        if((line.PointDist(m_start) > distance_error) ||
+            (line.PointDist(m_end) > distance_error)){
+                return false; // 端点不在直线上
+        }
+        if(this->length()>line.length()){
+            return false;// 我比你长，怎么可能是你孩子呢？（好邪恶...)
+        }
+        return true;
     }
 private:
     bool m_empty;
