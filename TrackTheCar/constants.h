@@ -8,8 +8,13 @@
 #define HEADTAIL_DISTANCE 8.5 
 
 // for opencv functions
+// 用于寻找角点 cvgoodfeaturestotrack
 #define MCV_QUALITY_LEVEL 0.10
 #define MCV_MIN_DISTANCE 10
+// Hough变换找直线
+#define MCV_LINE_EXIST 10 // 线段是否存在的阀值
+#define MCV_MIN_LINE_LENGTH 20 // 最短线段的长度，短于它的将被忽略
+#define MCV_MAX_LINE_DISTANCE 40 // 线段间隔最大值，小于它，线段将被连在一起??
 
 // for route helper functions
 #define DISTANCE_ERROR 30 //当距离小于等于distance_error像素时，可认为为0

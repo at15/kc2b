@@ -19,12 +19,7 @@ CAboutDlg::CAboutDlg() : CDialogEx(CAboutDlg::IDD)
 }
 
 
-
-
-
 // CTrackTheCarDlg ¶Ô»°¿ò
-
-
 
 
 CTrackTheCarDlg::CTrackTheCarDlg(CWnd* pParent /*=NULL*/)

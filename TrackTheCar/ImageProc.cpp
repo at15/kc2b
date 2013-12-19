@@ -175,8 +175,12 @@ CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold
     return blue_p;
 }
 
-void CImageProc::FindLines(){
-    // 还是tm找直线吧，角点太不靠谱了有木有
+void CImageProc::FindLines(IplImage* binary_image){
+    CvMemStorage* storage = cvCreateMemStorage(); //创建一片内存区域存储线段数据
+    CvSeq* lines = cvHoughLines2(binary_image, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 
+        MCV_LINE_EXIST, MCV_MIN_LINE_LENGTH, MCV_MAX_LINE_DISTANCE);
+    // 去除重复的线段
+
 
 }
 
