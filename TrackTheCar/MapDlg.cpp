@@ -74,7 +74,12 @@ void CMapDlg::SetMainFrame(IplImage* pSrc){
 
 void CMapDlg::map_process(){
      CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    // get the binary and then use the thin
+     // check if we have transformed the image
+     if(!global_configs->IsTransfromSet()){
+         AfxMessageBox(L"请先设置地图变形");
+         return;
+     }
+     // get the binary and then use the thin
     CImageProc proc;
     IplImage* grey = proc.GetGrey(m_map_input.GetCurrentFrame());
     // add true get the different type of binary image.... 

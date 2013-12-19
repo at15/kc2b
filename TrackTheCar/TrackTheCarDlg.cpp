@@ -253,6 +253,7 @@ void CTrackTheCarDlg::OnConfigTransform()
     m_dlg_transform.DoModal();
     m_main_input.Pause(false);
     ShowConfig();
+    process_input(&m_main_input);
 }
 
 void CTrackTheCarDlg::OnConfigMap()
