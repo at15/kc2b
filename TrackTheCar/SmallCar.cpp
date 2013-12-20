@@ -29,8 +29,28 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
     return true;
 }
 
-bool GetCarInfo(){
+bool CSmallCar::GetCarInfo(CarInfo& info){
+    CvPoint head,tail,core;
+    IplImage* t = m_camera->GetCurrentFrame();
 
+    head = m_proc.GetRedCore(t,m_config->GetThreshold());
+    tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
+    // 没有找到小车
+    if(head.x < 0 || head.y <0 || tail.x < 0 || tail.y < 0 ){
+        return false;
+    }
+
+    core = cvPoint((head.x+tail.x)/2,(head.y+tail.y)/2);
+
+    double head_tail_dist = m_route.Distance(m_head,m_tail);
+    int car_length = head_tail_dist / HEADTAIL_DISTANCE * CAR_LENGTH;
+
+    info.head = head;
+    info.tail = tail;
+    info.core = core;
+    info.length = car_length;
+
+    return true;
 }
 
 bool CSmallCar::StartCar(){

@@ -39,6 +39,13 @@ public:
     void SetLineDistanceError(double e){m_line_distance_error = e;}
     double GetLineDistanceError(){return m_line_distance_error;}
 
+    bool IsMapLineSet(){return m_bmap_line_set;}
+    void SetMapLine(const std::vector<CLine>& lines){
+        m_bmap_line_set = true;       
+        m_map_line = lines;
+    }
+    std::vector<CLine> GetMapLine();
+
     // the threshold for red and blue, to get the map corner and the car position
     void SetThreshold(std::vector<int> threshold);
     std::vector<int> GetThreshold();
@@ -77,6 +84,9 @@ private:
 
     // 去除重复直线时端点到线的距离
     double m_line_distance_error;
+    // 是否已生成地图线
+    bool m_bmap_line_set;
+    std::vector<CLine> m_map_line;
 
     // the threshold for the red and blue
     std::vector<int> m_threshold;

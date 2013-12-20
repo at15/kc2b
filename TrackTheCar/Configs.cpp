@@ -46,6 +46,7 @@ void CConfigs::RestConfig(){
     m_bmap_point_set = false;
     m_map_corners.clear();
     m_map_point.clear();
+    m_map_line.clear();
     m_threshold.clear();
     LoadDefaultSetting();
 }
@@ -76,5 +77,13 @@ std::vector<CvPoint2D32f> CConfigs::GetMapPoint(){
         throw logic_error("map point not set!");
     }else{
         return m_map_point;
+    }
+}
+
+vector<CLine> CConfigs::GetMapLine(){
+    if(m_map_line.empty()){
+        throw logic_error("map line not set!");
+    }else{
+        return m_map_line;
     }
 }

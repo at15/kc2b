@@ -7,6 +7,7 @@
 struct CarInfo{
     CvPoint head;
     CvPoint tail;
+    CvPoint core;
     double length;
 };
 
@@ -32,7 +33,6 @@ public:
         GO_FORWARD
     };
     bool Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);
-    CAR_ERROR GetCarInfo(CarInfo& info);
     bool StartCar();
     bool StopCar();
     int CalcCarLength();
@@ -40,6 +40,10 @@ public:
     FIND_POINT FindNextPoint(CvPoint* nex_point = NULL);
     MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error = DISTANCE_ERROR,
         int angle_error = ANGLE_ERROR);// move to destination point
+
+    // The new routine
+    bool Prepare(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);
+    bool GetCarInfo(CarInfo& info);
 private:
     bool init_success;
     CImageProc m_proc;
@@ -53,6 +57,7 @@ private:
 
     CvPoint m_head;
     CvPoint m_tail;
+    CvPoint m_current_car_pos; //the car's current pos
     double m_car_length;
 
     CarInfo m_car_info;
@@ -62,6 +67,6 @@ private:
 
     CCarControl m_car_control;
 
-    CvPoint m_current_car_pos; //the car's current pos
+    
     CvPoint m_next_point;//the point that the car is trying to move to
 };
