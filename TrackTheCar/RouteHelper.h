@@ -50,20 +50,25 @@ class CLine{
 public:
     CLine(){
         m_empty = true;
+        m_passed = false;
     }
     CLine(CvPoint* line){
         m_start = line[0];
         m_end = line[1];
         m_empty = false;
+        m_passed = false;
     }
     CLine(CvSeq* lines,int i){
         CvPoint* line = (CvPoint*) cvGetSeqElem(lines,i);
         m_start = line[0];
         m_end = line[1];
         m_empty = false;
+        m_passed = false;
     }
 public:
     bool isEmpty() const {return m_empty;} 
+    bool isPassed() const {return m_passed;}
+    void SetPassed() {m_passed = true;}
     // 获取线段的起点和终点
     CvPoint start() const {return m_start;} 
     CvPoint end() const {return m_end;} 
@@ -107,6 +112,7 @@ public:
     }
 private:
     bool m_empty;
+    bool m_passed;// 这条直线是否已经走过了
     CvPoint m_start;
     CvPoint m_end;
     double Distance(CvPoint src,CvPoint dst) const {

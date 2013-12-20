@@ -243,7 +243,7 @@ vector<CLine> CImageProc::SortLines(const std::vector<CLine>& o_lines,
             current_line.Swap();
         }
         // 用它的end去找下一条直线
-
+        // 或者让小车每次移动完一条直线之后再去找
 }
 
 void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners,
