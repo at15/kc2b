@@ -28,6 +28,7 @@ public:
     };
     enum MOVE_RESULT{
         REACH_POINT,
+        PASS_POINT,
         TURN_LEFT,
         TURN_RIGHT,
         GO_FORWARD

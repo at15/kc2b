@@ -177,40 +177,73 @@ CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold
 
 vector<CLine> CImageProc::FindLines(IplImage* binary_image,
     double line_distance_error /*= LINE_DISTANCE_ERROR */){
-    CvMemStorage* storage = cvCreateMemStorage(); //创建一片内存区域存储线段数据
-    // 使用Hough变换找到所有的直线
-    CvSeq* lines = cvHoughLines2(binary_image, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 
-        MCV_LINE_EXIST, MCV_MIN_LINE_LENGTH, MCV_MAX_LINE_DISTANCE);
-    // 去除重复的线段
-    int total_found = lines->total;
-    vector<CLine> all_lines;// 存储所有找到的直线
-    for(int i=0;i<total_found;i++){
-        all_lines.push_back(CLine(lines,i));
-    }
-    //return all_lines;// for debug ...
-    vector<CLine> final_lines;// 存储去除重复后的直线
-    for(int i=0;i<all_lines.size();i++){
-       CLine current = all_lines.at(i);
-       bool is_child = false;
-       for(int j=0;j<all_lines.size();j++){
-           if(i == j) continue;
-           if(current.IsChildLine(all_lines.at(j),line_distance_error)){
-               is_child = true;
-               break;
+        CvMemStorage* storage = cvCreateMemStorage(); //创建一片内存区域存储线段数据
+        // 使用Hough变换找到所有的直线
+        CvSeq* lines = cvHoughLines2(binary_image, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 
+            MCV_LINE_EXIST, MCV_MIN_LINE_LENGTH, MCV_MAX_LINE_DISTANCE);
+        // 去除重复的线段
+        int total_found = lines->total;
+        vector<CLine> all_lines;// 存储所有找到的直线
+        for(int i=0;i<total_found;i++){
+            all_lines.push_back(CLine(lines,i));
+        }
+        //return all_lines;// for debug ...
+        vector<CLine> final_lines;// 存储去除重复后的直线
+        for(int i=0;i<all_lines.size();i++){
+            CLine current = all_lines.at(i);
+            bool is_child = false;
+            for(int j=0;j<all_lines.size();j++){
+                if(i == j) continue;
+                if(current.IsChildLine(all_lines.at(j),line_distance_error)){
+                    is_child = true;
+                    break;
+                }
+            }
+            if(!is_child){
+                final_lines.push_back(current);
             }
         }
-       if(!is_child){
-           final_lines.push_back(current);
-        }
-    }
 
-    return final_lines;
+        return final_lines;
 }
+
 void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines){
     cvSetZero(pSrc);
     for(int i=0;i<v_lines.size();i++){
         cvLine(pSrc,v_lines.at(i).start(),v_lines.at(i).end(),cvScalar(255,0,0));
     }
+}
+
+// 指定起始点之后给线段排序
+vector<CLine> CImageProc::SortLines(const std::vector<CLine>& o_lines,
+    CvPoint car_head,CvPoint car_tail){
+
+        if(o_lines.empty()){
+            throw logic_error("can't sort empty vector<CLine>");
+        }
+
+        CvPoint start_piont;
+        start_piont.x = (car_head.x + car_tail.x)/2;
+        start_piont.y = (car_head.y + car_tail.y)/2;
+        // 先找到距离起始点最近的直线
+        double min_distance = o_lines.at(0).PointDist(start_piont);
+        int i_first_line = 0;
+        for(int i=0;i<o_lines.size();i++){
+            double dist = o_lines.at(i).PointDist(start_piont);
+            if(dist < min_distance){
+                min_distance = dist;
+                int i_first_line = i;
+            }
+        }
+
+        vector<CLine> sorted_lines;
+        CLine current_line = o_lines.at(i_first_line);
+        // 判断线段端点位置
+        if(current_line.StartDist(car_tail) > current_line.StartDist(car_head)){
+            current_line.Swap();
+        }
+        // 用它的end去找下一条直线
+
 }
 
 void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners,

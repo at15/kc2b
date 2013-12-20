@@ -77,6 +77,14 @@ public:
     double length() const {
         return Distance(m_start,m_end);
     } 
+    // 某点到线段起始点的距离
+    double StartDist(CvPoint point) const {
+        return Distance(m_start,point);
+    }
+    // 某点到线段终点的距离
+    double EndDist(CvPoint point) const {
+        return Distance(m_end,point);
+    }
     // 计算某点到该直线的距离
     double PointDist(CvPoint point) const {
         // 向量叉乘的模除以线段长

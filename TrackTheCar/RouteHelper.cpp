@@ -14,8 +14,9 @@ CRouteHelper::~CRouteHelper(void)
 double CRouteHelper::Distance(CvPoint src,CvPoint dst) //求两整数点距离，当距离小于等于distance_error像素时，可认为为0
 {
     double distance=sqrtl((src.x-dst.x)*(src.x-dst.x)+(src.y-dst.y)*(src.y-dst.y));
-    if(distance>DISTANCE_ERROR) return distance;
-    else return 0;
+    //if(distance>DISTANCE_ERROR) return distance;
+    //else return 0;
+    return distance;
 }
 
 double CRouteHelper::Angle(CvPoint src,CvPoint dst)//返回向量极坐标方向角，0～360度

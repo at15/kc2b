@@ -400,7 +400,7 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
         OnConfigThreshold();
         return;
     }
-    
+
 
 }
 
@@ -451,8 +451,9 @@ void CTrackTheCarDlg::CarProc(){
         CamProc();// cap a new frame
         if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
             AddToConsole(L"can't find the car pos!");
-            ExitCarProc(false);
-            //AfxMessageBox(L"找不到小车，把摄像头前障碍物移开后点确定！");
+            //ExitCarProc(false);
+            ExitCarProc(true);
+            AfxMessageBox(L"找不到小车");
             return;
         }
         re = m_car.Move2NextPoint(t_distance_e,t_angle_e);
@@ -493,6 +494,11 @@ void CTrackTheCarDlg::CarProc(){
             op = L"reach point";
             break;
                                     }
+        case CSmallCar::PASS_POINT:{
+            op = L"pass point";
+            break;
+                                   }
+
         }
 
         CString str;
@@ -502,7 +508,7 @@ void CTrackTheCarDlg::CarProc(){
             to.x,to.y);
         AddToConsole(str);
 
-    }while(re != CSmallCar::REACH_POINT);
+    }while(re != CSmallCar::REACH_POINT || re != CSmallCar::PASS_POINT);
 
     AddToConsole("reach point");
 
