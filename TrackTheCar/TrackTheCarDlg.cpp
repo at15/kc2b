@@ -442,7 +442,14 @@ void CTrackTheCarDlg::CarProc(){
     // 避免小车回头在Move2NextPoint里
     int c_same_op = 0;
     int c_error_modify = 0; // 自动修改过几次误差值
-    CSmallCar::MOVE_RESULT last_op = CSmallCar::REACH_POINT;// 上一次操作
+    // 用于记录上一次操作
+    CSmallCar::MOVE_RESULT last_op = CSmallCar::REACH_POINT;
+    /*
+    int c_same_pos;
+    CRouteHelper route;// 用于计算小车位置的变化
+    CvPoint last_car_pos;
+    last_car_pos.x = -1;
+    last_car_pos.y = -1;*/
 
     // the temp value for the small car distance
     int t_distance_e = global_configs->GetDistanceError();
@@ -451,14 +458,16 @@ void CTrackTheCarDlg::CarProc(){
     do{
 
         CamProc();// cap a new frame
+
         if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
             AddToConsole(L"can't find the car pos!");
-            //ExitCarProc(false);
             ExitCarProc(true);
             AfxMessageBox(L"找不到小车");
             return;
         }
+
         re = m_car.Move2NextPoint(t_distance_e,t_angle_e);
+
         if(re != last_op){
             c_same_op = 0;
             last_op = re;
@@ -482,6 +491,7 @@ void CTrackTheCarDlg::CarProc(){
             t_distance_e += ERROR_MODIFY_VALUE;
             c_error_modify++;
         }
+        // 输出操作结果
         switch(re){
         case CSmallCar::GO_FORWARD:{
             op = L"go forward";

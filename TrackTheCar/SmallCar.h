@@ -31,16 +31,30 @@ public:
         PASS_POINT,
         TURN_LEFT,
         TURN_RIGHT,
-        GO_FORWARD
+        GO_FORWARD,
+        CAR_STUCK// 车卡住了，需要加一下速
     };
     bool Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);
     bool StartCar();
     bool StopCar();
-    int CalcCarLength();
+    double GetCarLength();
     FIND_POINT GetCarPosEx(CvPoint* car_pos = NULL);
     FIND_POINT FindNextPoint(CvPoint* nex_point = NULL);
     MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error = DISTANCE_ERROR,
         int angle_error = ANGLE_ERROR);// move to destination point
+    // 判断车是不是卡住了
+    bool isCarStuck();
+    struct StuckInfo{
+        StuckInfo(){
+            empty = true;
+        }
+        bool empty;
+        CvPoint firstPoint;
+        int stuck_time;
+        int max_stuck_time;
+        double stuck_distance;// TODO:define them in the constants
+        // maybe it should be relative
+    }m_stuck_info;
 
     // The new routine
     bool Prepare(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);

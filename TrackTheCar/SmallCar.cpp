@@ -67,9 +67,9 @@ bool CSmallCar::StopCar(){
     return true;
 }
 
-int CSmallCar::CalcCarLength(){
+double CSmallCar::GetCarLength(){
     double head_tail_dist = m_route.Distance(m_head,m_tail);
-    int car_length = head_tail_dist / HEADTAIL_DISTANCE * CAR_LENGTH;
+    double car_length = head_tail_dist / HEADTAIL_DISTANCE * CAR_LENGTH;
     return car_length;
 }
 
@@ -118,6 +118,8 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
         double direction_target=m_route.Angle(m_current_car_pos,m_next_point);
         //小车中心到目标点的距离
         double distance=m_route.Distance(m_current_car_pos,m_next_point);
+        
+        // 判断车是不是卡住了
 
         // 达到目标
         if(distance <= distance_error) {
@@ -169,4 +171,20 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
             m_car_control.GoForward();// 应该会把头转回来
             return GO_FORWARD;
         }
+}
+
+bool CSmallCar::isCarStuck(){
+    if(m_stuck_info.empty){
+        // 初始化
+        m_stuck_info.firstPoint = m_current_car_pos;
+        m_stuck_info.stuck_distance = GetCarLength() * CAR_S_DISTANCE_ERROR_P;
+        m_stuck_info.empty = false;
+        return false;// 第一使用，肯定是没卡
+    }
+    // 判断是否卡住了
+    double dist = m_route.Distance(m_stuck_info.firstPoint,m_current_car_pos);
+    if(dist < m_stuck_info.stuck_distance){
+        // 距离小，卡住了+1
+        m_stuck_info.stuck_time++;
+    }
 }
