@@ -29,6 +29,10 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
     return true;
 }
 
+bool GetCarInfo(){
+
+}
+
 bool CSmallCar::StartCar(){
     if(FIND_POINT::FAIL == GetCarPosEx()){
         return false;
@@ -40,13 +44,6 @@ bool CSmallCar::StartCar(){
 bool CSmallCar::StopCar(){
     // stop the car
     m_car_control.Stop();
-    return true;
-}
-
-bool CSmallCar::GetCarPos(){
-    IplImage* t = m_camera->GetCurrentFrame();
-    m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
-    m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
     return true;
 }
 
