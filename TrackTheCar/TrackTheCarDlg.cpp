@@ -460,16 +460,19 @@ void CTrackTheCarDlg::CarProc(){
         if(re != last_op){
             c_same_op = 0;
             last_op = re;
-        }else if(re != CSmallCar::GO_FORWARD){
-            c_same_op++;// 可以一直向前
+        }else if((re != CSmallCar::GO_FORWARD) ||
+            (re != CSmallCar::REACH_POINT) ||
+            (re != CSmallCar::PASS_POINT)){
+            c_same_op++;// 可以一直向前,到达点，跳过点
         }
         if(MAX_ERROR_MODIFY_TIME < c_error_modify){
             // too much modify!
             CString str;
             str.Format(L"ERROR:too much modify! %d times",c_error_modify);
             AddToConsole(str);
+            //AfxMessageBox(L"自动修改次数过多！角点生成有误");
             ExitCarProc(true);
-            AfxMessageBox(L"自动修改次数过多！角点生成有误");
+            
         }
         if(MAX_OP_TIME < c_same_op){
             c_same_op = 0;
@@ -507,8 +510,10 @@ void CTrackTheCarDlg::CarProc(){
             from.x,from.y,
             to.x,to.y);
         AddToConsole(str);
+        if(re == CSmallCar::REACH_POINT) break;
+        if(re == CSmallCar::PASS_POINT) break;
 
-    }while(re != CSmallCar::REACH_POINT || re != CSmallCar::PASS_POINT);
+    }while(re != CSmallCar::REACH_POINT);
 
     AddToConsole("reach point");
 
