@@ -32,4 +32,6 @@ public:
     virtual void OnOK();
     virtual void OnCancel();
     afx_msg void OnBnClickedGoBack();
+    afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

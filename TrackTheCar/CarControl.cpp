@@ -45,24 +45,28 @@ void CCarControl::ClosePort(){
 }
 
 void CCarControl::GoLeft(){
+    if(!port_ready) return;
     m_last_op = kLeft;
     RunCar(kLeft);
     RunCar(kSFront);
 }
 
 void CCarControl::GoRight(){
+    if(!port_ready) return;
     m_last_op = kRight;
     RunCar(kRight);
     RunCar(kSFront);
 }
 
-// not achieved yet
+
 void CCarControl::GoBack(){
+    if(!port_ready) return;
     m_last_op = kBack;
     RunCar(kBack);
 }
 
 void CCarControl::Stop(){
+    if(!port_ready) return;
     m_last_op = kStop;
     RunCar(kStop);
 }
@@ -182,6 +186,8 @@ bool CCarControl::SetSpeed( int new_speed )
         return false;
     }
     m_speed = new_speed;
+    int t = m_speed;
+
 }
 
 bool CCarControl::SpeedUp()

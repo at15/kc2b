@@ -51,4 +51,5 @@ public:
     afx_msg void OnBnClickedMapLineGen();
     // 去除重复直线时允许的间距
     double m_line_distance_error;
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
 };

@@ -198,3 +198,19 @@ void CMapDlg::OnBnClickedMapLineGen()
 
 
 }
+
+
+BOOL CMapDlg::PreTranslateMessage(MSG* pMsg)
+{
+    /*
+    // TODO: 在此添加专用代码和/或调用基类
+    if(pMsg->message==WM_KEYDOWN)
+    {
+        if(pMsg->wParam==110)
+        {
+            AfxMessageBox(L"你按了n键");
+
+        }
+    }*/
+    return CDialogEx::PreTranslateMessage(pMsg);
+}

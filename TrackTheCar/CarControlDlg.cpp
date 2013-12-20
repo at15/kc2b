@@ -37,6 +37,7 @@ BEGIN_MESSAGE_MAP(CarControlDlg, CDialogEx)
     ON_BN_CLICKED(IDC_BUTTON3, &CarControlDlg::OnBnClickedLeft)
     ON_BN_CLICKED(IDC_BUTTON5, &CarControlDlg::OnBnClickedRight)
     ON_BN_CLICKED(IDC_BUTTON2, &CarControlDlg::OnBnClickedGoBack)
+    ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 
@@ -123,3 +124,47 @@ void CarControlDlg::OnCancel()
 }
 
 
+
+
+void CarControlDlg::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+    // TODO: 在此添加消息处理程序代码和/或调用默认值
+    CString str;
+    str.Format(L"你按了%d",nChar);
+    AfxMessageBox(str);
+    CDialogEx::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+
+BOOL CarControlDlg::PreTranslateMessage(MSG* pMsg)
+{
+    // TODO: 在此添加专用代码和/或调用基类
+    if(pMsg->message==WM_KEYDOWN)
+    {
+        switch(pMsg->wParam)
+        {
+        case  'W':
+            m_car_ctrl.GoForward();
+            break;
+        case  'A':
+            m_car_ctrl.GoLeft();
+            break;
+        case 'S':
+            m_car_ctrl.GoBack();
+            break;
+        case  'D':
+            m_car_ctrl.GoRight();
+            break;
+        case 'J':
+            m_car_ctrl.SpeedUp();
+            //m_car_ctrl.GoForward();
+            break;
+        case 'K':
+            m_car_ctrl.SpeedDown();
+            //m_car_ctrl.GoForward();
+            break;
+
+        }
+    }
+    return CDialogEx::PreTranslateMessage(pMsg);
+}
