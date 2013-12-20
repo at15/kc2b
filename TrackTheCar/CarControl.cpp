@@ -57,23 +57,15 @@ void CCarControl::GoRight(){
 
 // not achieved yet
 void CCarControl::GoBack(){
+    m_last_op = kBack;
+    RunCar(kBack);
 }
 
 void CCarControl::Stop(){
     m_last_op = kStop;
     RunCar(kStop);
 }
-/*
 
-The command string recived from PC has 6 bit(chars):
-Bit 0 is '$' as start bit
-Bit 1 is direction bit : forwad or backward
-Bit 2 is direction bit : left or right
-Bit 3 is angle value bit
-Bit 4 is speed value bit
-Bit 5 is change flag bit (record the changed iterm)
-Bit 6 is '#' :stop bit
-*/
 
 /*
 kSFront,  // 从停止开始前进
@@ -99,12 +91,24 @@ void CCarControl::GoForward(){
     RunCar(kSFront);
     m_last_op = kSFront;
 }
+/*
 
+The command string recived from PC has 6 bit(chars):
+Bit 0 is '$' as start bit
+Bit 1 is direction bit : forwad or backward
+Bit 2 is direction bit : left or right
+Bit 3 is angle value bit
+Bit 4 is speed value bit
+Bit 5 is change flag bit (record the changed iterm)
+Bit 6 is '#' :stop bit
+*/
 void CCarControl::RunCar(opcode op)
 {
     if(!port_ready) return;
 
     unsigned char* data;
+
+    bool t;
 
     switch (op) {
     case kSFront:
@@ -135,10 +139,17 @@ void CCarControl::RunCar(opcode op)
         data =(unsigned char*)"$01803#";
         m_port->WriteData(data, 7);
         break;
+    
+    case kBack:
+        data =(unsigned char*)"$10034#";// TODO:will this work?
+        t = m_port->WriteData(data, 7);
+        break;
+
     case kStop:
         data =(unsigned char*)"$00004#";
         m_port->WriteData(data, 7);
         break;
+
     case speedup:
         data =(unsigned char*)"$00094#";
         m_port->WriteData(data, 7);

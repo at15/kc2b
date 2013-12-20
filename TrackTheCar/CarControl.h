@@ -26,6 +26,7 @@ private:
 
         kLeft,    // 左转
         kRight,   // 右转
+        kBack,    // 后退
         kStop,    // 停止
         speedup,  // 加速
         slowdown, // 减速

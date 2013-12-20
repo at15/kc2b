@@ -20,7 +20,7 @@ IMPLEMENT_DYNAMIC(CarControlDlg, CDialogEx)
 
 CarControlDlg::~CarControlDlg()
 {
-    m_car_ctrl.ClosePort();
+    //m_car_ctrl.ClosePort();
 }
 
 void CarControlDlg::DoDataExchange(CDataExchange* pDX)
@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(CarControlDlg, CDialogEx)
     ON_BN_CLICKED(IDC_BUTTON1, &CarControlDlg::OnBnClickedForward)
     ON_BN_CLICKED(IDC_BUTTON3, &CarControlDlg::OnBnClickedLeft)
     ON_BN_CLICKED(IDC_BUTTON5, &CarControlDlg::OnBnClickedRight)
+    ON_BN_CLICKED(IDC_BUTTON2, &CarControlDlg::OnBnClickedGoBack)
 END_MESSAGE_MAP()
 
 
@@ -86,6 +87,12 @@ void CarControlDlg::OnBnClickedRight()
 }
 
 
+void CarControlDlg::OnBnClickedGoBack()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    m_car_ctrl.GoBack();
+}
+
 BOOL CarControlDlg::OnInitDialog()
 {
     CDialogEx::OnInitDialog();
@@ -114,3 +121,5 @@ void CarControlDlg::OnCancel()
 
     CDialogEx::OnCancel();
 }
+
+

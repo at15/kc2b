@@ -430,6 +430,7 @@ void CTrackTheCarDlg::CarProc(){
     CSmallCar::MOVE_RESULT re;
     CString op;
     CSmallCar::FIND_POINT pre = m_car.FindNextPoint(&to);
+    // 已经走完了！
     if(pre == CSmallCar::NO_MORE_POINT){
         AddToConsole("reach last point!");
         ExitCarProc(true);
@@ -437,7 +438,8 @@ void CTrackTheCarDlg::CarProc(){
         return;
     }
 
-    // the counters, to avoid the car stuck in one place
+    // 避免小车卡在一个地方
+    // 避免小车回头在Move2NextPoint里
     int c_same_op = 0;
     int c_error_modify = 0; // 自动修改过几次误差值
     CSmallCar::MOVE_RESULT last_op = CSmallCar::REACH_POINT;// 上一次操作
@@ -460,10 +462,10 @@ void CTrackTheCarDlg::CarProc(){
         if(re != last_op){
             c_same_op = 0;
             last_op = re;
-        }else if((re != CSmallCar::GO_FORWARD) ||
-            (re != CSmallCar::REACH_POINT) ||
-            (re != CSmallCar::PASS_POINT)){
-            c_same_op++;// 可以一直向前,到达点，跳过点
+        }else if((re == CSmallCar::TURN_LEFT) ||
+            (re == CSmallCar::TURN_RIGHT)){
+                // 如果一直在转弯就得准备允许扩大误差了
+                c_same_op++;
         }
         if(MAX_ERROR_MODIFY_TIME < c_error_modify){
             // too much modify!
