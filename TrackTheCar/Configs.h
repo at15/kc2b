@@ -35,6 +35,10 @@ public:
     }
     std::vector<CvPoint2D32f> GetMapPoint();
 
+    // 去除重复直线时端点到线的距离
+    void SetLineDistanceError(double e){m_line_distance_error = e;}
+    double GetLineDistanceError(){return m_line_distance_error;}
+
     // the threshold for red and blue, to get the map corner and the car position
     void SetThreshold(std::vector<int> threshold);
     std::vector<int> GetThreshold();
@@ -70,6 +74,9 @@ private:
     int m_mcv_min_distance;
     bool m_bmap_point_set;
     std::vector<CvPoint2D32f> m_map_point;
+
+    // 去除重复直线时端点到线的距离
+    double m_line_distance_error;
 
     // the threshold for the red and blue
     std::vector<int> m_threshold;

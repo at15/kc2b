@@ -16,6 +16,8 @@
 #define MCV_MIN_LINE_LENGTH 20 // 最短线段的长度，短于它的将被忽略
 #define MCV_MAX_LINE_DISTANCE 40 // 线段间隔最大值，小于它，线段将被连在一起??
 
+#define LINE_DISTANCE_ERROR 10 // 去除重复直线时允许的端点间距离,小于它被认为重复
+
 // for route helper functions
 #define DISTANCE_ERROR 30 //当距离小于等于distance_error像素时，可认为为0
 #define ANGLE_ERROR 20 // 当角度小于distance_error像素时，可认为是0

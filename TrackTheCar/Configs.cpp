@@ -30,6 +30,8 @@ void CConfigs::LoadDefaultSetting(){
     m_mcv_quality_level = MCV_QUALITY_LEVEL;
     m_mcv_min_distance = MCV_MIN_DISTANCE;
 
+    m_line_distance_error = LINE_DISTANCE_ERROR;
+
     // the com port for blue tooth
     m_com_num = 7;
 

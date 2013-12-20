@@ -175,8 +175,10 @@ CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold
     return blue_p;
 }
 
-vector<CLine> CImageProc::FindLines(IplImage* binary_image){
+vector<CLine> CImageProc::FindLines(IplImage* binary_image,
+    double line_distance_error /*= LINE_DISTANCE_ERROR */){
     CvMemStorage* storage = cvCreateMemStorage(); //创建一片内存区域存储线段数据
+    // 使用Hough变换找到所有的直线
     CvSeq* lines = cvHoughLines2(binary_image, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 
         MCV_LINE_EXIST, MCV_MIN_LINE_LENGTH, MCV_MAX_LINE_DISTANCE);
     // 去除重复的线段
@@ -187,12 +189,10 @@ vector<CLine> CImageProc::FindLines(IplImage* binary_image){
     }
     //return all_lines;// for debug ...
     vector<CLine> final_lines;// 存储去除重复后的直线
-    double line_distance_error = 10;// 线段距离小于它将被认为共线
     for(int i=0;i<all_lines.size();i++){
        CLine current = all_lines.at(i);
        bool is_child = false;
        for(int j=0;j<all_lines.size();j++){
-           // ！！！ 忘记了跳过自己。。。
            if(i == j) continue;
            if(current.IsChildLine(all_lines.at(j),line_distance_error)){
                is_child = true;

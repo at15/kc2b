@@ -49,4 +49,6 @@ private:
     bool map_point_gened;
 public:
     afx_msg void OnBnClickedMapLineGen();
+    // 去除重复直线时允许的间距
+    double m_line_distance_error;
 };

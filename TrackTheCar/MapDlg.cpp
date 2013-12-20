@@ -17,6 +17,7 @@ CMapDlg::CMapDlg(CWnd* pParent /*=NULL*/)
     , m_thin_iteration(0)
     , m_quality_level(0)
     , m_min_distance(0)
+    , m_line_distance_error(0)
 {
     map_gened = false;
     map_point_gened = false;
@@ -33,6 +34,7 @@ void CMapDlg::DoDataExchange(CDataExchange* pDX)
     DDX_Text(pDX, IDC_EDIT3, m_thin_iteration);
     DDX_Text(pDX, IDC_EDIT5, m_quality_level);
     DDX_Text(pDX, IDC_EDIT8, m_min_distance);
+    DDX_Text(pDX, IDC_EDIT9, m_line_distance_error);
 }
 
 
@@ -63,6 +65,7 @@ BOOL CMapDlg::OnInitDialog()
     m_thin_iteration = global_configs->GetThinIteration();
     m_quality_level = global_configs->GetQualityLevel();
     m_min_distance = global_configs->GetMinDistance();
+    m_line_distance_error = global_configs->GetLineDistanceError();
     UpdateData(FALSE);
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
@@ -100,6 +103,8 @@ void CMapDlg::OnBnClickedMapOpenImage()
     if(m_map_input.GetCurrentFrame()){
         m_map_input.UpdateFrame();
         map_process();
+        OnBnClickedMapPointGen();
+        OnBnClickedMapLineGen();
         return;
     }
 
@@ -124,6 +129,7 @@ void CMapDlg::OnBnClickedMapChange()
     }
     map_process();
     OnBnClickedMapPointGen();
+    OnBnClickedMapLineGen();
 }
 
 
@@ -165,6 +171,7 @@ void CMapDlg::OnBnClickedMapPointGen()
 
 void CMapDlg::OnBnClickedMapLineGen()
 {
+    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     // 生成地图线段
     CImageProc proc;
     // get the bin image form other control
@@ -177,8 +184,12 @@ void CMapDlg::OnBnClickedMapLineGen()
         AfxMessageBox(L"无法生成地图！");
         return;
     }
+    // get and set the configs in global
+    UpdateData();
+    global_configs->SetLineDistanceError(m_line_distance_error);
+
     IplImage* bin = m_map_thin.GetCurrentFrame();
-    vector<CLine> v_lines = proc.FindLines(bin);
+    vector<CLine> v_lines = proc.FindLines(bin,m_line_distance_error);
 
     // show it in the dialog
     m_map_line_gened.SetCurrentFrame(m_map_thin.GetCurrentFrame(),false);
