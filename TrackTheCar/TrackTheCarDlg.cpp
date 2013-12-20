@@ -466,6 +466,13 @@ void CTrackTheCarDlg::CarProc(){
             return;
         }
 
+        if(m_car.isCarStuck()){
+            CString str;
+            str.Format(L"car stuck at x=%d y=%d",from.x,from.y);
+            AddToConsole(str);
+            
+        }
+
         re = m_car.Move2NextPoint(t_distance_e,t_angle_e);
 
         if(re != last_op){

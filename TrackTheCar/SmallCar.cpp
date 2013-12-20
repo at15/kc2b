@@ -186,5 +186,10 @@ bool CSmallCar::isCarStuck(){
     if(dist < m_stuck_info.stuck_distance){
         // 距离小，卡住了+1
         m_stuck_info.stuck_time++;
+        if(m_stuck_info.stuck_time > m_stuck_info.max_stuck_time ) return true;
+    }else{
+        // 没有卡住
+        m_stuck_info.firstPoint = m_current_car_pos;
+        m_stuck_info.stuck_time = 0;
     }
 }

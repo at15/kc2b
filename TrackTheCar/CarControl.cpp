@@ -5,6 +5,7 @@ CCarControl::CCarControl(void)
 {
     port_ready = false;
     m_port = NULL;
+    m_speed = 3;// 初始速度是现在最慢的那个
 }
 
 CCarControl::~CCarControl(void)
@@ -107,26 +108,45 @@ void CCarControl::RunCar(opcode op)
     if(!port_ready) return;
 
     unsigned char* data;
-
-    bool t;
+    CString str;
 
     switch (op) {
     case kSFront:
-        data =(unsigned char*)"$00034#";
+        
+        str.Format(L"$000%d4#",m_speed);
+        data = (unsigned char*)EZ::CStrConv::utf162ansi(str.GetBuffer());
+        //data =(unsigned char*)"$00064#";
         m_port->WriteData(data, 7);
+        delete data;
+        data = NULL;
         break;
 
     case kLFront:
         data =(unsigned char*)"$01203#";
         m_port->WriteData(data, 7);
-        data =(unsigned char*)"$00034#";
+        //CString str;
+        str.Format(L"$000%d4#",m_speed);
+        data = (unsigned char*)EZ::CStrConv::utf162ansi(str.GetBuffer());
+        //data =(unsigned char*)"$00064#";
         m_port->WriteData(data, 7);
+        delete data;
+        data = NULL;
         break;
 
     case kRFront:
         data =(unsigned char*)"$01103#";
         m_port->WriteData(data, 7);
-        data =(unsigned char*)"$00134#";
+        //CString str;
+        str.Format(L"$001%d4#",m_speed);
+        data = (unsigned char*)EZ::CStrConv::utf162ansi(str.GetBuffer());
+        //data =(unsigned char*)"$00164#";
+        m_port->WriteData(data, 7);
+        delete data;
+        data = NULL;
+        break;
+
+    case kBack:
+        data =(unsigned char*)"$10001#";
         m_port->WriteData(data, 7);
         break;
 
@@ -139,24 +159,54 @@ void CCarControl::RunCar(opcode op)
         data =(unsigned char*)"$01803#";
         m_port->WriteData(data, 7);
         break;
-    
-    case kBack:
-        data =(unsigned char*)"$10034#";// TODO:will this work?
-        t = m_port->WriteData(data, 7);
-        break;
-
     case kStop:
         data =(unsigned char*)"$00004#";
         m_port->WriteData(data, 7);
         break;
-
+    /*
     case speedup:
         data =(unsigned char*)"$00094#";
-        m_port->WriteData(data, 7);
+        Port.WriteData(data, 7);
         break;
     case slowdown:
         data =(unsigned char*)"$00034#";
-        m_port->WriteData(data, 7);
+        Port.WriteData(data, 7);
         break;
+        */
+    }
+}
+
+bool CCarControl::SetSpeed( int new_speed )
+{
+    if(!IsValidSpeed(new_speed)){
+        return false;
+    }
+    m_speed = new_speed;
+}
+
+bool CCarControl::SpeedUp()
+{
+    if(IsValidSpeed(m_speed+1)){
+        SetSpeed(m_speed+1);
+        return true;
+    }
+    return false;
+}
+
+bool CCarControl::SpeedDown()
+{
+    if(IsValidSpeed(m_speed-1)){
+        SetSpeed(m_speed-1);
+        return true;
+    }
+    return false;
+}
+
+bool CCarControl::IsValidSpeed( int speed )
+{
+    if(speed >= 3 && speed <= 9){
+        return true;
+    }else{
+        return false;
     }
 }

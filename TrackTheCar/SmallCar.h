@@ -47,6 +47,7 @@ public:
     struct StuckInfo{
         StuckInfo(){
             empty = true;
+            max_stuck_time = CAR_S_MAX_TIME;
         }
         bool empty;
         CvPoint firstPoint;
