@@ -61,12 +61,16 @@ public:
 
     void cvThin( IplImage* src, IplImage* dst, int iterations=1);
 
+    // 使用线段的走法
     std::vector<CLine> FindLines(IplImage* binary_image,
         double line_distance_error = LINE_DISTANCE_ERROR);
     void DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines);
     std::vector<CLine> SortLines(const std::vector<CLine>& o_lines,
         CvPoint car_head,CvPoint car_tail);
+    // 根据c_point的位置找离他最近的直线，找到后把该直线的passed设为true
+    bool FindNearestLine(CLine& r_line,std::vector<CLine>& o_lines,CvPoint c_point);
 
+    // 使用角点的走法
     void FindMapPoints(IplImage* pSrc,std::vector<CvPoint2D32f>& v_corners,
         double qualityLevel=MCV_QUALITY_LEVEL,
         double minDistance=MCV_MIN_DISTANCE);

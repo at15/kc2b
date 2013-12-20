@@ -232,7 +232,7 @@ vector<CLine> CImageProc::SortLines(const std::vector<CLine>& o_lines,
             double dist = o_lines.at(i).PointDist(start_piont);
             if(dist < min_distance){
                 min_distance = dist;
-                int i_first_line = i;
+                i_first_line = i;
             }
         }
 
@@ -244,6 +244,32 @@ vector<CLine> CImageProc::SortLines(const std::vector<CLine>& o_lines,
         }
         // 用它的end去找下一条直线
         // 或者让小车每次移动完一条直线之后再去找
+}
+
+bool CImageProc::FindNearestLine(CLine& r_line,std::vector<CLine>& o_lines,CvPoint c_point){
+    if(o_lines.empty()){
+        throw logic_error("can't find line in empty vector<CLine>");
+    }
+
+    double min_distance = 10000; // 设定一个很大的值
+    int line_index = -1;
+    for(int i=0;i<o_lines.size();i++){
+        if(o_lines.at(i).isPassed()) continue;// 忽略已经走过的线
+        double dist = o_lines.at(i).PointDist(c_point);
+        if(dist < min_distance){
+            min_distance = dist;
+            line_index = i;
+        }
+    }
+
+    if(-1 == line_index){
+        // 没有找到最近的线
+        return false;
+    }else{
+        o_lines.at(line_index).SetPassed();
+        r_line = o_lines.at(line_index);
+        return true;
+    }
 }
 
 void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners,
