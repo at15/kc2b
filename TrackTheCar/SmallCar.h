@@ -11,8 +11,6 @@ public:
     CSmallCar(void);
     ~CSmallCar(void);
 public:
-    //bool Init(CCvPicCtrl* camera,IplImage* map,CConfigs* config);
-    bool Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D32f> map_point,CConfigs* config);
     bool Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);
 
     bool StartCar();

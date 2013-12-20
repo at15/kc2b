@@ -11,7 +11,8 @@ CSmallCar::~CSmallCar(void)
 {
 }
 
-bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D32f> map_point,CConfigs* config){
+
+bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
     // check if we can start the car, if we can, then lets go
     if(!m_car_control.Init(config->GetCOM())) return false;
 
@@ -20,30 +21,18 @@ bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,std::vector<CvPoint2D
 
     m_map_point.clear();
     m_pass_point.clear();
-    for(int i=0;i<map_point.size();i++){
-        m_map_point.push_back(cvPointFrom32f(map_point.at(i)));
+    for(int i=0;i<config->GetMapPoint().size();i++){
+        m_map_point.push_back(cvPointFrom32f(config->GetMapPoint().at(i)));
         m_pass_point.push_back(false);
     }
     m_config = config;
     return true;
 }
 
-bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
-    return Init(camera,output,config->GetMapPoint(),config);
-}
-
 bool CSmallCar::StartCar(){
     if(FIND_POINT::FAIL == GetCarPosEx()){
         return false;
     }
-    /* the new distance error is just too big to use
-    // calc the new distance error,this should avoid the points 
-    // that are "indiside the car"
-    int dist_e = CalcDistanceError();
-    if(dist_e > m_config->GetDistanceError()){
-        m_config->SetDistanceError(dist_e);
-    }
-    */
     return true;
 
 }

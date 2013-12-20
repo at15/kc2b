@@ -28,6 +28,10 @@ public:
     }
     double x(){return m_x;}
     double y() {return m_y;}
+    // 自己叉乘向量v2的数值（通过它的正负，若正，则转到v2逆时针）
+    double Cross(CVector v2){
+        return m_x * v2.y() - v2.x()*m_y;
+    }
     // 叉乘的模
     double CrossABS(CVector v2){
         // 二维向量叉乘的模 x1 * y2 - x2 * y1
@@ -99,6 +103,6 @@ private:
     CvPoint m_end;
     double Distance(CvPoint src,CvPoint dst) const {
         return sqrtl((src.x - dst.x)*(src.x - dst.x)
-            +(src.y-dst.y)*(src.y-dst.y));
+            + (src.y - dst.y)*(src.y - dst.y));
     }
 };
