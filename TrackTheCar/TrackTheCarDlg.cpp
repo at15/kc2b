@@ -470,7 +470,9 @@ void CTrackTheCarDlg::CarProc(){
             CString str;
             str.Format(L"car stuck at x=%d y=%d",from.x,from.y);
             AddToConsole(str);
-            
+            // 加速一下，然后再捕获
+            m_car.SpeedUp();
+            continue;
         }
 
         re = m_car.Move2NextPoint(t_distance_e,t_angle_e);

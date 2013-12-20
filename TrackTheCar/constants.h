@@ -31,3 +31,4 @@
 #define CAR_S_MAX_TIME  10// 在一个点附近卡了多少次之后就算卡住了
 #define CAR_S_DISTANCE_ERROR_P 0.1 // 离上一个点多近才算卡在这一点,
 // 0.1表示这个距离是车长的0.1
+#define CAR_S_SLEEP_TIME 20 // 加速后等待多少时间减速

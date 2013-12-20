@@ -36,6 +36,7 @@ public:
     };
     bool Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);
     bool StartCar();
+    bool SpeedUp();
     bool StopCar();
     double GetCarLength();
     FIND_POINT GetCarPosEx(CvPoint* car_pos = NULL);

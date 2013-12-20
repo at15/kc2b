@@ -58,12 +58,12 @@ void CCarControl::GoRight(){
     RunCar(kSFront);
 }
 
-
+/* 后退了就再也无法前进了，你妹
 void CCarControl::GoBack(){
     if(!port_ready) return;
     m_last_op = kBack;
     RunCar(kBack);
-}
+}*/
 
 void CCarControl::Stop(){
     if(!port_ready) return;
@@ -77,7 +77,13 @@ kSFront,  // 从停止开始前进
 kLFront,  // 从左转状态开始正向前进
 kRFront,  // 从右转状态开始正向前进
 */
-void CCarControl::GoForward(){
+void CCarControl::GoForward(bool change_direction /*= true*/){
+    if(!change_direction){
+        RunCar(kSFront);
+        m_last_op = kSFront;
+        return;
+    }
+
     if(kStop == m_last_op){
         RunCar(kSFront);
         m_last_op = kSFront;

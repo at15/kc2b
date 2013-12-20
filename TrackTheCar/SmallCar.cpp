@@ -61,6 +61,17 @@ bool CSmallCar::StartCar(){
 
 }
 
+bool CSmallCar::SpeedUp(){
+    if(!m_car_control.SpeedUp()){
+        return false;
+    }
+    // 不改变方向，只是为了加速
+    m_car_control.GoForward(false);
+    Sleep(CAR_S_SLEEP_TIME);// 让小车跑一会
+    m_car_control.SpeedDown();
+    m_car_control.GoForward(false);
+}
+
 bool CSmallCar::StopCar(){
     // stop the car
     m_car_control.Stop();
