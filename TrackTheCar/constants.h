@@ -19,8 +19,8 @@
 #define LINE_DISTANCE_ERROR 10 // 去除重复直线时允许的端点间距离,小于它被认为重复
 
 // for route helper functions
-#define DISTANCE_ERROR 30 //当距离小于等于distance_error像素时，可认为为0
-#define ANGLE_ERROR 20 // 当角度小于distance_error像素时，可认为是0
+#define DISTANCE_ERROR 10 //当距离小于等于distance_error像素时，可认为为0
+#define ANGLE_ERROR 10 // 当角度小于angle_error像素时，可认为是0
 
 // for control the car in MainDlg
 #define MAX_OP_TIME 20 // 小车单一操作最多的重复次数，超过它就会修改误差值
@@ -32,3 +32,6 @@
 #define CAR_S_DISTANCE_ERROR_P 0.1 // 离上一个点多近才算卡在这一点,
 // 0.1表示这个距离是车长的0.1
 #define CAR_S_SLEEP_TIME 20 // 加速后等待多少时间减速
+
+
+//#define USE_BACK
