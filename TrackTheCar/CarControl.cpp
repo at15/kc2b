@@ -49,6 +49,7 @@ void CCarControl::GoLeft(){
     //m_last_op = kLeft;
     //RunCar(kLeft);
     //RunCar(kSFront);
+    //RunCar(kSFront);
 }
 
 void CCarControl::GoRight(){
@@ -119,7 +120,7 @@ void CCarControl::RunCar(opcode op)
 
     unsigned char* data;
     CString str;
-
+    
     switch (op) {
     case kSFront:
         data =(unsigned char*)"$00001#";
