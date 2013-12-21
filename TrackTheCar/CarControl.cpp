@@ -6,6 +6,7 @@ CCarControl::CCarControl(void)
     port_ready = false;
     m_port = NULL;
     m_speed = 4;// 初始速度是现在最慢的那个
+    //m_last_op = kSFront;
 }
 
 CCarControl::~CCarControl(void)
@@ -26,7 +27,7 @@ bool CCarControl::Init(int com_num){
      
     if(m_port->InitPort(com_num)){
         port_ready = true;
-        m_last_op = kStop;
+        m_current_op = kStop;
 
         return true;
     }else{
@@ -46,7 +47,7 @@ void CCarControl::ClosePort(){
 
 void CCarControl::GoLeft(){
     if(!port_ready) return;
-    //m_last_op = kLeft;
+    //m_current_op = kLeft;
     //RunCar(kLeft);
     //RunCar(kSFront);
     //RunCar(kSFront);
@@ -54,7 +55,7 @@ void CCarControl::GoLeft(){
 
 void CCarControl::GoRight(){
     if(!port_ready) return;
-    m_last_op = kRight;
+    m_current_op = kRight;
     RunCar(kRight);
     RunCar(kSFront);
 }
@@ -62,13 +63,13 @@ void CCarControl::GoRight(){
 //退了就再也无法前进了，你妹
 void CCarControl::GoBack(){
     if(!port_ready) return;
-    m_last_op = kBack;
+    m_current_op = kBack;
     RunCar(kBack);
 }
 
 void CCarControl::Stop(){
     if(!port_ready) return;
-    m_last_op = kStop;
+    m_current_op = kStop;
     RunCar(kStop);
 }
 
@@ -81,27 +82,27 @@ kRFront,  // 从右转状态开始正向前进
 void CCarControl::GoForward(bool change_direction /*= true*/){
     if(!change_direction){
         RunCar(kSFront);
-        m_last_op = kSFront;
+        m_current_op = kSFront;
         return;
     }
 
-    if(kStop == m_last_op){
+    if(kStop == m_current_op){
         RunCar(kSFront);
-        m_last_op = kSFront;
+        m_current_op = kSFront;
         return;
     }
-    if(kLeft == m_last_op){
+    if(kLeft == m_current_op){
         RunCar(kLFront);
-        m_last_op = kLFront;
+        m_current_op = kLFront;
         return;
     }
-    if(kRight == m_last_op){
+    if(kRight == m_current_op){
         RunCar(kRFront);
-        m_last_op = kRFront;
+        m_current_op = kRFront;
         return;
     }
     RunCar(kSFront);
-    m_last_op = kSFront;
+    m_current_op = kSFront;
 }
 /*
 
@@ -117,7 +118,12 @@ Bit 6 is '#' :stop bit
 void CCarControl::RunCar(opcode op)
 {
     if(!port_ready) return;
-
+    /*
+    if(m_current_op == m_last_op && m_current_op != kSFront){
+        return;
+    }else{
+        m_last_op = m_current_op;
+    }*/
     unsigned char* data;
     CString str;
     

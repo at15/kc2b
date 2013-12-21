@@ -42,7 +42,7 @@ private:
         speedup,  // º”ÀŸ
         slowdown, // ºıÀŸ
     };
-    opcode m_this_op; // current op
+    opcode m_current_op; // current op
     opcode m_last_op; // store the last op
     /* ------------------------------------------------------------------------*/
     /**
