@@ -499,6 +499,7 @@ void CTrackTheCarDlg::CarProc(){
             t_distance_e += ERROR_MODIFY_VALUE;
             t_distance_e += ERROR_MODIFY_VALUE;
             c_error_modify++;
+            AddToConsole("modify");
         }
         // 输出操作结果
         switch(re){

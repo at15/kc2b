@@ -5,7 +5,7 @@ CCarControl::CCarControl(void)
 {
     port_ready = false;
     m_port = NULL;
-    m_speed = 3;// 初始速度是现在最慢的那个
+    m_speed = 4;// 初始速度是现在最慢的那个
 }
 
 CCarControl::~CCarControl(void)
@@ -46,9 +46,9 @@ void CCarControl::ClosePort(){
 
 void CCarControl::GoLeft(){
     if(!port_ready) return;
-    m_last_op = kLeft;
-    RunCar(kLeft);
-    RunCar(kSFront);
+    //m_last_op = kLeft;
+    //RunCar(kLeft);
+    //RunCar(kSFront);
 }
 
 void CCarControl::GoRight(){
