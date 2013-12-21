@@ -58,12 +58,12 @@ void CCarControl::GoRight(){
     RunCar(kSFront);
 }
 
-/* 后退了就再也无法前进了，你妹
+//退了就再也无法前进了，你妹
 void CCarControl::GoBack(){
     if(!port_ready) return;
     m_last_op = kBack;
     RunCar(kBack);
-}*/
+}
 
 void CCarControl::Stop(){
     if(!port_ready) return;
@@ -122,7 +122,8 @@ void CCarControl::RunCar(opcode op)
 
     switch (op) {
     case kSFront:
-        
+        data =(unsigned char*)"$00001#";
+        m_port->WriteData(data, 7);
         str.Format(L"$000%d4#",m_speed);
         data = (unsigned char*)EZ::CStrConv::utf162ansi(str.GetBuffer());
         //data =(unsigned char*)"$00064#";

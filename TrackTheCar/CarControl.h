@@ -12,7 +12,7 @@ public:
     // control the small car
     void GoLeft();
     void GoRight();
-    //void GoBack();
+    void GoBack();
     // 默认会把方向改到正前方，但调整速度时是不改方向的
     void GoForward(bool change_direction = true);
 
