@@ -190,6 +190,7 @@ void CMapDlg::OnBnClickedMapLineGen()
 
     IplImage* bin = m_map_thin.GetCurrentFrame();
     vector<CLine> v_lines = proc.FindLines(bin,m_line_distance_error);
+    global_configs->SetMapLine(v_lines);
 
     // show it in the dialog
     m_map_line_gened.SetCurrentFrame(m_map_thin.GetCurrentFrame(),false);

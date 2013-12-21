@@ -46,9 +46,9 @@ void CCarControl::ClosePort(){
 
 void CCarControl::GoLeft(){
     if(!port_ready) return;
-    //m_last_op = kLeft;
-    //RunCar(kLeft);
-    //RunCar(kSFront);
+    m_last_op = kLeft;
+    RunCar(kLeft);
+    RunCar(kSFront);
 }
 
 void CCarControl::GoRight(){
