@@ -190,11 +190,12 @@ void CMapDlg::OnBnClickedMapLineGen()
 
     IplImage* bin = m_map_thin.GetCurrentFrame();
     vector<CLine> v_lines = proc.FindLines(bin,m_line_distance_error);
+    vector<CLine> v_processed = proc.SortLines(v_lines,cvPoint(400,400),cvPoint(400,400));
     global_configs->SetMapLine(v_lines);
 
     // show it in the dialog
     m_map_line_gened.SetCurrentFrame(m_map_thin.GetCurrentFrame(),false);
-    proc.DrawLines(m_map_line_gened.GetCurrentFrame(),v_lines); 
+    proc.DrawLines(m_map_line_gened.GetCurrentFrame(),v_processed); 
     m_map_line_gened.UpdateFrame();
 
 

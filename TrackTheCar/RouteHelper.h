@@ -65,6 +65,12 @@ public:
         m_empty = false;
         m_passed = false;
     }
+    CLine(CvPoint start,CvPoint end){
+        m_start = start;
+        m_end = end;
+        m_empty = false;
+        m_passed = false;
+    }
 public:
     bool isEmpty() const {return m_empty;} 
     bool isPassed() const {return m_passed;}
@@ -112,13 +118,10 @@ public:
     }
     // return the index of the nearest line from a vector of CLine
     static int FindNearestLine(CvPoint point,const std::vector<CLine>& v_lines);
+    static double Distance(CvPoint p1,CvPoint p2);
 private:
     bool m_empty;
     bool m_passed;// 这条直线是否已经走过了
     CvPoint m_start;
     CvPoint m_end;
-    double Distance(CvPoint src,CvPoint dst) const {
-        return sqrtl((src.x - dst.x)*(src.x - dst.x)
-            + (src.y - dst.y)*(src.y - dst.y));
-    }
 };

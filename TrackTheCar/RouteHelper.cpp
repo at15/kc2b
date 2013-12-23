@@ -70,3 +70,10 @@ int CLine::FindNearestLine( CvPoint p,const vector<CLine>& v_lines )
      }
      return n;
 }
+
+double CLine::Distance( CvPoint p1,CvPoint p2 )
+{
+    // d^2 = (x1 - x2)^2 + (y1 - y2)^2
+    return sqrtl((p1.x - p2.x)*(p1.x - p2.x)
+        + (p1.y - p2.y)*(p1.y - p2.y));
+}

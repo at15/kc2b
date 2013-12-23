@@ -219,7 +219,8 @@ void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines){
 
 // Sort the lines with the given start point
 vector<CLine> CImageProc::SortLines(std::vector<CLine> o_lines,
-    CvPoint car_head,CvPoint car_tail){
+    CvPoint car_head,CvPoint car_tail,
+    double point_dist/* = LINE_POINT_DIST*/){
 
         if(o_lines.empty()){
             throw logic_error("can't sort empty vector<CLine>");
@@ -230,18 +231,10 @@ vector<CLine> CImageProc::SortLines(std::vector<CLine> o_lines,
         start_piont.y = (car_head.y + car_tail.y)/2;
 
         // find the first line, which is nearest to the start point
-        double min_distance = o_lines.at(0).PointDist(start_piont);
-        int i_first_line = 0;
-        for(int i=0;i<o_lines.size();i++){
-            double dist = o_lines.at(i).PointDist(start_piont);
-            if(dist < min_distance){
-                min_distance = dist;
-                i_first_line = i;
-            }
-        }
+        int i_first_line = CLine::FindNearestLine(start_piont,o_lines);
 
         vector<CLine> sorted_lines;
-        CLine current_line;
+        CLine current_line,next_line;
         current_line = o_lines.at(i_first_line);
         // make sure the start of the line is closer to the car's tail
         if(current_line.StartDist(car_tail) > current_line.StartDist(car_head)){
@@ -251,10 +244,27 @@ vector<CLine> CImageProc::SortLines(std::vector<CLine> o_lines,
         o_lines.erase(o_lines.begin()+i_first_line,o_lines.begin()+i_first_line+1);
 
         // keep finding all the lines
-        //min_distance = 
-        //for(int i=0;i<o_lines.size();i++){
-        //    if()
-        //}
+        for(int i=0;i<o_lines.size();i++){
+            int j = CLine::FindNearestLine(current_line.end(),o_lines);
+            // The closer point should be the start point
+            if(o_lines.at(j).StartDist(current_line.end()) >
+                o_lines.at(j).EndDist(current_line.end())){
+                    o_lines.at(j).Swap();
+            }
+            // if the end of line1 and start of line2 is close enough, they become
+            // a same point, otherwise a new line generated
+            if(o_lines.at(j).StartDist(current_line.end()) < point_dist){
+                // o_line[j].Start() is close enough to current_line.end()
+                next_line = CLine(current_line.end(),o_lines.at(j).end());
+            }else{
+                next_line = o_lines.at(j);
+                // add an extra line
+                sorted_lines.push_back(CLine(current_line.end(),next_line.start()));
+            }
+            sorted_lines.push_back(next_line);
+            o_lines.erase(o_lines.begin()+j,o_lines.begin()+j+1);
+        }
+        return sorted_lines;
 }
 
 bool CImageProc::FindNearestLine(CLine& r_line,std::vector<CLine>& o_lines,CvPoint c_point){

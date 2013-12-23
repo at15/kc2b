@@ -59,7 +59,7 @@ bool Prepare(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
 }*/
 
 bool CSmallCar::StartCar(){
-    if(FIND_POINT::FAIL == GetCarPosEx()){
+    if(FAIL == GetCarPosEx()){
         return false;
     }
     return true;
@@ -94,14 +94,14 @@ CSmallCar::FIND_POINT CSmallCar::GetCarPosEx(CvPoint* car_pos /*= NULL*/){
     m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
     if(m_head.x < 0 || m_head.y <0 || m_tail.x < 0 || m_tail.y < 0 ){
         //throw logic_error("can't find car position");
-        return FIND_POINT::FAIL;
+        return FAIL;
     }
     CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2);
     m_current_car_pos = carPos;
     if(car_pos){
         *car_pos = carPos;
     }
-    return FIND_POINT::OK;
+    return OK;
 }
 
 CSmallCar::FIND_POINT CSmallCar::FindNextPoint(CvPoint* nex_point /*= NULL*/){
