@@ -217,3 +217,7 @@ bool CSmallCar::isCarStuck(){
     }
 }
 
+// The new routine
+bool CSmallCar::GetNewLines(){
+
+}

@@ -61,6 +61,7 @@ public:
     /* The new routine */
     bool Prepare(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);
     bool GetCarInfo(CarInfo& info);
+    bool IsEnd();// if the car has reached the end
 
 private:
     bool init_success;
@@ -90,4 +91,8 @@ private:
 
     /* The new routine */
     CarInfo m_car_info;
+    bool m_reach_end;
+    // get the new lines, and the end of one line will be the start of the next
+    bool GetNewLines(const std::vector<CLine>& );
+    std::vector<CLine> m_map_line;
 };
