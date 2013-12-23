@@ -1,4 +1,91 @@
 #pragma once
+// The config item that store one int
+class CConfigInt{
+public:
+    bool IsSet(){return m_set;}
+    int Get(){return m_value;}
+    void Set(int value){m_value = value}
+private:
+    int m_value;
+    bool m_set;
+};
+
+// Store the vector
+template class<T>
+class CConfigVector{
+public:
+    CConfigVector(){
+        m_set = false;
+        m_value.clear();
+    }
+    // get a copy of all value
+    std::vector<T> Get(){
+        if(!m_set && b_throw){
+            throw std::logic_error("vector is not set!");
+        }else if(!m_set){
+            m_value.clear();
+        }
+        return m_value;
+    }
+    bool Get(std::vector<T>& v){
+        if(!m_set){
+            return false;
+        }
+        v = m_value;
+        return true;
+    }
+    Set(std::vector<T> value){
+        m_value = value;
+        m_set = true;
+    }
+    // get a pointer to the value
+    const std::vector<T>* GetPtr(){
+        if(!m_set){
+            return NULL;
+        }
+        return &m_value;
+    }
+    // get a copy of one specific item
+    bool GetItem(int index,T& item){
+        if(!m_set){
+            return false;
+        }
+        if((index < 0) || (index-1 > m_value.size)){
+            return false;
+        }
+        return m_value.at(index);
+    }
+
+private:
+    std::vector<T> m_value;
+    bool m_set;
+    bool b_throw;
+};
+
+// global configs
+class CGConfigs{
+public:
+    // Bluetooth com port
+    CConfigInt com_port;
+
+    // The error for the route
+    CConfigInt route_distance_error;
+    CConfigInt route_angle_error;
+
+    // The four corner of the map,used for transform the image
+    CConfigVector<int> map_corner;
+    // The size of the corner,the shouldn't be in the transformed map
+    CConfigInt map_corner_size;
+
+    // Get the binary for map and thin it to get points or lines
+    CConfigInt map_threshold;
+    CConfigInt map_thin_iteration;
+
+    // The lines for the car?
+
+
+};
+
 class CConfigs
 {
 public:

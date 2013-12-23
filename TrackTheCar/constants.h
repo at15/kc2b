@@ -6,6 +6,7 @@
 // the param for the little car
 #define CAR_LENGTH 15
 #define HEADTAIL_DISTANCE 8.5 
+#define CAR_SPEED 4
 
 // for opencv functions
 // ”√”⁄—∞’“Ω«µ„ cvgoodfeaturestotrack

@@ -58,9 +58,10 @@ public:
         // maybe it should be relative
     }m_stuck_info;
 
-    // The new routine
+    /* The new routine */
     bool Prepare(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);
     bool GetCarInfo(CarInfo& info);
+
 private:
     bool init_success;
     CImageProc m_proc;
@@ -77,7 +78,7 @@ private:
     CvPoint m_current_car_pos; //the car's current pos
     double m_car_length;
 
-    CarInfo m_car_info;
+    
 
     std::vector<CvPoint> m_map_point;
     std::vector<bool> m_pass_point;
@@ -86,4 +87,7 @@ private:
 
     
     CvPoint m_next_point;//the point that the car is trying to move to
+
+    /* The new routine */
+    CarInfo m_car_info;
 };

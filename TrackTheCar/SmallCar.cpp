@@ -35,7 +35,7 @@ bool CSmallCar::GetCarInfo(CarInfo& info){
 
     head = m_proc.GetRedCore(t,m_config->GetThreshold());
     tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
-    // 没有找到小车
+    // can't find the car
     if(head.x < 0 || head.y <0 || tail.x < 0 || tail.y < 0 ){
         return false;
     }
@@ -52,6 +52,11 @@ bool CSmallCar::GetCarInfo(CarInfo& info){
 
     return true;
 }
+
+/* kind of useless... i have to say, just the same as Init
+bool Prepare(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
+
+}*/
 
 bool CSmallCar::StartCar(){
     if(FIND_POINT::FAIL == GetCarPosEx()){
@@ -73,7 +78,6 @@ bool CSmallCar::SpeedUp(){
 }
 
 bool CSmallCar::StopCar(){
-    // stop the car
     m_car_control.Stop();
     return true;
 }
@@ -212,3 +216,4 @@ bool CSmallCar::isCarStuck(){
         return false;
     }
 }
+
