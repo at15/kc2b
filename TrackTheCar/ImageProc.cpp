@@ -244,13 +244,15 @@ vector<CLine> CImageProc::SortLines(std::vector<CLine> o_lines,
         o_lines.erase(o_lines.begin()+i_first_line,o_lines.begin()+i_first_line+1);
 
         // keep finding all the lines
-        for(int i=0;i<o_lines.size();i++){
+        //for(int i=0;i<o_lines.size();i++){
+        while(!o_lines.empty()){
             int j = CLine::FindNearestLine(current_line.end(),o_lines);
             // The closer point should be the start point
             if(o_lines.at(j).StartDist(current_line.end()) >
                 o_lines.at(j).EndDist(current_line.end())){
                     o_lines.at(j).Swap();
             }
+            
             // if the end of line1 and start of line2 is close enough, they become
             // a same point, otherwise a new line generated
             if(o_lines.at(j).StartDist(current_line.end()) < point_dist){
@@ -261,8 +263,10 @@ vector<CLine> CImageProc::SortLines(std::vector<CLine> o_lines,
                 // add an extra line
                 sorted_lines.push_back(CLine(current_line.end(),next_line.start()));
             }
+            //next_line = o_lines.at(j); // for debug
             sorted_lines.push_back(next_line);
             o_lines.erase(o_lines.begin()+j,o_lines.begin()+j+1);
+            current_line = next_line;
         }
         return sorted_lines;
 }
