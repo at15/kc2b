@@ -1,14 +1,24 @@
 #pragma once
-// The config item that store one int
-class CConfigInt{
+// The config item that store int or bool
+template class<T>
+class CConfigItem{
 public:
+    CConfigItem(){
+        m_set = false;
+    }
     bool IsSet(){return m_set;}
-    int Get(){return m_value;}
-    void Set(int value){m_value = value}
+    T Get(){return m_value;}
+    void Set(T value){
+        m_set = true;
+        m_value = value;
+    }
 private:
-    int m_value;
+    T m_value;
     bool m_set;
 };
+
+typedef CConfigInt CConfigItem<int>
+typedef CConfigBool CConfigItem<bool>
 
 // Store the vector
 template class<T>
