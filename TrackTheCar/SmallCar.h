@@ -93,6 +93,6 @@ private:
     CarInfo m_car_info;
     bool m_reach_end;
     // get the new lines, and the end of one line will be the start of the next
-    bool GetNewLines(const std::vector<CLine>& );
+    bool GetNewLines(const std::vector<CLine>& o_lines);
     std::vector<CLine> m_map_line;
 };

@@ -110,6 +110,8 @@ public:
         }
         return true;
     }
+    // return the index of the nearest line from a vector of CLine
+    static int FindNearestLine(CvPoint point,const std::vector<CLine>& v_lines);
 private:
     bool m_empty;
     bool m_passed;// 这条直线是否已经走过了

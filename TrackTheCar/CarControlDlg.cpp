@@ -91,7 +91,7 @@ void CarControlDlg::OnBnClickedRight()
 void CarControlDlg::OnBnClickedGoBack()
 {
     // TODO: 在此添加控件通知处理程序代码
-    //m_car_ctrl.GoBack();
+    m_car_ctrl.GoBack();
 }
 
 BOOL CarControlDlg::OnInitDialog()
@@ -150,7 +150,7 @@ BOOL CarControlDlg::PreTranslateMessage(MSG* pMsg)
             m_car_ctrl.GoLeft();
             break;
         case 'S':
-            //m_car_ctrl.GoBack();
+            m_car_ctrl.GoBack();
             break;
         case  'D':
             m_car_ctrl.GoRight();

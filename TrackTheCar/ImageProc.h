@@ -65,7 +65,7 @@ public:
     std::vector<CLine> FindLines(IplImage* binary_image,
         double line_distance_error = LINE_DISTANCE_ERROR);
     void DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines);
-    std::vector<CLine> SortLines(const std::vector<CLine>& o_lines,
+    std::vector<CLine> SortLines(std::vector<CLine> o_lines,
         CvPoint car_head,CvPoint car_tail);
     // 根据c_point的位置找离他最近的直线，找到后把该直线的passed设为true
     bool FindNearestLine(CLine& r_line,std::vector<CLine>& o_lines,CvPoint c_point);

@@ -181,14 +181,17 @@ vector<CLine> CImageProc::FindLines(IplImage* binary_image,
         // 使用Hough变换找到所有的直线
         CvSeq* lines = cvHoughLines2(binary_image, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 
             MCV_LINE_EXIST, MCV_MIN_LINE_LENGTH, MCV_MAX_LINE_DISTANCE);
-        // 去除重复的线段
+
+        // remove the redundant lines
         int total_found = lines->total;
-        vector<CLine> all_lines;// 存储所有找到的直线
+        // store all the lines found by cvHoughLines2 in a CLine vector
+        vector<CLine> all_lines;
         for(int i=0;i<total_found;i++){
             all_lines.push_back(CLine(lines,i));
         }
-        //return all_lines;// for debug ...
-        vector<CLine> final_lines;// 存储去除重复后的直线
+        // return all_lines;// for debug ...
+        // store the cleaned up lines
+        vector<CLine> final_lines;
         for(int i=0;i<all_lines.size();i++){
             CLine current = all_lines.at(i);
             bool is_child = false;
@@ -214,8 +217,8 @@ void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines){
     }
 }
 
-// 指定起始点之后给线段排序
-vector<CLine> CImageProc::SortLines(const std::vector<CLine>& o_lines,
+// Sort the lines with the given start point
+vector<CLine> CImageProc::SortLines(std::vector<CLine> o_lines,
     CvPoint car_head,CvPoint car_tail){
 
         if(o_lines.empty()){
@@ -225,7 +228,8 @@ vector<CLine> CImageProc::SortLines(const std::vector<CLine>& o_lines,
         CvPoint start_piont;
         start_piont.x = (car_head.x + car_tail.x)/2;
         start_piont.y = (car_head.y + car_tail.y)/2;
-        // 先找到距离起始点最近的直线
+
+        // find the first line, which is nearest to the start point
         double min_distance = o_lines.at(0).PointDist(start_piont);
         int i_first_line = 0;
         for(int i=0;i<o_lines.size();i++){
@@ -237,13 +241,20 @@ vector<CLine> CImageProc::SortLines(const std::vector<CLine>& o_lines,
         }
 
         vector<CLine> sorted_lines;
-        CLine current_line = o_lines.at(i_first_line);
-        // 判断线段端点位置
+        CLine current_line;
+        current_line = o_lines.at(i_first_line);
+        // make sure the start of the line is closer to the car's tail
         if(current_line.StartDist(car_tail) > current_line.StartDist(car_head)){
             current_line.Swap();
         }
-        // 用它的end去找下一条直线
-        // 或者让小车每次移动完一条直线之后再去找
+        sorted_lines.push_back(current_line);
+        o_lines.erase(o_lines.begin()+i_first_line,o_lines.begin()+i_first_line+1);
+
+        // keep finding all the lines
+        //min_distance = 
+        //for(int i=0;i<o_lines.size();i++){
+        //    if()
+        //}
 }
 
 bool CImageProc::FindNearestLine(CLine& r_line,std::vector<CLine>& o_lines,CvPoint c_point){

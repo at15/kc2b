@@ -15,10 +15,11 @@ public:
     void GoBack();
     // 默认会把方向改到正前方，但调整速度时是不改方向的
     void GoForward(bool change_direction = true);
+    /*
     void Go();// just go,don't change direction, may go back
     void GoForward();// go forward, will stop go back, but won't change direction
     void GoStraightForward();// go straight forward,stop go back and turn left or turn right
-
+    */
     void Stop();
 
     // 只是设置速度，在下次指令时才会生效。

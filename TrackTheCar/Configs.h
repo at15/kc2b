@@ -1,6 +1,6 @@
 #pragma once
 // The config item that store int or bool
-template class<T>
+template<class T>
 class CConfigItem{
 public:
     CConfigItem(){
@@ -17,11 +17,11 @@ private:
     bool m_set;
 };
 
-typedef CConfigInt CConfigItem<int>
-typedef CConfigBool CConfigItem<bool>
+typedef CConfigItem<int> CConfigInt;
+typedef CConfigItem<bool> CConfigBool;
 
 // Store the vector
-template class<T>
+template<class T>
 class CConfigVector{
 public:
     CConfigVector(){
@@ -44,7 +44,7 @@ public:
         v = m_value;
         return true;
     }
-    Set(std::vector<T> value){
+    void Set(std::vector<T> value){
         m_value = value;
         m_set = true;
     }

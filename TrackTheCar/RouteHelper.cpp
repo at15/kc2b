@@ -56,3 +56,17 @@ CvPoint CRouteHelper::FindnextPoint(CvPoint current,vector<CvPoint> map_points,v
     return map_points.at(nearest_num);
 }
 
+
+int CLine::FindNearestLine( CvPoint p,const vector<CLine>& v_lines )
+{
+     double min_distance = v_lines.at(0).PointDist(p);
+     int n = 0;
+     for(int i=1;i<v_lines.size();i++){
+         double dist = v_lines.at(i).PointDist(p);
+         if(dist < min_distance){
+             min_distance = dist;
+             n = i;
+         }
+     }
+     return n;
+}
