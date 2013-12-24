@@ -73,27 +73,27 @@ public:
 
     // transform the image in the main input
     void process_input(CCvPicCtrl* pic_ctrl);
+    
+    // the console to show messages 
+    CEdit m_main_console;
+    // func for add message to the console
+    void AddToConsole(const CString& str);
+    void AddToConsole(const char* str);
+    // save the console messages to log file
+    CStdioFile m_log_file;
+    CFileException m_log_error;
+    
+    // show all the config in the list ctrl
+    CListCtrl m_list_config;
+    void ShowConfig();
+    afx_msg void OnRestConfig();
+
+public:
     afx_msg void OnCapPic();
     afx_msg void OnShowAbout();
     afx_msg void OnConfigThreshold();
     afx_msg void OnConfigTransform();
     afx_msg void OnMainOpenImage();
-
-    // the console to show messages like change the threshold and transform etc
-    CEdit m_main_console;
-    // func for add message to the console
-    void AddToConsole(const CString& str);
-    void AddToConsole(const char* str);
-    // save the console to log file
-    CStdioFile m_log_file;
-    CFileException m_log_error;
-
-    // show the config in list
-    void ShowConfig();
-
-private:
-    bool use_config;
-public:
     afx_msg void OnConfigMap();
     afx_msg void OnCenCorner();
     afx_msg void OnCarConfig();
@@ -101,14 +101,12 @@ public:
     afx_msg void OnTimer(UINT_PTR nIDEvent);
 
 public:
+    // The functions which are called in timer
     void CamProc();
     void CarProc();
     void ExitCarProc(bool forever = true);// 出现问题,退出处理函数。和是否永远退出
 public:
     afx_msg void OnBnClickedStartCar();
-    // show all the config in the list ctrl
-    CListCtrl m_list_config;
     virtual void PostNcDestroy();
-    afx_msg void OnRestConfig();
     afx_msg void OnBnClickedPrepareCar();
 };
