@@ -217,36 +217,3 @@ bool CSmallCar::isCarStuck(){
     }
 }
 
-// The new routine
-bool CSmallCar::GetNewLines(const std::vector<CLine>& o_lines){
-     if(o_lines.empty()){
-            throw logic_error("can't sort empty vector<CLine>");
-        }
-
-        CvPoint start_piont;
-        CvPoint car_head = m_car_info.head;
-        CvPoint car_tail = m_car_info.tail;
-
-        start_piont.x = (car_head.x + car_tail.x)/2;
-        start_piont.y = (car_head.y + car_tail.y)/2;
-
-        // find the first line
-        double min_distance = o_lines.at(0).PointDist(start_piont);
-        int i_first_line = 0;
-        for(int i=0;i<o_lines.size();i++){
-            double dist = o_lines.at(i).PointDist(start_piont);
-            if(dist < min_distance){
-                min_distance = dist;
-                i_first_line = i;
-            }
-        }
-
-        vector<CLine> sorted_lines;
-        CLine current_line = o_lines.at(i_first_line);
-        // 判断线段端点位置
-        if(current_line.StartDist(car_tail) > current_line.StartDist(car_head)){
-            current_line.Swap();
-        }
-        // 用它的end去找下一条直线
-        // 或者让小车每次移动完一条直线之后再去找
-}
