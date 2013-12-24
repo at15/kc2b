@@ -140,35 +140,6 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
         }
 }
 
-bool CSmallCar::IsCarStuck(){
-    if(m_stuck_info.empty){
-        // 初始化
-        m_stuck_info.firstPoint = m_current_car_pos;
-        m_stuck_info.stuck_distance = GetCarLength() * CAR_S_DISTANCE_ERROR_P;
-        m_stuck_info.empty = false;
-        return false;// 第一使用，肯定是没卡
-    }
-
-    // 判断是否卡住了
-    double dist = m_route.Distance(m_stuck_info.firstPoint,m_current_car_pos);
-    if(dist < m_stuck_info.stuck_distance){
-        // 距离小，卡住了+1
-        m_stuck_info.stuck_time++;
-        // 卡够一定次数才算卡住
-        if(m_stuck_info.stuck_time > m_stuck_info.max_stuck_time ){
-            return true;
-        }else{
-            return false;// 卡的次数还不够多
-        }
-            
-    }else{
-        // 没有卡住
-        m_stuck_info.firstPoint = m_current_car_pos;
-        m_stuck_info.stuck_time = 0;
-        return false;
-    }
-}
-
 CSmallCar::MOVE_RESULT CSmallCar::CarProc()
 {
     // 1 determine what to do

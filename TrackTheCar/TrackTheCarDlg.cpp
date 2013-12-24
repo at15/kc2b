@@ -51,6 +51,7 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_WM_TIMER()
     ON_BN_CLICKED(IDC_BUTTON2, &CTrackTheCarDlg::OnBnClickedStartCar)
     ON_COMMAND(ID_32783, &CTrackTheCarDlg::OnRestConfig)
+    ON_BN_CLICKED(IDC_BUTTON3, &CTrackTheCarDlg::OnBnClickedPrepareCar)
 END_MESSAGE_MAP()
 
 
@@ -556,4 +557,12 @@ void CTrackTheCarDlg::OnRestConfig()
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     global_configs->RestConfig();
     ShowConfig();
+}
+
+
+void CTrackTheCarDlg::OnBnClickedPrepareCar()
+{
+    // TODO: Connect and find the car, and find the lines
+    CSmallCar::CAR_ERROR e;
+    e = m_car.Init();
 }

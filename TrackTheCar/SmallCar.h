@@ -34,11 +34,10 @@ public:
         TURN_LEFT,
         TURN_RIGHT,
         GO_FORWARD,
-        CAR_STUCK// 车卡住了，需要加一下速
+        CAR_STUCK// The car is stuck, need to speed up
     };
     CAR_ERROR Init(CCvPicCtrl* cam,CCvPicCtrl* o_map,CCvPicCtrl* o_car,CConfigs* config);
     bool StartCar();
-    bool IsCarStuck();
     MOVE_RESULT CarProc();
     bool SpeedUp();
     bool StopCar();
