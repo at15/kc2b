@@ -11,22 +11,16 @@ CSmallCar::~CSmallCar(void)
 {
 }
 
-
-bool CSmallCar::Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
-    // check if we can start the car, if we can, then lets go
-    if(!m_car_control.Init(config->GetCOM())) return false;
-
+CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CCvPicCtrl* output_map,CCvPicCtrl* output_car,CConfigs* config )
+{
+    // check if we can connect the car via bluetooth
+    if(!m_car_control.Init(config->GetCOM())) return CANT_CONNECT_CAR;
+    // check if we can find the car
+    if(!GetCarInfo(m_car_info)) return CANT_FIND_CAR;
     m_camera = camera;
-    m_output = output;
-
-    m_map_point.clear();
-    m_pass_point.clear();
-    for(int i=0;i<config->GetMapPoint().size();i++){
-        m_map_point.push_back(cvPointFrom32f(config->GetMapPoint().at(i)));
-        m_pass_point.push_back(false);
-    }
+    m_output_map = output_map;
     m_config = config;
-    return true;
+    return NO_CAR_ERROR;
 }
 
 bool CSmallCar::GetCarInfo(CarInfo& info){
@@ -53,26 +47,18 @@ bool CSmallCar::GetCarInfo(CarInfo& info){
     return true;
 }
 
-/* kind of useless... i have to say, just the same as Init
-bool Prepare(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config){
-
-}*/
-
 bool CSmallCar::StartCar(){
-    if(FAIL == GetCarPosEx()){
-        return false;
-    }
+    m_car_control.GoForward();
     return true;
-
 }
 
 bool CSmallCar::SpeedUp(){
     if(!m_car_control.SpeedUp()){
         return false;
     }
-    // 不改变方向，只是为了加速
+    // don't change the direction
     m_car_control.GoForward(false);
-    Sleep(CAR_S_SLEEP_TIME);// 让小车跑一会
+    Sleep(CAR_S_SLEEP_TIME);// just let the car run for a while
     m_car_control.SpeedDown();
     m_car_control.GoForward(false);
 }
@@ -80,40 +66,6 @@ bool CSmallCar::SpeedUp(){
 bool CSmallCar::StopCar(){
     m_car_control.Stop();
     return true;
-}
-
-double CSmallCar::GetCarLength(){
-    double head_tail_dist = m_route.Distance(m_head,m_tail);
-    double car_length = head_tail_dist / HEADTAIL_DISTANCE * CAR_LENGTH;
-    return car_length;
-}
-
-CSmallCar::FIND_POINT CSmallCar::GetCarPosEx(CvPoint* car_pos /*= NULL*/){
-    IplImage* t = m_camera->GetCurrentFrame();
-    m_head = m_proc.GetRedCore(t,m_config->GetThreshold());
-    m_tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
-    if(m_head.x < 0 || m_head.y <0 || m_tail.x < 0 || m_tail.y < 0 ){
-        //throw logic_error("can't find car position");
-        return FAIL;
-    }
-    CvPoint carPos = cvPoint((m_head.x+m_tail.x)/2,(m_head.y+m_tail.y)/2);
-    m_current_car_pos = carPos;
-    if(car_pos){
-        *car_pos = carPos;
-    }
-    return OK;
-}
-
-CSmallCar::FIND_POINT CSmallCar::FindNextPoint(CvPoint* nex_point /*= NULL*/){
-    try{
-        m_next_point = m_route.FindnextPoint(m_current_car_pos,m_map_point,m_pass_point);
-        if(nex_point){
-            *nex_point = m_next_point;
-        }
-        return FIND_POINT::OK;
-    }catch(logic_error e){
-        return FIND_POINT::NO_MORE_POINT;
-    }
 }
 
 CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE_ERROR*/,
@@ -188,7 +140,7 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
         }
 }
 
-bool CSmallCar::isCarStuck(){
+bool CSmallCar::IsCarStuck(){
     if(m_stuck_info.empty){
         // 初始化
         m_stuck_info.firstPoint = m_current_car_pos;
@@ -215,5 +167,12 @@ bool CSmallCar::isCarStuck(){
         m_stuck_info.stuck_time = 0;
         return false;
     }
+}
+
+CSmallCar::MOVE_RESULT CSmallCar::CarProc()
+{
+    // 1 determine what to do
+    // 2 draw the result on the screen
+
 }
 

@@ -36,8 +36,10 @@ public:
         GO_FORWARD,
         CAR_STUCK// 车卡住了，需要加一下速
     };
-    CAR_ERROR Init(CCvPicCtrl* camera,CCvPicCtrl* output_map,CCvPicCtrl* output_car,CConfigs* config);
+    CAR_ERROR Init(CCvPicCtrl* cam,CCvPicCtrl* o_map,CCvPicCtrl* o_car,CConfigs* config);
     bool StartCar();
+    bool IsCarStuck();
+    MOVE_RESULT CarProc();
     bool SpeedUp();
     bool StopCar();
      /* The new routine */
@@ -51,7 +53,8 @@ private:
     CImageProc m_proc;
 
     CCvPicCtrl* m_camera;
-    CCvPicCtrl* m_output;// show what the car is doing now
+    CCvPicCtrl* m_output_map;// show what the car is doing now
+    CCvPicCtrl* m_output_car;
 
     CConfigs* m_config;
 

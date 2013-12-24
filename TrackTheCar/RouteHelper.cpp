@@ -33,30 +33,6 @@ double CRouteHelper::Angle(CvPoint src,CvPoint dst)//返回向量极坐标方向角，0～36
     return angle;
 }
 
-
-CvPoint CRouteHelper::FindnextPoint(CvPoint current,vector<CvPoint> map_points,vector<bool>& mask) //寻找下一个点，即返回与当前点最近的点
-{
-    double min_distance=1000.0;// just make it big enough
-    int nearest_num=-1;
-    for(int i=0;i<map_points.size();i++)
-    {
-        if(mask.at(i)) continue; // pass the points that are passed
-        double dist=Distance(current,map_points.at(i));
-        if(min_distance>dist)
-        {
-            min_distance=dist;
-            nearest_num=i;
-        }
-    }
-    if(-1 ==  nearest_num){
-        throw logic_error("can't find nearest point!"); // that's why the
-        // vector is out of range
-    }
-    mask.at(nearest_num)=true;
-    return map_points.at(nearest_num);
-}
-
-
 int CLine::FindNearestLine( CvPoint p,const vector<CLine>& v_lines )
 {
      double min_distance = v_lines.at(0).PointDist(p);

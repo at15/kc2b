@@ -13,8 +13,6 @@ public:
     //返回向量极坐标方向角，0～360度
     static double Angle(CvPoint src,CvPoint dst);
 
-    //寻找下一个点，即返回与当前点最近的点,mask来判断某个点是否走过
-    CvPoint FindnextPoint(CvPoint current,std::vector<CvPoint> map_points,std::vector<bool>& mask);
 
 };
 
