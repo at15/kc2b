@@ -69,6 +69,7 @@ public:
     // this for the main picture control 
     CCameraCtrl m_main_input;
     CCvPicCtrl m_main_output;
+    CCvPicCtrl m_main_output2;
 
     // transform the image in the main input
     void process_input(CCvPicCtrl* pic_ctrl);
@@ -109,4 +110,5 @@ public:
     CListCtrl m_list_config;
     virtual void PostNcDestroy();
     afx_msg void OnRestConfig();
+    afx_msg void OnBnClickedPrepareCar();
 };

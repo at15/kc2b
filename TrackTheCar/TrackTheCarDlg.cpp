@@ -95,11 +95,16 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     log_path.Format(L"%s%s.txt",L"C:\\Users\\W7_64\\Desktop\\",c_time);
     m_log_file.Open(log_path , CFile::modeWrite|CFile::modeCreate, &m_log_error);
     AddToConsole(L">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");// start the log
+
+    // init the pic ctrls
     if(!m_main_input.Init(this,IDC_MAIN_INPUT)){
         AddToConsole(_T("ERROR: can't init the main picture control!"));
     }
     if(!m_main_output.Init(this,IDC_MAIN_OUTPUT)){
         AddToConsole(_T("ERROR: can't init the output picture control!"));
+    }
+    if(!m_main_output2.Init(this,IDC_MAIN_OUTPUT2)){
+        AddToConsole(_T("ERROR: can't init the output2 picture control!"));
     }
 
     // show the configs in the listctrl
@@ -107,9 +112,11 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     m_list_config.InsertColumn(1,L"Value", LVCFMT_CENTER,100);
     ShowConfig();
 
+    // set the flag
     car_working = false;
 
     AddToConsole(_T("Track the car app init finished, waiting for orders..."));
+
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
