@@ -55,7 +55,7 @@ private:
     CCvPicCtrl* m_output_map;// show what the car is doing now
     CCvPicCtrl* m_output_car;
 
-    CConfigs* m_config;
+    CGConfigs* m_config;
 
     CRouteHelper m_route;
 

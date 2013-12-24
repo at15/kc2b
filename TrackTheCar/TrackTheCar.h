@@ -30,14 +30,8 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 public:
-    /*
-    // the global vars store in the theApp;
-    struct opencv_config{
-        std::vector<int> threshold;
-        std::vector<int> map_corners;
-    }; just put it in another file
-    */
     CConfigs global_configs;
+    CGConfigs g_configs;
 };
 
 extern CTrackTheCarApp theApp;

@@ -11,10 +11,10 @@ CSmallCar::~CSmallCar(void)
 {
 }
 
-CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CCvPicCtrl* output_map,CCvPicCtrl* output_car,CConfigs* config )
+CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CCvPicCtrl* output_map,CCvPicCtrl* output_car,CGConfigs* config )
 {
     // check if we can connect the car via bluetooth
-    if(!m_car_control.Init(config->GetCOM())) return CANT_CONNECT_CAR;
+    if(!m_car_control.Init(config->com_port.Get())) return CANT_CONNECT_CAR;
     // check if we can find the car
     if(!GetCarInfo(m_car_info)) return CANT_FIND_CAR;
     m_camera = camera;
@@ -27,8 +27,8 @@ bool CSmallCar::GetCarInfo(CarInfo& info){
     CvPoint head,tail,core;
     IplImage* t = m_camera->GetCurrentFrame();
 
-    head = m_proc.GetRedCore(t,m_config->GetThreshold());
-    tail = m_proc.GetBlueCore(t,m_config->GetThreshold());
+    head = m_proc.GetRedCore(t,m_config->car_threshold.Get());
+    tail = m_proc.GetBlueCore(t,m_config->car_threshold.Get());
     // can't find the car
     if(head.x < 0 || head.y <0 || tail.x < 0 || tail.y < 0 ){
         return false;

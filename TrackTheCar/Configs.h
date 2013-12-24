@@ -93,7 +93,9 @@ public:
 
     // The lines for the car?
 
-
+    // The threshold for the blue and red
+    // TODO: in fact, we should separate the threshold for blue and red
+    CConfigVector<int> car_threshold;
 };
 
 class CConfigs
