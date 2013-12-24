@@ -356,58 +356,58 @@ void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
 
 void CTrackTheCarDlg::OnBnClickedStartCar()
 {
-    if(!m_main_input.IsCapturing()){
-        AfxMessageBox(L"Open the cam please");
-        AddToConsole("start_car_error:the cam is not opened");
-        return;
-    }else{
-        AddToConsole("cam opened,please set the map and the car");
-    }
+    //if(!m_main_input.IsCapturing()){
+    //    AfxMessageBox(L"Open the cam please");
+    //    AddToConsole("start_car_error:the cam is not opened");
+    //    return;
+    //}else{
+    //    AddToConsole("cam opened,please set the map and the car");
+    //}
 
-    // then set all the config
+    //// then set all the config
 
-    // check if all the config is done
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    try{
-        global_configs->GetMapCorner();
-    }catch(logic_error e){
-        AfxMessageBox(L"didn't set the corner for the map!");
-        AddToConsole(e.what());
-        return;
-    }
-    AddToConsole("map corner set!");
+    //// check if all the config is done
+    //CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    //try{
+    //    global_configs->GetMapCorner();
+    //}catch(logic_error e){
+    //    AfxMessageBox(L"didn't set the corner for the map!");
+    //    AddToConsole(e.what());
+    //    return;
+    //}
+    //AddToConsole("map corner set!");
 
-    // OnCenCorner();// gen the map point, NO! the map point should be done 
-    // without putting the car on the map
+    //// OnCenCorner();// gen the map point, NO! the map point should be done 
+    //// without putting the car on the map
 
-    try{
-        global_configs->GetMapPoint();
-    }catch(logic_error e){
-        AfxMessageBox(L"can't get the map point!");
-        AddToConsole(e.what());
-        return;
-    }
-    AddToConsole("map point generated!");
+    //try{
+    //    global_configs->GetMapPoint();
+    //}catch(logic_error e){
+    //    AfxMessageBox(L"can't get the map point!");
+    //    AddToConsole(e.what());
+    //    return;
+    //}
+    //AddToConsole("map point generated!");
 
-    AddToConsole("all config loaded!,start the car");
+    //AddToConsole("all config loaded!,start the car");
 
-    // Note: the car will control camera now, you don't have call a timer
-    // really? no .... you can't set timer in cpp....so this is just init...
-    if(m_car.Init(&m_main_input,&m_main_output,global_configs)){
-        AddToConsole("car initialized!");
-    }else{
-        AfxMessageBox(L"Please open the car and set the right com port!");
-        AddToConsole("Car init failed!");
-        return;
-    }
-    if(m_car.StartCar()){
-        KillTimer(MAIN_CAM);
-        SetTimer(CAR_PROC,20,NULL);
-    }else{
-        AfxMessageBox(L"无法找到小车，请调节阀值！");
-        OnConfigThreshold();
-        return;
-    }
+    //// Note: the car will control camera now, you don't have call a timer
+    //// really? no .... you can't set timer in cpp....so this is just init...
+    //if(m_car.Init(&m_main_input,&m_main_output,global_configs)){
+    //    AddToConsole("car initialized!");
+    //}else{
+    //    AfxMessageBox(L"Please open the car and set the right com port!");
+    //    AddToConsole("Car init failed!");
+    //    return;
+    //}
+    //if(m_car.StartCar()){
+    //    KillTimer(MAIN_CAM);
+    //    SetTimer(CAR_PROC,20,NULL);
+    //}else{
+    //    AfxMessageBox(L"无法找到小车，请调节阀值！");
+    //    OnConfigThreshold();
+    //    return;
+    //}
 
 
 }
@@ -429,126 +429,126 @@ void CTrackTheCarDlg::CamProc(){
 }
 
 void CTrackTheCarDlg::CarProc(){
-    car_working = true;
+    //car_working = true;
 
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    //CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
 
-    CvPoint from;
-    CvPoint to;
-    CSmallCar::MOVE_RESULT re;
-    CString op;
-    CSmallCar::FIND_POINT pre = m_car.FindNextPoint(&to);
-    // 已经走完了！
-    if(pre == CSmallCar::NO_MORE_POINT){
-        AddToConsole("reach last point!");
-        ExitCarProc(true);
-        AfxMessageBox(L"The car has reached last point!");
-        return;
-    }
+    //CvPoint from;
+    //CvPoint to;
+    //CSmallCar::MOVE_RESULT re;
+    //CString op;
+    //CSmallCar::FIND_POINT pre = m_car.FindNextPoint(&to);
+    //// 已经走完了！
+    //if(pre == CSmallCar::NO_MORE_POINT){
+    //    AddToConsole("reach last point!");
+    //    ExitCarProc(true);
+    //    AfxMessageBox(L"The car has reached last point!");
+    //    return;
+    //}
 
-    // 避免小车卡在一个地方
-    // 避免小车回头在Move2NextPoint里
-    int c_same_op = 0;
-    int c_error_modify = 0; // 自动修改过几次误差值
-    // 用于记录上一次操作
-    CSmallCar::MOVE_RESULT last_op = CSmallCar::REACH_POINT;
-    /*
-    int c_same_pos;
-    CRouteHelper route;// 用于计算小车位置的变化
-    CvPoint last_car_pos;
-    last_car_pos.x = -1;
-    last_car_pos.y = -1;*/
+    //// 避免小车卡在一个地方
+    //// 避免小车回头在Move2NextPoint里
+    //int c_same_op = 0;
+    //int c_error_modify = 0; // 自动修改过几次误差值
+    //// 用于记录上一次操作
+    //CSmallCar::MOVE_RESULT last_op = CSmallCar::REACH_POINT;
+    ///*
+    //int c_same_pos;
+    //CRouteHelper route;// 用于计算小车位置的变化
+    //CvPoint last_car_pos;
+    //last_car_pos.x = -1;
+    //last_car_pos.y = -1;*/
 
-    // the temp value for the small car distance
-    int t_distance_e = global_configs->GetDistanceError();
-    int t_angle_e = global_configs->GetAngleError();
+    //// the temp value for the small car distance
+    //int t_distance_e = global_configs->GetDistanceError();
+    //int t_angle_e = global_configs->GetAngleError();
 
-    do{
+    //do{
 
-        CamProc();// cap a new frame
+    //    CamProc();// cap a new frame
 
-        if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
-            AddToConsole(L"can't find the car pos!");
-            ExitCarProc(true);
-            AfxMessageBox(L"找不到小车");
-            return;
-        }
+    //    if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
+    //        AddToConsole(L"can't find the car pos!");
+    //        ExitCarProc(true);
+    //        AfxMessageBox(L"找不到小车");
+    //        return;
+    //    }
 
-        if(m_car.isCarStuck()){
-            CString str;
-            str.Format(L"car stuck at x=%d y=%d",from.x,from.y);
-            AddToConsole(str);
-            // 加速一下，然后再捕获
-            m_car.SpeedUp();
-            continue;
-        }
+    //    if(m_car.isCarStuck()){
+    //        CString str;
+    //        str.Format(L"car stuck at x=%d y=%d",from.x,from.y);
+    //        AddToConsole(str);
+    //        // 加速一下，然后再捕获
+    //        m_car.SpeedUp();
+    //        continue;
+    //    }
 
-        re = m_car.Move2NextPoint(t_distance_e,t_angle_e);
+    //    re = m_car.Move2NextPoint(t_distance_e,t_angle_e);
 
-        if(re != last_op){
-            c_same_op = 0;
-            last_op = re;
-        }else if((re == CSmallCar::TURN_LEFT) ||
-            (re == CSmallCar::TURN_RIGHT)){
-                // 如果一直在转弯就得准备允许扩大误差了
-                c_same_op++;
-        }
-        if(MAX_ERROR_MODIFY_TIME < c_error_modify){
-            // too much modify!
-            CString str;
-            str.Format(L"ERROR:too much modify! %d times",c_error_modify);
-            AddToConsole(str);
-            //AfxMessageBox(L"自动修改次数过多！角点生成有误");
-            ExitCarProc(true);
-            
-        }
-        if(MAX_OP_TIME < c_same_op){
-            c_same_op = 0;
-            t_distance_e += ERROR_MODIFY_VALUE;
-            t_distance_e += ERROR_MODIFY_VALUE;
-            c_error_modify++;
-            AddToConsole("modify");
-        }
-        // 输出操作结果
-        switch(re){
-        case CSmallCar::GO_FORWARD:{
-            op = L"go forward";
-            break;
-                                   }
-        case CSmallCar::TURN_LEFT:{
-            op = L"go left";
-            break;
-                                  }
-        case CSmallCar::TURN_RIGHT:{
-            op = L"go right";
-            break;
-                                   }
-        case CSmallCar::REACH_POINT:{
-            op = L"reach point";
-            break;
-                                    }
-        case CSmallCar::PASS_POINT:{
-            op = L"pass point";
-            break;
-                                   }
+    //    if(re != last_op){
+    //        c_same_op = 0;
+    //        last_op = re;
+    //    }else if((re == CSmallCar::TURN_LEFT) ||
+    //        (re == CSmallCar::TURN_RIGHT)){
+    //            // 如果一直在转弯就得准备允许扩大误差了
+    //            c_same_op++;
+    //    }
+    //    if(MAX_ERROR_MODIFY_TIME < c_error_modify){
+    //        // too much modify!
+    //        CString str;
+    //        str.Format(L"ERROR:too much modify! %d times",c_error_modify);
+    //        AddToConsole(str);
+    //        //AfxMessageBox(L"自动修改次数过多！角点生成有误");
+    //        ExitCarProc(true);
+    //        
+    //    }
+    //    if(MAX_OP_TIME < c_same_op){
+    //        c_same_op = 0;
+    //        t_distance_e += ERROR_MODIFY_VALUE;
+    //        t_distance_e += ERROR_MODIFY_VALUE;
+    //        c_error_modify++;
+    //        AddToConsole("modify");
+    //    }
+    //    // 输出操作结果
+    //    switch(re){
+    //    case CSmallCar::GO_FORWARD:{
+    //        op = L"go forward";
+    //        break;
+    //                               }
+    //    case CSmallCar::TURN_LEFT:{
+    //        op = L"go left";
+    //        break;
+    //                              }
+    //    case CSmallCar::TURN_RIGHT:{
+    //        op = L"go right";
+    //        break;
+    //                               }
+    //    case CSmallCar::REACH_POINT:{
+    //        op = L"reach point";
+    //        break;
+    //                                }
+    //    case CSmallCar::PASS_POINT:{
+    //        op = L"pass point";
+    //        break;
+    //                               }
 
-        }
+    //    }
 
-        CString str;
-        str.Format(L"Op=%s Move from x=%d y=%d to x=%d y=%d",
-            op,
-            from.x,from.y,
-            to.x,to.y);
-        AddToConsole(str);
-        if(re == CSmallCar::REACH_POINT) break;
-        if(re == CSmallCar::PASS_POINT) break;
+    //    CString str;
+    //    str.Format(L"Op=%s Move from x=%d y=%d to x=%d y=%d",
+    //        op,
+    //        from.x,from.y,
+    //        to.x,to.y);
+    //    AddToConsole(str);
+    //    if(re == CSmallCar::REACH_POINT) break;
+    //    if(re == CSmallCar::PASS_POINT) break;
 
-    }while(re != CSmallCar::REACH_POINT);
+    //}while(re != CSmallCar::REACH_POINT);
 
-    AddToConsole("reach point");
+    //AddToConsole("reach point");
 
 
-    car_working = false;
+    //car_working = false;
 }
 
 void CTrackTheCarDlg::ExitCarProc(bool forever /*= true*/){

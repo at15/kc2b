@@ -14,7 +14,7 @@ IMPLEMENT_DYNAMIC(CConfigThreshold, CDialogEx)
     CConfigThreshold::CConfigThreshold(CWnd* pParent /*=NULL*/)
     : CDialogEx(CConfigThreshold::IDD, pParent)
 {
-
+    current_mode = RED_MODE;// default mode is set thershold for red
 }
 
 CConfigThreshold::~CConfigThreshold()
@@ -38,6 +38,8 @@ BEGIN_MESSAGE_MAP(CConfigThreshold, CDialogEx)
     ON_BN_CLICKED(IDC_CONFIG_OPEN_CAM, &CConfigThreshold::OnBnClickedConfigOpenCam)
     ON_WM_TIMER()
     ON_BN_CLICKED(IDC_CONFIG_OPEN_IMAGE, &CConfigThreshold::OnBnClickedConfigOpenImage)
+    ON_BN_CLICKED(IDC_RADIO1, &CConfigThreshold::OnBnClickedCkRed)
+    ON_BN_CLICKED(IDC_RADIO2, &CConfigThreshold::OnBnClickedCkBlue)
 END_MESSAGE_MAP()
 
 
@@ -131,6 +133,11 @@ void CConfigThreshold::SetThreshold(){
         m_threshold.at(i) =  m_sliders.at(i)->GetPos();
     }
     global_configs->SetThreshold(m_threshold);
+
+    CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
+    if(RED_MODE == current_mode){
+
+    }
 }
 
 void CConfigThreshold::CamProc(){
@@ -149,12 +156,18 @@ void CConfigThreshold::BasicProc(){
         hsvbgrBin.push_back(t_bin);
         m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
     }
-    IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
-    m_red_bin.SetCurrentFrame(redbin);
-    IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
-    m_blue_bin.SetCurrentFrame(bluebin);
-    cvReleaseImage(&redbin);
-    cvReleaseImage(&bluebin);
+    if(RED_MODE == current_mode){
+        IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
+        m_red_bin.SetCurrentFrame(redbin);
+        cvReleaseImage(&redbin);
+    }
+    
+    if(BLUE_MODE == current_mode){
+        IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
+        m_blue_bin.SetCurrentFrame(bluebin);
+        cvReleaseImage(&bluebin);
+    }
+    
     proc.releaseHSVBGR(hsvbgrBin);
     proc.releaseHSVBGR(hsvbgr);
 }
@@ -167,6 +180,12 @@ void CConfigThreshold::OnBnClickedConfigOpenCam()
 
 void CConfigThreshold::OnBnClickedConfigOpenImage()
 {
+    // for testing the checkbox control
+    UpdateData();
+    CString str;
+    //str.Format(L"red is %d blue is %d",m_ck_red,m_ck_red);
+    AfxMessageBox(str);
+    /*
     // TODO: 在此添加控件通知处理程序代码
     if(m_camera.GetCurrentFrame()){
         m_camera.UpdateFrame();
@@ -178,5 +197,23 @@ void CConfigThreshold::OnBnClickedConfigOpenImage()
         BasicProc();
     }else{
         AfxMessageBox(_T("you didn't select file!"));
-    }
+    }*/
+}
+
+void CConfigThreshold::OnBnClickedCkRed()
+{
+    ChangeMode(RED_MODE);
+}
+
+
+void CConfigThreshold::OnBnClickedCkBlue()
+{
+    ChangeMode(BLUE_MODE);
+}
+
+void CConfigThreshold::ChangeMode( COLOR_MODE mode /*= RED_MODE*/ )
+{
+    if(current_mode == mode) return;
+    current_mode = mode;
+    // TODO:maybe we should show more info?
 }

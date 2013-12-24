@@ -60,4 +60,13 @@ public:
     afx_msg void OnBnClickedConfigOpenCam();
     afx_msg void OnTimer(UINT_PTR nIDEvent);
     afx_msg void OnBnClickedConfigOpenImage();
+
+    enum COLOR_MODE{
+        RED_MODE,
+        BLUE_MODE
+    };
+    COLOR_MODE current_mode;
+    void ChangeMode(COLOR_MODE mode = RED_MODE);
+    afx_msg void OnBnClickedCkRed();
+    afx_msg void OnBnClickedCkBlue();
 };

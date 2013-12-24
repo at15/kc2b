@@ -36,7 +36,7 @@ public:
         GO_FORWARD,
         CAR_STUCK// The car is stuck, need to speed up
     };
-    CAR_ERROR Init(CCvPicCtrl* cam,CCvPicCtrl* o_map,CCvPicCtrl* o_car,CConfigs* config);
+    CAR_ERROR Init(CCvPicCtrl* cam,CCvPicCtrl* o_map,CCvPicCtrl* o_car,CGConfigs* config);
     bool StartCar();
     MOVE_RESULT CarProc();
     bool SpeedUp();

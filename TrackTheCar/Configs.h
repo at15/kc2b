@@ -95,7 +95,8 @@ public:
 
     // The threshold for the blue and red
     // TODO: in fact, we should separate the threshold for blue and red
-    CConfigVector<int> car_threshold;
+    CConfigVector<int> red_threshold;
+    CConfigVector<int> blue_threshold;
 };
 
 class CConfigs
