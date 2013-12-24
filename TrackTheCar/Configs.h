@@ -75,6 +75,7 @@ private:
 // global configs
 class CGConfigs{
 public:
+    void ResetConfig();
     // Bluetooth com port
     CConfigInt com_port;
 
@@ -95,8 +96,11 @@ public:
 
     // The threshold for the blue and red
     // TODO: in fact, we should separate the threshold for blue and red
+    CConfigVector<int> default_threshold;
     CConfigVector<int> red_threshold;
     CConfigVector<int> blue_threshold;
+private:
+    void LoadDefault();
 };
 
 class CConfigs

@@ -47,7 +47,8 @@ public:
     CSliderCtrl m_slider_g;
     CSliderCtrl m_slider_r;
     std::vector<CSliderCtrl*> m_sliders;
-    std::vector<int> m_threshold;// in h,s,v,b,g,r order
+    std::vector<int> m_red_threshold;// in h,s,v,b,g,r order
+    std::vector<int> m_blue_threshold;
 
     // set the threshold from the slider
     void SetThreshold();

@@ -87,3 +87,13 @@ vector<CLine> CConfigs::GetMapLine(){
         return m_map_line;
     }
 }
+
+void CGConfigs::ResetConfig()
+{
+    LoadDefault();
+}
+
+void CGConfigs::LoadDefault()
+{
+
+}

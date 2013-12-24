@@ -95,10 +95,11 @@ BOOL CConfigThreshold::OnInitDialog()
     m_sliders.push_back(&m_slider_r);
 
     // init the threshold value
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    m_threshold = global_configs->GetThreshold();
+    CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
+    int t;
     for(int i=0;i<6;i++){
-        m_sliders.at(i)->SetPos(m_threshold.at(i));
+        g_configs->default_threshold.GetItem(i,t);
+        m_sliders.at(i)->SetPos(t);
     }
 
     SetThreshold();// set the global config
