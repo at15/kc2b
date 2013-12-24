@@ -95,5 +95,18 @@ void CGConfigs::ResetConfig()
 
 void CGConfigs::LoadDefault()
 {
+    // init the threshold value
+    default_threshold.PushBack(150);
+    default_threshold.PushBack(138);
+    default_threshold.PushBack(40);
+    default_threshold.PushBack(100);
+    default_threshold.PushBack(80);
+    default_threshold.PushBack(80);
 
+
+}
+
+CGConfigs::CGConfigs()
+{
+    LoadDefault();
 }

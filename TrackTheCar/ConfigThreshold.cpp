@@ -101,8 +101,9 @@ BOOL CConfigThreshold::OnInitDialog()
         g_configs->default_threshold.GetItem(i,t);
         m_sliders.at(i)->SetPos(t);
     }
+    m_red_threshold = g_configs->default_threshold.Get();
+    m_blue_threshold = g_configs->default_threshold.Get();
 
-    SetThreshold();// set the global config
     return TRUE;  // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
 }
@@ -128,17 +129,25 @@ void CConfigThreshold::SetMainFrame(IplImage* pSrc){
 }
 
 void CConfigThreshold::SetThreshold(){
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    // get the threshold form the sliders
-    for(int i=0;i<6;i++){
-        m_threshold.at(i) =  m_sliders.at(i)->GetPos();
-    }
-    global_configs->SetThreshold(m_threshold);
-
     CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
-    if(RED_MODE == current_mode){
 
+    // get the threshold form the sliders
+    if(RED_MODE == current_mode){
+        for(int i=0;i<6;i++){
+            m_red_threshold.at(i) = m_sliders.at(i)->GetPos();
+        }
     }
+    
+    if(BLUE_MODE == current_mode){
+        for(int i=0;i<6;i++){
+            m_blue_threshold.at(i) = m_sliders.at(i)->GetPos();
+        }
+    }
+    
+    // set the global
+    g_configs->red_threshold.Set(m_red_threshold);
+    g_configs->blue_threshold.Set(m_blue_threshold);
+
 }
 
 void CConfigThreshold::CamProc(){
@@ -152,18 +161,24 @@ void CConfigThreshold::BasicProc(){
     // show h,s,v,b,g,r
     std::vector<IplImage*> hsvbgr = proc.GetHSVBGR(m_camera.GetCurrentFrame());
     std::vector<IplImage*> hsvbgrBin;
-    for(int i=0;i<6;i++){
-        IplImage* t_bin = proc.GetBinary(hsvbgr.at(i),m_threshold.at(i));
-        hsvbgrBin.push_back(t_bin);
-        m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
-    }
+    
     if(RED_MODE == current_mode){
+        for(int i=0;i<6;i++){
+            IplImage* t_bin = proc.GetBinary(hsvbgr.at(i),m_red_threshold.at(i));
+            hsvbgrBin.push_back(t_bin);
+            m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
+        }
         IplImage* redbin = proc.GetRedBinary(hsvbgrBin);
         m_red_bin.SetCurrentFrame(redbin);
         cvReleaseImage(&redbin);
     }
     
     if(BLUE_MODE == current_mode){
+        for(int i=0;i<6;i++){
+            IplImage* t_bin = proc.GetBinary(hsvbgr.at(i),m_blue_threshold.at(i));
+            hsvbgrBin.push_back(t_bin);
+            m_hsvbgr_ctrls.at(i)->SetCurrentFrame(t_bin);
+        }
         IplImage* bluebin = proc.GetBlueBinary(hsvbgrBin);
         m_blue_bin.SetCurrentFrame(bluebin);
         cvReleaseImage(&bluebin);
@@ -181,13 +196,6 @@ void CConfigThreshold::OnBnClickedConfigOpenCam()
 
 void CConfigThreshold::OnBnClickedConfigOpenImage()
 {
-    // for testing the checkbox control
-    UpdateData();
-    CString str;
-    //str.Format(L"red is %d blue is %d",m_ck_red,m_ck_red);
-    AfxMessageBox(str);
-    /*
-    // TODO: 在此添加控件通知处理程序代码
     if(m_camera.GetCurrentFrame()){
         m_camera.UpdateFrame();
         BasicProc();
@@ -198,7 +206,7 @@ void CConfigThreshold::OnBnClickedConfigOpenImage()
         BasicProc();
     }else{
         AfxMessageBox(_T("you didn't select file!"));
-    }*/
+    }
 }
 
 void CConfigThreshold::OnBnClickedCkRed()

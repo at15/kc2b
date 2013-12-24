@@ -60,10 +60,16 @@ public:
         if(!m_set){
             return false;
         }
-        if((index < 0) || (index-1 > m_value.size)){
+        if((index < 0) || (index-1 > m_value.size())){
             return false;
         }
-        return m_value.at(index);
+        item = m_value.at(index);
+        return true;
+    }
+    // add item 
+    void PushBack(T item){
+        m_value.push_back(item);
+        m_set = true;
     }
 
 private:
@@ -75,6 +81,7 @@ private:
 // global configs
 class CGConfigs{
 public:
+    CGConfigs();
     void ResetConfig();
     // Bluetooth com port
     CConfigInt com_port;
