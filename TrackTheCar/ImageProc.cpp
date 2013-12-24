@@ -214,6 +214,7 @@ void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines){
     cvSetZero(pSrc);
     for(int i=0;i<v_lines.size();i++){
         cvLine(pSrc,v_lines.at(i).start(),v_lines.at(i).end(),cvScalar(255,0,0));
+        //Sleep(500);
     }
 }
 
@@ -261,7 +262,8 @@ vector<CLine> CImageProc::SortLines(std::vector<CLine> o_lines,
             }else{
                 next_line = o_lines.at(j);
                 // add an extra line
-                sorted_lines.push_back(CLine(current_line.end(),next_line.start()));
+                CLine extra_line = CLine(current_line.end(),next_line.start());
+                sorted_lines.push_back(extra_line);
             }
             //next_line = o_lines.at(j); // for debug
             sorted_lines.push_back(next_line);
