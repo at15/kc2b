@@ -21,10 +21,13 @@ CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CCvPicCtrl* output_map,
     m_output_car = output_car;
     m_config = config;
     // sort the lines
-
+    m_map_line = m_proc.SortLines(m_config->raw_line.Get(),
+        m_car_info.head,m_car_info.tail);
+    m_config->sorted_line.Set(m_map_line);
     // show the image in the output
     cvCircle(m_output_car->GetCurrentFrame(),m_car_info.core,10,CV_RGB(0,255,0),3);
-    
+    // show the new map in the output
+    m_proc.DrawLines(m_output_map->GetCurrentFrame(),m_config->sorted_line.Get());
     m_output_map->UpdateFrame();
     m_output_car->UpdateFrame();
     return NO_CAR_ERROR;
@@ -151,6 +154,7 @@ CSmallCar::MOVE_RESULT CSmallCar::CarProc()
 {
     // 1 determine what to do
     // 2 draw the result on the screen
+
     return REACH_POINT;
 }
 
