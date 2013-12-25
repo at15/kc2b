@@ -184,27 +184,33 @@ void CTrackTheCarDlg::PostNcDestroy()
 }
 
 void CTrackTheCarDlg::AddToConsole(const CString& str,bool show /*=false*/){
+    CString add_str = str;
+    add_str.Append(L"\r\n");
     if(!show){
-        m_log_file.WriteString(str);// write to log file;
+        m_log_file.WriteString(add_str);// write to log file;
         return;
-    }
-    CString old;
-    m_main_console.GetWindowTextW(old);
-    old.Append(str);
-    old.Append(L"\r\n");
-    m_main_console.SetWindowTextW(old);
-    
+    }else{
+        CString old;
+        m_main_console.GetWindowTextW(old);
+        old.Append(add_str);
+        m_main_console.SetWindowTextW(old);
+    } 
 }
 
 void CTrackTheCarDlg::AddToConsole(const char* str,bool show /*=false*/){
-    CString old;
-    m_main_console.GetWindowTextW(old);
     wchar_t* wstr = EZ::CStrConv::ansi2utf16(str);
-    old.Append(wstr);
+    CString add_str = wstr;
+    add_str.Append(L"\r\n");
+    if(!show){
+        m_log_file.WriteString(add_str);// write to log file;
+        return;
+    }else{
+        CString old;
+        m_main_console.GetWindowTextW(old);
+        old.Append(add_str);
+        m_main_console.SetWindowTextW(old);
+    } 
     delete wstr;
-    old.Append(L"\r\n");
-    m_main_console.SetWindowTextW(old);
-    m_log_file.WriteString(old);// write to log file;
 }
 
 void CTrackTheCarDlg::ShowConfig(){
