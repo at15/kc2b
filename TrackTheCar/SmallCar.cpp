@@ -188,10 +188,10 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
 
     //求小车向量方向
     double direction_car=m_route.Angle(m_car_info.tail,m_car_info.head);
-    //小车中心到下一个目标点的向量方向
-    double direction_target=m_route.Angle(m_car_info.core,current_line.end());
+    //车头到下一点的角度
+    double direction_target=m_route.Angle(m_car_info.head,current_line.end());
     //小车中心到目标点的距离
-    double distance=CLine::Distance(m_car_info.core,current_line.end());
+    double distance=CLine::Distance(m_car_info.head,current_line.end());
 
     // reach the target
     if(distance <= distance_error) {
