@@ -169,6 +169,12 @@ HCURSOR CTrackTheCarDlg::OnQueryDragIcon()
     return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CTrackTheCarDlg::PostNcDestroy()
+{
+    // TODO: 在此添加专用代码和/或调用基类
+    m_log_file.Close();
+    CDialogEx::PostNcDestroy();
+}
 
 void CTrackTheCarDlg::AddToConsole(const CString& str){
     CString old;
@@ -413,12 +419,7 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
 }
 
 
-void CTrackTheCarDlg::PostNcDestroy()
-{
-    // TODO: 在此添加专用代码和/或调用基类
-    m_log_file.Close();
-    CDialogEx::PostNcDestroy();
-}
+
 
 
 void CTrackTheCarDlg::CamProc(){
@@ -578,7 +579,21 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
         AddToConsole("cam opened,please set the map and the car");
     }
 
+    // check if config is set
+
     // TODO: Connect and find the car, and find the lines
     CSmallCar::CAR_ERROR e;
     e = m_car.Init(&m_main_input,&m_main_output,&m_main_output2,g_configs);
+    if(CSmallCar::CANT_FIND_CAR == e){
+        AfxMessageBox(L"Can't find car, please set the threshold!");
+        OnConfigThreshold();
+        return;
+    }
+    if(CSmallCar::CANT_CONNECT_CAR == e){
+        AfxMessageBox(L"Can't connect car, please set the right com port, "
+            "and open the car");
+        return;
+    }
+
+
 }

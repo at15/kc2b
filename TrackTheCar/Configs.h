@@ -93,7 +93,8 @@ public:
     // The four corner of the map,used for transform the image
     CConfigVector<int> map_corner;
     // The size of the corner,the shouldn't be in the transformed map
-    CConfigInt map_corner_size;
+    CConfigInt map_corner_width;
+    CConfigInt map_corner_height;
 
     // Get the binary for map and thin it to get points or lines
     CConfigInt map_threshold;
