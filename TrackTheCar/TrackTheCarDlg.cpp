@@ -98,17 +98,17 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     CString log_path; 
     log_path.Format(L"%s%s.txt",L"C:\\Users\\W7_64\\Desktop\\",c_time);
     m_log_file.Open(log_path , CFile::modeWrite|CFile::modeCreate, &m_log_error);
-    AddToConsole(L">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");// start the log
+    AddToConsole(L">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",true);// start the log
 
     // init the pic ctrls
     if(!m_main_input.Init(this,IDC_MAIN_INPUT)){
-        AddToConsole(_T("ERROR: can't init the main picture control!"));
+        AddToConsole(_T("ERROR: can't init the main picture control!"),true);
     }
     if(!m_main_output.Init(this,IDC_MAIN_OUTPUT)){
-        AddToConsole(_T("ERROR: can't init the output picture control!"));
+        AddToConsole(_T("ERROR: can't init the output picture control!"),true);
     }
     if(!m_main_output2.Init(this,IDC_MAIN_OUTPUT2)){
-        AddToConsole(_T("ERROR: can't init the output2 picture control!"));
+        AddToConsole(_T("ERROR: can't init the output2 picture control!"),true);
     }
 
     // show the configs in the listctrl
@@ -122,7 +122,7 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     // disable the buttons
     m_btn_start_car.EnableWindow(FALSE);
     m_btn_stop_car.EnableWindow(FALSE);
-    AddToConsole(_T("Track the car app init finished, waiting for orders..."));
+    AddToConsole(_T("Track the car app init finished, waiting for orders..."),true);
 
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -186,30 +186,26 @@ void CTrackTheCarDlg::PostNcDestroy()
 void CTrackTheCarDlg::AddToConsole(const CString& str,bool show /*=false*/){
     CString add_str = str;
     add_str.Append(L"\r\n");
-    if(!show){
-        m_log_file.WriteString(add_str);// write to log file;
-        return;
-    }else{
+    if(show){
         CString old;
         m_main_console.GetWindowTextW(old);
         old.Append(add_str);
         m_main_console.SetWindowTextW(old);
-    } 
+    }
+    m_log_file.WriteString(add_str);// write to log file;
 }
 
 void CTrackTheCarDlg::AddToConsole(const char* str,bool show /*=false*/){
     wchar_t* wstr = EZ::CStrConv::ansi2utf16(str);
     CString add_str = wstr;
     add_str.Append(L"\r\n");
-    if(!show){
-        m_log_file.WriteString(add_str);// write to log file;
-        return;
-    }else{
+    if(show){
         CString old;
         m_main_console.GetWindowTextW(old);
         old.Append(add_str);
         m_main_console.SetWindowTextW(old);
-    } 
+    }
+    m_log_file.WriteString(add_str);// write to log file;
     delete wstr;
 }
 
@@ -438,14 +434,14 @@ void CTrackTheCarDlg::CarProc(){
     // unknown error
     if(CSmallCar::MOVE_ERROR == re){
         ExitCarProc();
-        AddToConsole(L"Error in moving car!.Exit now");
+        AddToConsole(L"Error in moving car!.Exit now",true);
         AfxMessageBox(L"Error in moving car!.Exit now");
         return;
     }
     // reach the end point
     if(CSmallCar::REACH_END == re){
         ExitCarProc();
-        AddToConsole(L"Reach end!");
+        AddToConsole(L"Reach end!",true);
         AfxMessageBox(L"Reach end!");
         return;
     }
