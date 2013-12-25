@@ -62,7 +62,6 @@ void CCarControl::GoRight(){
     }
 }
 
-//退了就再也无法前进了，你妹
 void CCarControl::GoBack(){
     if(!port_ready) return;
     m_last_op = kBack;

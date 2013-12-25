@@ -146,11 +146,14 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
     // see if go right or left
     CVector car_vec(m_car_info.tail,m_car_info.head);
     CVector drct_vec(current_line.start(),current_line.end());
-
+    // PS:如果一直给小车发转向的指令，舵机会坏掉。所以在car control里会记录
+    // 上一次的操作，如果相同就不再发出指令。
     if(car_vec.Cross(drct_vec) < 0){
         m_car_control.GoRight();
+        return TURN_RIGHT;
     }else{
         m_car_control.GoLeft();
+        return TURN_LEFT;
     }
 }
 
