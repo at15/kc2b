@@ -171,25 +171,29 @@ void CMapDlg::OnBnClickedMapPointGen()
 
 void CMapDlg::OnBnClickedMapLineGen()
 {
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
     // 生成地图线段
     CImageProc proc;
     // get the bin image form other control
     if(!map_gened){
-        //AfxMessageBox(L"请先生成地图！");
-        //return;
         OnBnClickedMapChange();
     }
     if(!map_gened){
         AfxMessageBox(L"无法生成地图！");
         return;
     }
-    // get and set the configs in global
+    // get and set the config in global
     UpdateData();
-    global_configs->SetLineDistanceError(m_line_distance_error);
+    g_configs->line_distance_error.Set(m_line_distance_error);
 
     IplImage* bin = m_map_thin.GetCurrentFrame();
     vector<CLine> v_lines = proc.FindLines(bin,m_line_distance_error);
+    //  set the line
+    g_configs->raw_line.Set(v_lines);
+    proc.DrawLines(m_map_line_gened.GetCurrentFrame(),v_lines);
+    m_map_line_gened.UpdateFrame();
+
+    /*
     // 设置初始点对线段排序影响很大
     vector<CLine> v_processed = proc.SortLines(v_lines,cvPoint(400,600),cvPoint(400,600));
     global_configs->SetMapLine(v_lines);
@@ -204,7 +208,7 @@ void CMapDlg::OnBnClickedMapLineGen()
         m_map_line_gened.UpdateFrame();
     }
     m_map_line_gened.UpdateFrame();
-
+    */
 
 }
 

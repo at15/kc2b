@@ -109,4 +109,8 @@ public:
     afx_msg void OnBnClickedStartCar();
     virtual void PostNcDestroy();
     afx_msg void OnBnClickedPrepareCar();
+    CButton m_btn_start_car;
+    CButton m_btn_stop_car;
+    afx_msg void OnBnClickedBMainStartCar();
+    CButton m_btn_prepare_car;
 };

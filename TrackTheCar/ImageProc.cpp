@@ -439,20 +439,3 @@ void CImageProc::cvThin (IplImage* src, IplImage* dst, int iterations /*= 1*/) {
         } 
         cvReleaseImage(&t_image); 
 }
-
-void CImageProc::CleanUp(){
-    for(int i = 0;i<m_images.size();i++){
-        if(m_images.at(i)){
-            cvReleaseImage(&m_images.at(i));
-        }
-    }
-}
-
-IplImage* CImageProc::GetLastPtr(){
-    if(m_images.size()> 0){
-        return m_images.at(m_images.size()-1);
-    }
-    else{
-        return NULL;
-    }
-}

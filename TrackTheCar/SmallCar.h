@@ -52,8 +52,8 @@ private:
     CImageProc m_proc;
 
     CCvPicCtrl* m_camera;
-    CCvPicCtrl* m_output_map;// show what the car is doing now
-    CCvPicCtrl* m_output_car;
+    CCvPicCtrl* m_output_map;// show the map
+    CCvPicCtrl* m_output_car;// show the car
 
     CGConfigs* m_config;
 

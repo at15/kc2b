@@ -109,6 +109,7 @@ void CGConfigs::LoadDefault()
     map_corner_height.Set(CORNER_SIZE);
     map_corner_width.Set(CORNER_SIZE);
 
+    line_distance_error.Set(LINE_DISTANCE_ERROR);
 }
 
 CGConfigs::CGConfigs()

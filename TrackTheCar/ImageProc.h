@@ -77,11 +77,5 @@ public:
         double minDistance=MCV_MIN_DISTANCE);
 
     void DrawMapPoints(IplImage* pSrc,const std::vector<CvPoint2D32f>& v_corners);
-    /* abandoned func */
-public:
-    void CleanUp(); // release all the memory
-private:
-    IplImage* GetLastPtr();
-    std::vector<IplImage*> m_images; // hold the image we need,destroy when destruct
 };
 

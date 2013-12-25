@@ -13,13 +13,21 @@ CSmallCar::~CSmallCar(void)
 
 CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CCvPicCtrl* output_map,CCvPicCtrl* output_car,CGConfigs* config )
 {
-    // check if we can connect the car via bluetooth
+    // check if we can connect the car via blue tooth
     if(!m_car_control.Init(config->com_port.Get())) return CANT_CONNECT_CAR;
     // check if we can find the car
     if(!GetCarInfo(m_car_info)) return CANT_FIND_CAR;
     m_camera = camera;
     m_output_map = output_map;
+    m_output_car = output_car;
     m_config = config;
+    // sort the lines
+    // show the image in the output
+    // a green circle to show the car pos
+    cvCircle(m_output_car->GetCurrentFrame(),m_car_info.core,10,CV_RGB(0,255,0),3);
+    
+    m_output_map->UpdateFrame();
+    m_output_car->UpdateFrame();
     return NO_CAR_ERROR;
 }
 

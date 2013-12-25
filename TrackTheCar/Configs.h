@@ -103,13 +103,18 @@ public:
     CConfigInt map_threshold;
     CConfigInt map_thin_iteration;
 
-    // The lines for the car?
-
+ 
     // The threshold for the blue and red
-    // TODO: in fact, we should separate the threshold for blue and red
     CConfigVector<int> default_threshold;
     CConfigVector<int> red_threshold;
     CConfigVector<int> blue_threshold;
+
+    // The lines for the car
+
+    CConfigVector<CLine> raw_line;// line found by cvHoughLine2
+    CConfigVector<CLine> sorted_line;
+
+    CConfigItem<double> line_distance_error;
 private:
     void LoadDefault();
 };

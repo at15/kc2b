@@ -33,6 +33,9 @@ void CTrackTheCarDlg::DoDataExchange(CDataExchange* pDX)
     CDialogEx::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_EDIT1, m_main_console);
     DDX_Control(pDX, IDC_LIST1, m_list_config);
+    DDX_Control(pDX, IDC_B_MAIN_START_CAR, m_btn_start_car);
+    DDX_Control(pDX, IDC_B_MAIN_STOP_CAR, m_btn_stop_car);
+    DDX_Control(pDX, IDC_BUTTON3, m_btn_prepare_car);
 }
 
 BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
@@ -52,6 +55,8 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_BN_CLICKED(IDC_BUTTON2, &CTrackTheCarDlg::OnBnClickedStartCar)
     ON_COMMAND(ID_32783, &CTrackTheCarDlg::OnRestConfig)
     ON_BN_CLICKED(IDC_BUTTON3, &CTrackTheCarDlg::OnBnClickedPrepareCar)
+    ON_BN_CLICKED(IDC_B_MAIN_START_CAR, &CTrackTheCarDlg::OnBnClickedBMainStartCar)
+    ON_BN_CLICKED(IDC_B_MAIN_STOP_CAR, &CTrackTheCarDlg::OnBnClickedBMainStopCar)
 END_MESSAGE_MAP()
 
 
@@ -115,6 +120,9 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     // set the flag
     car_working = false;
 
+    // disable the buttons
+    m_btn_start_car.EnableWindow(FALSE);
+    m_btn_stop_car.EnableWindow(FALSE);
     AddToConsole(_T("Track the car app init finished, waiting for orders..."));
 
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
@@ -584,6 +592,11 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
         return;
     }
 
+    if(!g_configs->raw_line.IsSet()){
+        AfxMessageBox(L"Map line not generated!");
+        return;
+    }
+
     // TODO: Connect and find the car, and find the lines
     CSmallCar::CAR_ERROR e;
     e = m_car.Init(&m_main_input,&m_main_output,&m_main_output2,g_configs);
@@ -596,6 +609,28 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
         AfxMessageBox(L"Can't connect car, please set the right com port,and open the car");
         return;
     }
+    if(CSmallCar::NO_CAR_ERROR == e){
+        AddToConsole(L"Car initialized, waiting for order");
+        m_btn_start_car.EnableWindow(TRUE);
+    }
+}
+
+void CTrackTheCarDlg::OnBnClickedBMainStartCar()
+{
+    m_btn_prepare_car.EnableWindow(FALSE);
+    m_btn_stop_car.EnableWindow(TRUE);
+    // send the message to start the car, and start the loop
+    m_car.StartCar();
+    // timer!
+}
 
 
+void CTrackTheCarDlg::OnBnClickedBMainStopCar()
+{
+     // stop the car, in case something wrong has happened
+    m_btn_prepare_car.EnableWindow(TRUE);
+    m_btn_start_car.EnableWindow(TRUE);
+    m_btn_stop_car.EnableWindow(FALSE);
+    m_car.StopCar();
+    // killer timer
 }
