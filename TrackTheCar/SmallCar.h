@@ -50,7 +50,6 @@ public:
     // Method 2 move in points
 
 private:
-    bool init_success;
     CImageProc m_proc;
 
     CCvPicCtrl* m_camera;

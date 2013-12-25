@@ -68,7 +68,8 @@ public:
     std::vector<CLine> SortLines(std::vector<CLine> o_lines,
         CvPoint car_head,CvPoint car_tail,
         double point_dist = LINE_POINT_DIST);
-    // 根据c_point的位置找离他最近的直线，找到后把该直线的passed设为true
+
+    // abandoned:根据c_point的位置找离他最近的直线，找到后把该直线的passed设为true
     bool FindNearestLine(CLine& r_line,std::vector<CLine>& o_lines,CvPoint c_point);
 
     // 使用角点的走法

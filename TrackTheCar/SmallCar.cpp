@@ -4,7 +4,6 @@ using namespace std;
 
 CSmallCar::CSmallCar(void)
 {
-    init_success = false;
 }
 
 CSmallCar::~CSmallCar(void)
@@ -22,8 +21,8 @@ CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CCvPicCtrl* output_map,
     m_output_car = output_car;
     m_config = config;
     // sort the lines
+
     // show the image in the output
-    // a green circle to show the car pos
     cvCircle(m_output_car->GetCurrentFrame(),m_car_info.core,10,CV_RGB(0,255,0),3);
     
     m_output_map->UpdateFrame();
@@ -44,7 +43,7 @@ bool CSmallCar::GetCarInfo(CarInfo& info){
 
     core = cvPoint((head.x+tail.x)/2,(head.y+tail.y)/2);
 
-    double head_tail_dist = m_route.Distance(head,tail);
+    double head_tail_dist = CLine::Distance(head,tail);
     double car_length = head_tail_dist / HEADTAIL_DISTANCE * CAR_LENGTH;
 
     info.head = head;
