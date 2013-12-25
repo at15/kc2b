@@ -207,45 +207,42 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
             return PASS_POINT;
     }
 
-    
-    if(fabs(direction_car - direction_target) > angle_error) //小车与目标不在同一方向，则转向
+    // in the same direction, just go forward
+    if(fabs(direction_car - direction_target) <= angle_error){
+        m_car_control.GoForward(true);
+    }
+
+    if(direction_car<180)
     {
-        if(direction_car<180)
+        if(direction_target>direction_car && direction_target<direction_car+180) //左转
         {
-            if(direction_target>direction_car && direction_target<direction_car+180) //左转
-            {
-                m_car_control.GoLeft();
-                //m_car_control.GoForward();
-                return TURN_LEFT;
-            }
-            else //右转
-            {
-                m_car_control.GoRight();
-                //m_car_control.GoForward();
-                return TURN_RIGHT;
-            }
+            m_car_control.GoLeft();
+            //m_car_control.GoForward();
+            return TURN_LEFT;
         }
-        else
+        else //右转
         {
-            if(direction_target>direction_car-180 && direction_target<direction_car) //右转
-            {
-                m_car_control.GoRight();
-                //m_car_control.GoForward();
-                return TURN_RIGHT;
-            }
-            else //左转
-            {
-                m_car_control.GoLeft();
-                //m_car_control.GoForward();
-                return TURN_LEFT;
-            }
+            m_car_control.GoRight();
+            //m_car_control.GoForward();
+            return TURN_RIGHT;
         }
     }
-    else //小车与目标已在同一方向，则向前开
+    else
     {
-        m_car_control.GoForward();// 应该会把头转回来
-        return GO_FORWARD;
+        if(direction_target>direction_car-180 && direction_target<direction_car) //右转
+        {
+            m_car_control.GoRight();
+            //m_car_control.GoForward();
+            return TURN_RIGHT;
+        }
+        else //左转
+        {
+            m_car_control.GoLeft();
+            //m_car_control.GoForward();
+            return TURN_LEFT;
+        }
     }
+
     return REACH_POINT;
 }
 
