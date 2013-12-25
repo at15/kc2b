@@ -438,134 +438,43 @@ void CTrackTheCarDlg::CamProc(){
 }
 
 void CTrackTheCarDlg::CarProc(){
-    //car_working = true;
+    // this is new car proc
+    car_working = true;
 
-    //CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    if(!m_car.GetCarInfo()){
+        ExitCarProc();
+        AddToConsole(L"Can't find car!.Exit now");
+        AfxMessageBox(L"Can't find car!.Exit now");
+        return;
+    }
 
-    //CvPoint from;
-    //CvPoint to;
-    //CSmallCar::MOVE_RESULT re;
-    //CString op;
-    //CSmallCar::FIND_POINT pre = m_car.FindNextPoint(&to);
-    //// 已经走完了！
-    //if(pre == CSmallCar::NO_MORE_POINT){
-    //    AddToConsole("reach last point!");
-    //    ExitCarProc(true);
-    //    AfxMessageBox(L"The car has reached last point!");
-    //    return;
-    //}
-
-    //// 避免小车卡在一个地方
-    //// 避免小车回头在Move2NextPoint里
-    //int c_same_op = 0;
-    //int c_error_modify = 0; // 自动修改过几次误差值
-    //// 用于记录上一次操作
-    //CSmallCar::MOVE_RESULT last_op = CSmallCar::REACH_POINT;
-    ///*
-    //int c_same_pos;
-    //CRouteHelper route;// 用于计算小车位置的变化
-    //CvPoint last_car_pos;
-    //last_car_pos.x = -1;
-    //last_car_pos.y = -1;*/
-
-    //// the temp value for the small car distance
-    //int t_distance_e = global_configs->GetDistanceError();
-    //int t_angle_e = global_configs->GetAngleError();
-
-    //do{
-
-    //    CamProc();// cap a new frame
-
-    //    if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
-    //        AddToConsole(L"can't find the car pos!");
-    //        ExitCarProc(true);
-    //        AfxMessageBox(L"找不到小车");
-    //        return;
-    //    }
-
-    //    if(m_car.isCarStuck()){
-    //        CString str;
-    //        str.Format(L"car stuck at x=%d y=%d",from.x,from.y);
-    //        AddToConsole(str);
-    //        // 加速一下，然后再捕获
-    //        m_car.SpeedUp();
-    //        continue;
-    //    }
-
-    //    re = m_car.Move2NextPoint(t_distance_e,t_angle_e);
-
-    //    if(re != last_op){
-    //        c_same_op = 0;
-    //        last_op = re;
-    //    }else if((re == CSmallCar::TURN_LEFT) ||
-    //        (re == CSmallCar::TURN_RIGHT)){
-    //            // 如果一直在转弯就得准备允许扩大误差了
-    //            c_same_op++;
-    //    }
-    //    if(MAX_ERROR_MODIFY_TIME < c_error_modify){
-    //        // too much modify!
-    //        CString str;
-    //        str.Format(L"ERROR:too much modify! %d times",c_error_modify);
-    //        AddToConsole(str);
-    //        //AfxMessageBox(L"自动修改次数过多！角点生成有误");
-    //        ExitCarProc(true);
-    //        
-    //    }
-    //    if(MAX_OP_TIME < c_same_op){
-    //        c_same_op = 0;
-    //        t_distance_e += ERROR_MODIFY_VALUE;
-    //        t_distance_e += ERROR_MODIFY_VALUE;
-    //        c_error_modify++;
-    //        AddToConsole("modify");
-    //    }
-    //    // 输出操作结果
-    //    switch(re){
-    //    case CSmallCar::GO_FORWARD:{
-    //        op = L"go forward";
-    //        break;
-    //                               }
-    //    case CSmallCar::TURN_LEFT:{
-    //        op = L"go left";
-    //        break;
-    //                              }
-    //    case CSmallCar::TURN_RIGHT:{
-    //        op = L"go right";
-    //        break;
-    //                               }
-    //    case CSmallCar::REACH_POINT:{
-    //        op = L"reach point";
-    //        break;
-    //                                }
-    //    case CSmallCar::PASS_POINT:{
-    //        op = L"pass point";
-    //        break;
-    //                               }
-
-    //    }
-
-    //    CString str;
-    //    str.Format(L"Op=%s Move from x=%d y=%d to x=%d y=%d",
-    //        op,
-    //        from.x,from.y,
-    //        to.x,to.y);
-    //    AddToConsole(str);
-    //    if(re == CSmallCar::REACH_POINT) break;
-    //    if(re == CSmallCar::PASS_POINT) break;
-
-    //}while(re != CSmallCar::REACH_POINT);
-
-    //AddToConsole("reach point");
-
-
-    //car_working = false;
+    CSmallCar::MOVE_RESULT re;
+    CString log_str,error_str;
+    re = m_car.MoveCar(log_str,error_str);
+    // unknown error
+    if(CSmallCar::MOVE_ERROR == re){
+        ExitCarProc();
+        AddToConsole(L"Error in moving car!.Exit now");
+        AfxMessageBox(L"Error in moving car!.Exit now");
+        return;
+    }
+    // reach the end point
+    if(CSmallCar::REACH_END == re){
+        ExitCarProc();
+        AddToConsole(L"Reach end!");
+        AfxMessageBox(L"Reach end!");
+        return;
+    }
+    // other return value means the car is working fine
+    AddToConsole(log_str);
+    car_working = false;
 }
 
-void CTrackTheCarDlg::ExitCarProc(bool forever /*= true*/){
+void CTrackTheCarDlg::ExitCarProc(){
     m_car.StopCar();
     car_working = false;
-    if(forever){
-        KillTimer(CAR_PROC);
-    }
+    KillTimer(CAR_PROC);
+    AddToConsole(L"CarProc exit. some error may have occurred");
 }
 
 void CTrackTheCarDlg::OnRestConfig()

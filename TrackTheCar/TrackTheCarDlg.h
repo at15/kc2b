@@ -104,7 +104,7 @@ public:
     // The functions which are called in timer
     void CamProc();
     void CarProc();
-    void ExitCarProc(bool forever = true);// 出现问题,退出处理函数。和是否永远退出
+    void ExitCarProc();
 public:
     afx_msg void OnBnClickedStartCar();
     virtual void PostNcDestroy();

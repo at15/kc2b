@@ -23,31 +23,19 @@ public:
         CANT_FIND_CAR,
         CANT_CONNECT_CAR
     };
-    enum FIND_POINT{
-        OK,
-        FAIL,
-        NO_MORE_POINT
-    };
     enum MOVE_RESULT{
         REACH_POINT,
         PASS_POINT,
-        TURN_LEFT,
-        TURN_RIGHT,
-        GO_FORWARD,
-        CAR_STUCK// The car is stuck, need to speed up
+        REACH_END,
+        MOVE_ERROR
     };
     CAR_ERROR Init(CCvPicCtrl* cam,CCvPicCtrl* o_map,CCvPicCtrl* o_car,CGConfigs* config);
+    bool GetCarInfo();
     bool GetCarInfo(CarInfo& info);
     bool StartCar();
     bool StopCar();
-    MOVE_RESULT CarProc();
+    MOVE_RESULT MoveCar(CString& log_str,CString& error_str);
     bool SpeedUp();
-    
-    
-    bool IsEnd();// if the car has reached the end
-    // Method 1 move in lines
-
-    // Method 2 move in points
 
 private:
     CImageProc m_proc;
@@ -67,4 +55,5 @@ private:
     CarInfo m_car_info;
     bool m_reach_end;
     std::vector<CLine> m_map_line;
+    int m_current_line_index; // which line the car is running 0 based
 };
