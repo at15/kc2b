@@ -30,7 +30,7 @@ public:
 	DECLARE_MESSAGE_MAP()
 
 public:
-    CConfigs global_configs;
+    //CConfigs global_configs;
     CGConfigs g_configs;
 };
 

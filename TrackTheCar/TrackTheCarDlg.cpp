@@ -204,6 +204,7 @@ void CTrackTheCarDlg::AddToConsole(const char* str){
 }
 
 void CTrackTheCarDlg::ShowConfig(){
+    /* using CGConfig now
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     m_list_config.DeleteAllItems();
     CString str;
@@ -236,7 +237,7 @@ void CTrackTheCarDlg::ShowConfig(){
     m_list_config.InsertItem(index, L"À¶ÑÀ¶Ë¿Ú");
     str.Format(L"%d",global_configs->GetCOM());
     m_list_config.SetItemText(index,1,str);
-
+    */
 }
 
 void CTrackTheCarDlg::OnCapPic()
@@ -452,8 +453,9 @@ void CTrackTheCarDlg::ExitCarProc(){
 
 void CTrackTheCarDlg::OnRestConfig()
 {
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    global_configs->RestConfig();
+    
+    CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
+    g_configs->ResetConfig();
     ShowConfig();
 }
 

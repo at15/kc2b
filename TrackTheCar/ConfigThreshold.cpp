@@ -98,7 +98,7 @@ BOOL CConfigThreshold::OnInitDialog()
     CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
     int t;
     for(int i=0;i<6;i++){
-        g_configs->default_threshold.GetItem(i,t);
+        t = g_configs->default_threshold.Get().at(i);
         m_sliders.at(i)->SetPos(t);
     }
     m_red_threshold = g_configs->default_threshold.Get();

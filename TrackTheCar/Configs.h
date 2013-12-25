@@ -58,21 +58,27 @@ public:
         }
         return &m_value;
     }
+    /*
     // get a copy of one specific item
     bool GetItem(int index,T& item){
         if(!m_set){
             return false;
         }
-        if((index < 0) || (index-1 > m_value.size())){
+        if((index < 0) || (index+1 > m_value.size())){
             return false;
         }
         item = m_value.at(index);
         return true;
-    }
+    }*/
     // add item 
     void PushBack(T item){
         m_value.push_back(item);
         m_set = true;
+    }
+    // delete all item
+    void Clear(){
+        m_set = false;
+        m_value.clear();
     }
 
 private:
@@ -119,6 +125,7 @@ private:
     void LoadDefault();
 };
 
+/*
 class CConfigs
 {
 public:
@@ -221,4 +228,4 @@ private:
     // the length of the car in the transformed image
     int m_car_length;
     void LoadDefaultSetting();
-};
+};*/

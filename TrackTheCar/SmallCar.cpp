@@ -112,6 +112,7 @@ bool CSmallCar::StopCar(){
 
 CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
 {
+    error_str = L"";
     // 1 determine what to do
     // 2 draw the result on the screen
     if(!GetCarInfo(m_car_info)){
@@ -119,16 +120,17 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
         error_str = L"can't find the car";
         return MOVE_ERROR;
     }
+    // Should stop the car now
     if(m_config->sorted_line.Get().size() == (m_current_line_index+1)){
+        m_car_control.Stop();
         log_str = L"Reach last point";
-        error_str = L"";
         return REACH_END;
     }
 
     // move the car
 
     CLine current_line;
-    m_config->sorted_line.GetItem(m_current_line_index,current_line);
+    m_config->sorted_line.Get().at(m_current_line_index);
 
     //求小车向量方向
     double direction_car=m_route.Angle(m_car_info.tail,m_car_info.head);
@@ -141,6 +143,8 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
     if(distance <= m_config->route_distance_error.Get()) {
         m_car_control.Stop();
         m_current_line_index++;
+        log_str.Format(L"reach point x=%d y=%d",current_line.end().x,
+            current_line.end().y);
         return REACH_POINT;
     }
 
@@ -150,12 +154,20 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
         fabs(direction_car - direction_target)< 270 ){
             m_car_control.Stop();
             m_current_line_index++;
+            log_str.Format(L"Warning:Pass point x=%d y=%d",current_line.end().x,
+                current_line.end().y);
+            error_str = L"";
             return PASS_POINT;
     }
 
     // in the same direction, just go forward
     if(fabs(direction_car - direction_target) <= m_config->route_angle_error.Get()){
         m_car_control.GoForward(true);
+        log_str.Format(L"Forward from x=%d y=%d to x=%d y=%d",
+            m_car_info.core.x,
+            m_car_info.core.y,
+            current_line.end().x,
+            current_line.end().y);
         return MOVE_FORWARD;
     }
 
@@ -166,9 +178,19 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
     // 上一次的操作，如果相同就不再发出指令。
     if(car_vec.Cross(drct_vec) < 0){
         m_car_control.GoRight();
+        log_str.Format(L"Right from x=%d y=%d to x=%d y=%d",
+            m_car_info.core.x,
+            m_car_info.core.y,
+            current_line.end().x,
+            current_line.end().y);
         return TURN_RIGHT;
     }else{
         m_car_control.GoLeft();
+        log_str.Format(L"Left from x=%d y=%d to x=%d y=%d",
+            m_car_info.core.x,
+            m_car_info.core.y,
+            current_line.end().x,
+            current_line.end().y);
         return TURN_LEFT;
     }
 }

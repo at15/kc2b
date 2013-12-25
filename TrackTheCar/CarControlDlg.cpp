@@ -46,14 +46,14 @@ END_MESSAGE_MAP()
 
 void CarControlDlg::OnBnClickedInitCar()
 {
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
     UpdateData();
     if(!m_com_num){
         AfxMessageBox(_T("no com num!!"));
     }else{
         if(m_car_ctrl.Init(m_com_num)){
             AfxMessageBox(_T("init success!"));
-            global_configs->SetCOM(m_com_num);
+            g_configs->com_port.Set(m_com_num);
         }else{
             AfxMessageBox(_T("init fail!"));
         }
@@ -99,8 +99,8 @@ BOOL CarControlDlg::OnInitDialog()
     CDialogEx::OnInitDialog();
 
     // TODO:  在此添加额外的初始化
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    m_com_num = global_configs->GetCOM();
+    CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
+    m_com_num = g_configs->com_port.Get();
     UpdateData(FALSE);
 
     return TRUE;  // return TRUE unless you set the focus to a control
