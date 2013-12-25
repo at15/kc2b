@@ -183,16 +183,20 @@ void CTrackTheCarDlg::PostNcDestroy()
     CDialogEx::PostNcDestroy();
 }
 
-void CTrackTheCarDlg::AddToConsole(const CString& str){
+void CTrackTheCarDlg::AddToConsole(const CString& str,bool show /*=false*/){
+    if(!show){
+        m_log_file.WriteString(str);// write to log file;
+        return;
+    }
     CString old;
     m_main_console.GetWindowTextW(old);
     old.Append(str);
     old.Append(L"\r\n");
     m_main_console.SetWindowTextW(old);
-    m_log_file.WriteString(old);// write to log file;
+    
 }
 
-void CTrackTheCarDlg::AddToConsole(const char* str){
+void CTrackTheCarDlg::AddToConsole(const char* str,bool show /*=false*/){
     CString old;
     m_main_console.GetWindowTextW(old);
     wchar_t* wstr = EZ::CStrConv::ansi2utf16(str);
@@ -414,8 +418,8 @@ void CTrackTheCarDlg::CamProc(){
 void CTrackTheCarDlg::CarProc(){
     // this is new car proc
     car_working = true;
-
-    if(!m_car.GetCarInfo()){
+    CvPoint car_head,car_tail,car_target;
+    if(!m_car.GetCarInfo(&car_head,&car_tail,&car_target)){
         ExitCarProc();
         AddToConsole(L"Can't find car!.Exit now");
         AfxMessageBox(L"Can't find car!.Exit now");

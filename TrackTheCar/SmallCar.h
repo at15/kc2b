@@ -33,7 +33,7 @@ public:
         MOVE_ERROR
     };
     CAR_ERROR Init(CCvPicCtrl* cam,CCvPicCtrl* o_map,CCvPicCtrl* o_car,CGConfigs* config);
-    bool GetCarInfo();
+    bool GetCarInfo(CvPoint* head,CvPoint* tail,CvPoint* target);
     bool GetCarInfo(CarInfo& info);
     bool StartCar();
     bool StopCar();

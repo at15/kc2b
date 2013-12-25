@@ -74,17 +74,20 @@ bool CSmallCar::GetCarInfo(CarInfo& info){
     return true;
 }
 
-bool CSmallCar::GetCarInfo()
+bool CSmallCar::GetCarInfo(CvPoint* head,CvPoint* tail,CvPoint* target)
 {
-    CvPoint head,tail;
+    CvPoint t_head,t_tail;
     IplImage* t = m_camera->GetCurrentFrame();
 
-    head = m_proc.GetRedCore(t,m_config->red_threshold.Get());
-    tail = m_proc.GetBlueCore(t,m_config->blue_threshold.Get());
+    t_head = m_proc.GetRedCore(t,m_config->red_threshold.Get());
+    t_tail = m_proc.GetBlueCore(t,m_config->blue_threshold.Get());
 
-    if(head.x < 0 || head.y <0 || tail.x < 0 || tail.y < 0 ){
+    if(t_head.x < 0 || t_head.y <0 || t_tail.x < 0 || t_tail.y < 0 ){
         return false;// can't find the car
     }else{
+        *head = t_head;
+        *tail = t_tail;
+        *target = m_config->sorted_line.Get().at(m_current_line_index).end();
         return true;
     }
 }
@@ -120,6 +123,7 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
         error_str = L"can't find the car";
         return MOVE_ERROR;
     }
+
     // Should stop the car now
     if(m_config->sorted_line.Get().size() == (m_current_line_index+1)){
         m_car_control.Stop();
