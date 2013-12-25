@@ -330,7 +330,7 @@ void CImageProc::DrawMiddleCircle(IplImage* img,CvScalar color /* = CV_RGB(0,255
     int h = img->height;
     cvCircle(img,cvPoint(w/2,h/2),10,color,3);
 }
-// the order of fout points is 
+// the order of four points is 
 // left top,right top, right bottom, left bottom
 std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img_bin,int corner_width,int corner_height){
     // step 1 find the left one

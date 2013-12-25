@@ -91,7 +91,7 @@ public:
     CConfigInt route_angle_error;
 
     // The four corner of the map,used for transform the image
-    CConfigVector<int> map_corner;
+    CConfigVector<CvPoint> map_corner;
     // The size of the corner,the shouldn't be in the transformed map
     CConfigInt map_corner_width;
     CConfigInt map_corner_height;

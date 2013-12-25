@@ -103,6 +103,8 @@ void CGConfigs::LoadDefault()
     default_threshold.PushBack(80);
     default_threshold.PushBack(80);
 
+   red_threshold = default_threshold;
+   blue_threshold = default_threshold;
 
 }
 

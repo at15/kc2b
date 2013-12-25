@@ -65,9 +65,10 @@ void CTransformDlg::process(int corner_size/* = 0*/){
     IplImage* redbin = proc.GetRedBinary(m_input_pic.GetCurrentFrame(),g_configs->red_threshold.Get());
     m_bin_pic.SetCurrentFrame(redbin);
     // find the corners
-    std::vector<CvPoint> corners = proc.FindMapCorner(redbin,global_configs->GetCornerSize());
+    std::vector<CvPoint> corners = proc.FindMapCorner(redbin,g_configs->map_corner_width.Get(),
+        g_configs->map_corner_height.Get());
     // store it to the global var
-    global_configs->SetMapCorners(corners);
+    g_configs->map_corner.Set(corners);
     // show the transformed result
     IplImage* transformed_pic= proc.TransformImage(m_input_pic.GetCurrentFrame(),corners);
     m_output_pic.SetCurrentFrame(transformed_pic);

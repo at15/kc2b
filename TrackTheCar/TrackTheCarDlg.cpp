@@ -590,8 +590,7 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
         return;
     }
     if(CSmallCar::CANT_CONNECT_CAR == e){
-        AfxMessageBox(L"Can't connect car, please set the right com port, "
-            "and open the car");
+        AfxMessageBox(L"Can't connect car, please set the right com port,and open the car");
         return;
     }
 
