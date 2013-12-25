@@ -8,10 +8,9 @@
 #define HEADTAIL_DISTANCE 8.5 
 #define CAR_SPEED 4
 
-// for opencv functions
-// 用于寻找角点 cvgoodfeaturestotrack
-#define MCV_QUALITY_LEVEL 0.10
-#define MCV_MIN_DISTANCE 10
+// for the map
+#define MAP_THRESHOLD 90
+#define MAP_THIN_ITERATION 20
 // Hough变换找直线
 #define MCV_LINE_EXIST 10 // 线段是否存在的阀值
 #define MCV_MIN_LINE_LENGTH 20 // 最短线段的长度，短于它的将被忽略
@@ -21,19 +20,7 @@
 #define LINE_POINT_DIST 10 // 线段排序时，若端点距离小于它合为一点，否则增加一条直线
 
 // for route helper functions
-#define DISTANCE_ERROR 30 //当距离小于等于distance_error像素时，可认为为0
+#define DISTANCE_ERROR 30 //当距离小于等于distance_error像素时，可认为已到达该点
 #define ANGLE_ERROR 20 // 当角度小于distance_error像素时，可认为是0
 
-
-// for error handling in the car
-
-// for control the car in MainDlg
-#define MAX_OP_TIME 20 // 小车单一操作最多的重复次数，超过它就会修改误差值
-#define MAX_ERROR_MODIFY_TIME 5 // 最多可以修改几次误差值
-#define ERROR_MODIFY_VALUE 5 // 单次修改的误差值
-
-// 确定小车是不是卡在那里的值
-#define CAR_S_MAX_TIME  10// 在一个点附近卡了多少次之后就算卡住了
-#define CAR_S_DISTANCE_ERROR_P 0.1 // 离上一个点多近才算卡在这一点,
-// 0.1表示这个距离是车长的0.1
-#define CAR_S_SLEEP_TIME 20 // 加速后等待多少时间减速
+#define CAR_S_SLEEP_TIME 20

@@ -18,8 +18,8 @@ void CConfigs::LoadDefaultSetting(){
     m_map_threshold = 99;
     m_thin_iteration = 20; // 20 times for the thin
 
-    m_mcv_quality_level = MCV_QUALITY_LEVEL;
-    m_mcv_min_distance = MCV_MIN_DISTANCE;
+    //m_mcv_quality_level = MCV_QUALITY_LEVEL;
+    //m_mcv_min_distance = MCV_MIN_DISTANCE;
 
     m_line_distance_error = LINE_DISTANCE_ERROR;
 
@@ -99,6 +99,9 @@ void CGConfigs::LoadDefault()
 
     map_corner_height.Set(CORNER_SIZE);
     map_corner_width.Set(CORNER_SIZE);
+
+    map_threshold.Set(MAP_THRESHOLD);
+    map_thin_iteration.Set(MAP_THIN_ITERATION);
 
     line_distance_error.Set(LINE_DISTANCE_ERROR);
 

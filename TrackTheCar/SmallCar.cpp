@@ -29,6 +29,22 @@ CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CCvPicCtrl* output_map,
     cvCircle(m_output_car->GetCurrentFrame(),m_car_info.core,10,CV_RGB(0,255,0),3);
     // show the new map in the output
     m_proc.DrawLines(m_output_map->GetCurrentFrame(),m_config->sorted_line.Get());
+    /*
+    // 设置初始点对线段排序影响很大
+    vector<CLine> v_processed = proc.SortLines(v_lines,cvPoint(400,600),cvPoint(400,600));
+    global_configs->SetMapLine(v_lines);
+
+    // show it in the dialog
+    m_map_line_gened.SetCurrentFrame(m_map_thin.GetCurrentFrame(),false);
+    //proc.DrawLines(m_map_line_gened.GetCurrentFrame(),v_processed); 
+    cvSetZero(m_map_line_gened.GetCurrentFrame());
+    for(int i=0;i<v_processed.size();i++){
+        cvLine(m_map_line_gened.GetCurrentFrame(),v_processed.at(i).start(),v_processed.at(i).end(),cvScalar(255,0,0));
+        Sleep(500);
+        m_map_line_gened.UpdateFrame();
+    }
+    m_map_line_gened.UpdateFrame();
+    */
     m_output_map->UpdateFrame();
     m_output_car->UpdateFrame();
     return NO_CAR_ERROR;

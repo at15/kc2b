@@ -1,5 +1,6 @@
 #pragma once
 #include "CameraCtrl.h"
+#include "afxwin.h"
 
 // CMapDlg 对话框
 
@@ -34,22 +35,12 @@ private:
     CCvPicCtrl m_map_line_gened;
 public:
     afx_msg void OnBnClickedMapOpenImage();
-    afx_msg void OnBnClickedMapChange();
     // the threshold for the map binary
     int m_map_threshold;
     // the time for the thin
     int m_thin_iteration;
-    // used in cvgoodfeaturetrack
-    double m_quality_level;
-    // used in cvgoodfeature track,the min distance between two points
-    int m_min_distance;
-    afx_msg void OnBnClickedMapPointGen();
-private:
-    bool map_gened;
-    bool map_point_gened;
-public:
-    afx_msg void OnBnClickedMapLineGen();
     // 去除重复直线时允许的间距
     double m_line_distance_error;
-    virtual BOOL PreTranslateMessage(MSG* pMsg);
+    afx_msg void OnBnClickedBMapRegen();
+    CButton m_btn_regen_all;
 };

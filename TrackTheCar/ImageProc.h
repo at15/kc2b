@@ -72,11 +72,5 @@ public:
     // abandoned:根据c_point的位置找离他最近的直线，找到后把该直线的passed设为true
     bool FindNearestLine(CLine& r_line,std::vector<CLine>& o_lines,CvPoint c_point);
 
-    // 使用角点的走法
-    void FindMapPoints(IplImage* pSrc,std::vector<CvPoint2D32f>& v_corners,
-        double qualityLevel=MCV_QUALITY_LEVEL,
-        double minDistance=MCV_MIN_DISTANCE);
-
-    void DrawMapPoints(IplImage* pSrc,const std::vector<CvPoint2D32f>& v_corners);
 };
 

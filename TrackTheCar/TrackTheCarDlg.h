@@ -95,7 +95,6 @@ public:
     afx_msg void OnConfigTransform();
     afx_msg void OnMainOpenImage();
     afx_msg void OnConfigMap();
-    afx_msg void OnCenCorner();
     afx_msg void OnCarConfig();
     afx_msg void OnMainOpenCam();
     afx_msg void OnTimer(UINT_PTR nIDEvent);

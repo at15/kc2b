@@ -48,7 +48,6 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_COMMAND(ID_32773, &CTrackTheCarDlg::OnConfigTransform)
     ON_COMMAND(ID_32778, &CTrackTheCarDlg::OnMainOpenImage)
     ON_COMMAND(ID_32781, &CTrackTheCarDlg::OnConfigMap)
-    ON_COMMAND(ID_32782, &CTrackTheCarDlg::OnCenCorner)
     ON_COMMAND(ID_32777, &CTrackTheCarDlg::OnCarConfig)
     ON_COMMAND(ID_32780, &CTrackTheCarDlg::OnMainOpenCam)
     ON_WM_TIMER()
@@ -298,32 +297,6 @@ void CTrackTheCarDlg::OnMainOpenImage()
 }
 
 
-void CTrackTheCarDlg::OnCenCorner()
-{
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    // TODO: typo ... should be OnGenCorner
-    CImageProc proc;
-    m_main_output.SetCurrentFrame(m_main_input.GetCurrentFrame());
-
-    // first get the bin image
-    IplImage* grey = proc.GetGrey(m_main_output.GetCurrentFrame());
-    // add true get the different type of binary image.... 
-    IplImage* bin = proc.GetBinary(grey,global_configs->GetMapThreshold(),true);
-    proc.cvThin(bin,bin,global_configs->GetThinIteration());
-
-    vector<CvPoint2D32f> points;
-    proc.FindMapPoints(bin,points);
-    // set the map point in global
-    global_configs->SetMapPoint(points);
-    proc.DrawMapPoints(m_main_output.GetCurrentFrame(),points); 
-    m_main_output.UpdateFrame();
-
-    cvReleaseImage(&grey);
-    cvReleaseImage(&bin);
-    ShowConfig();
-}
-
-
 void CTrackTheCarDlg::OnCarConfig()
 {
     m_dlg_car = new CarControlDlg;
@@ -358,11 +331,11 @@ void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
 void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
     // transform the image
     CImageProc proc;
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
     // return if the transform is not set
-    if(!global_configs->IsTransfromSet()) return; 
+    if(!g_configs->map_corner.IsSet()) return; 
     IplImage* transformed_pic= proc.TransformImage(pic_ctrl->GetCurrentFrame(),
-        global_configs->GetMapCorner());
+        g_configs->map_corner.Get());
     pic_ctrl->SetCurrentFrame(transformed_pic);
     cvReleaseImage(&transformed_pic);
 }

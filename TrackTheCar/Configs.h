@@ -81,7 +81,7 @@ private:
     bool b_throw;
 };
 
-// global configs
+// global config
 class CGConfigs{
 public:
     CGConfigs();

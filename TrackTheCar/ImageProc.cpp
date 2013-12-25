@@ -174,162 +174,6 @@ CvPoint CImageProc::GetBlueCore(IplImage* color_image,std::vector<int> threshold
     cvReleaseImage(&bluebin);
     return blue_p;
 }
-
-vector<CLine> CImageProc::FindLines(IplImage* binary_image,
-    double line_distance_error /*= LINE_DISTANCE_ERROR */){
-        CvMemStorage* storage = cvCreateMemStorage(); //创建一片内存区域存储线段数据
-        // 使用Hough变换找到所有的直线
-        CvSeq* lines = cvHoughLines2(binary_image, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 
-            MCV_LINE_EXIST, MCV_MIN_LINE_LENGTH, MCV_MAX_LINE_DISTANCE);
-
-        // remove the redundant lines
-        int total_found = lines->total;
-        // store all the lines found by cvHoughLines2 in a CLine vector
-        vector<CLine> all_lines;
-        for(int i=0;i<total_found;i++){
-            all_lines.push_back(CLine(lines,i));
-        }
-        // return all_lines;// for debug ...
-        // store the cleaned up lines
-        vector<CLine> final_lines;
-        for(int i=0;i<all_lines.size();i++){
-            CLine current = all_lines.at(i);
-            bool is_child = false;
-            for(int j=0;j<all_lines.size();j++){
-                if(i == j) continue;
-                if(current.IsChildLine(all_lines.at(j),line_distance_error)){
-                    is_child = true;
-                    break;
-                }
-            }
-            if(!is_child){
-                final_lines.push_back(current);
-            }
-        }
-
-        return final_lines;
-}
-
-void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines){
-    cvSetZero(pSrc);
-    for(int i=0;i<v_lines.size();i++){
-        cvLine(pSrc,v_lines.at(i).start(),v_lines.at(i).end(),cvScalar(255,0,0));
-        //Sleep(500);
-    }
-}
-
-// Sort the lines with the given start point
-vector<CLine> CImageProc::SortLines(std::vector<CLine> o_lines,
-    CvPoint car_head,CvPoint car_tail,
-    double point_dist/* = LINE_POINT_DIST*/){
-
-        if(o_lines.empty()){
-            throw logic_error("can't sort empty vector<CLine>");
-        }
-
-        CvPoint start_piont;
-        start_piont.x = (car_head.x + car_tail.x)/2;
-        start_piont.y = (car_head.y + car_tail.y)/2;
-
-        // find the first line, which is nearest to the start point
-        int i_first_line = CLine::FindNearestLine(start_piont,o_lines);
-
-        vector<CLine> sorted_lines;
-        CLine current_line,next_line;
-        current_line = o_lines.at(i_first_line);
-        // make sure the start of the line is closer to the car's tail
-        if(current_line.StartDist(car_tail) > current_line.StartDist(car_head)){
-            current_line.Swap();
-        }
-        sorted_lines.push_back(current_line);
-        o_lines.erase(o_lines.begin()+i_first_line,o_lines.begin()+i_first_line+1);
-
-        // keep finding all the lines
-        //for(int i=0;i<o_lines.size();i++){
-        while(!o_lines.empty()){
-            int j = CLine::FindNearestLine(current_line.end(),o_lines);
-            // The closer point should be the start point
-            if(o_lines.at(j).StartDist(current_line.end()) >
-                o_lines.at(j).EndDist(current_line.end())){
-                    o_lines.at(j).Swap();
-            }
-            
-            // if the end of line1 and start of line2 is close enough, they become
-            // a same point, otherwise a new line generated
-            if(o_lines.at(j).StartDist(current_line.end()) < point_dist){
-                // o_line[j].Start() is close enough to current_line.end()
-                next_line = CLine(current_line.end(),o_lines.at(j).end());
-            }else{
-                next_line = o_lines.at(j);
-                // add an extra line
-                CLine extra_line = CLine(current_line.end(),next_line.start());
-                sorted_lines.push_back(extra_line);
-            }
-            //next_line = o_lines.at(j); // for debug
-            sorted_lines.push_back(next_line);
-            o_lines.erase(o_lines.begin()+j,o_lines.begin()+j+1);
-            current_line = next_line;
-        }
-        return sorted_lines;
-}
-
-bool CImageProc::FindNearestLine(CLine& r_line,std::vector<CLine>& o_lines,CvPoint c_point){
-    if(o_lines.empty()){
-        throw logic_error("can't find line in empty vector<CLine>");
-    }
-
-    double min_distance = 10000; // 设定一个很大的值
-    int line_index = -1;
-    for(int i=0;i<o_lines.size();i++){
-        if(o_lines.at(i).isPassed()) continue;// 忽略已经走过的线
-        double dist = o_lines.at(i).PointDist(c_point);
-        if(dist < min_distance){
-            min_distance = dist;
-            line_index = i;
-        }
-    }
-
-    if(-1 == line_index){
-        // 没有找到最近的线
-        return false;
-    }else{
-        o_lines.at(line_index).SetPassed();
-        r_line = o_lines.at(line_index);
-        return true;
-    }
-}
-
-void CImageProc::FindMapPoints(IplImage* pSrc,vector<CvPoint2D32f>& v_corners,
-    double qualityLevel/*=MCV_QUALITY_LEVEL*/,
-    double minDistance/*=MCV_MIN_DISTANCE*/){
-        // Create temporary images required by cvGoodFeaturesToTrack  
-        IplImage* corners1 = cvCreateImage(cvGetSize(pSrc),IPL_DEPTH_32F,1);
-        IplImage* corners2 = cvCreateImage(cvGetSize(pSrc),IPL_DEPTH_32F,1);
-        // Create the array to store the points detected( <= 1000 )  
-        int count = 1000;  
-        CvPoint2D32f* corners = new CvPoint2D32f[count];  
-        cvGoodFeaturesToTrack(pSrc, corners1, corners2, corners, &count,qualityLevel,minDistance,0);
-
-        if(!v_corners.empty()) v_corners.clear();
-        for(int i=0;i<count;i++)  
-        {  
-            v_corners.push_back(corners[i]);
-        }
-        delete corners;
-}
-
-void CImageProc::DrawMapPoints(IplImage* pSrc,const std::vector<CvPoint2D32f>& v_corners){
-    // just draw the circle on the image for the corners
-    for (int i=0;i<v_corners.size();i++){
-        cvCircle(pSrc,cvPointFrom32f(v_corners.at(i)),6, CV_RGB(255,0,0),2);
-    }
-}
-
-void CImageProc::DrawMiddleCircle(IplImage* img,CvScalar color /* = CV_RGB(0,255,0) */){
-    int w = img->width;
-    int h = img->height;
-    cvCircle(img,cvPoint(w/2,h/2),10,color,3);
-}
 // the order of four points is 
 // left top,right top, right bottom, left bottom
 std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img_bin,int corner_width,int corner_height){
@@ -438,4 +282,133 @@ void CImageProc::cvThin (IplImage* src, IplImage* dst, int iterations /*= 1*/) {
                     } 
         } 
         cvReleaseImage(&t_image); 
+}
+vector<CLine> CImageProc::FindLines(IplImage* binary_image,
+    double line_distance_error /*= LINE_DISTANCE_ERROR */){
+        CvMemStorage* storage = cvCreateMemStorage(); //创建一片内存区域存储线段数据
+        // 使用Hough变换找到所有的直线
+        CvSeq* lines = cvHoughLines2(binary_image, storage, CV_HOUGH_PROBABILISTIC, 1, CV_PI/180, 
+            MCV_LINE_EXIST, MCV_MIN_LINE_LENGTH, MCV_MAX_LINE_DISTANCE);
+
+        // remove the redundant lines
+        int total_found = lines->total;
+        // store all the lines found by cvHoughLines2 in a CLine vector
+        vector<CLine> all_lines;
+        for(int i=0;i<total_found;i++){
+            all_lines.push_back(CLine(lines,i));
+        }
+        // return all_lines;// for debug ...
+        // store the cleaned up lines
+        vector<CLine> final_lines;
+        for(int i=0;i<all_lines.size();i++){
+            CLine current = all_lines.at(i);
+            bool is_child = false;
+            for(int j=0;j<all_lines.size();j++){
+                if(i == j) continue;
+                if(current.IsChildLine(all_lines.at(j),line_distance_error)){
+                    is_child = true;
+                    break;
+                }
+            }
+            if(!is_child){
+                final_lines.push_back(current);
+            }
+        }
+
+        return final_lines;
+}
+
+void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines){
+    cvSetZero(pSrc);
+    for(int i=0;i<v_lines.size();i++){
+        cvLine(pSrc,v_lines.at(i).start(),v_lines.at(i).end(),cvScalar(255,0,0));
+        //Sleep(500);
+    }
+}
+
+// Sort the lines with the given start point
+vector<CLine> CImageProc::SortLines(std::vector<CLine> o_lines,
+    CvPoint car_head,CvPoint car_tail,
+    double point_dist/* = LINE_POINT_DIST*/){
+
+        if(o_lines.empty()){
+            throw logic_error("can't sort empty vector<CLine>");
+        }
+
+        CvPoint start_piont;
+        start_piont.x = (car_head.x + car_tail.x)/2;
+        start_piont.y = (car_head.y + car_tail.y)/2;
+
+        // find the first line, which is nearest to the start point
+        int i_first_line = CLine::FindNearestLine(start_piont,o_lines);
+
+        vector<CLine> sorted_lines;
+        CLine current_line,next_line;
+        current_line = o_lines.at(i_first_line);
+        // make sure the start of the line is closer to the car's tail
+        if(current_line.StartDist(car_tail) > current_line.StartDist(car_head)){
+            current_line.Swap();
+        }
+        sorted_lines.push_back(current_line);
+        o_lines.erase(o_lines.begin()+i_first_line,o_lines.begin()+i_first_line+1);
+
+        // keep finding all the lines
+        //for(int i=0;i<o_lines.size();i++){
+        while(!o_lines.empty()){
+            int j = CLine::FindNearestLine(current_line.end(),o_lines);
+            // The closer point should be the start point
+            if(o_lines.at(j).StartDist(current_line.end()) >
+                o_lines.at(j).EndDist(current_line.end())){
+                    o_lines.at(j).Swap();
+            }
+
+            // if the end of line1 and start of line2 is close enough, they become
+            // a same point, otherwise a new line generated
+            if(o_lines.at(j).StartDist(current_line.end()) < point_dist){
+                // o_line[j].Start() is close enough to current_line.end()
+                next_line = CLine(current_line.end(),o_lines.at(j).end());
+            }else{
+                next_line = o_lines.at(j);
+                // add an extra line
+                CLine extra_line = CLine(current_line.end(),next_line.start());
+                sorted_lines.push_back(extra_line);
+            }
+            //next_line = o_lines.at(j); // for debug
+            sorted_lines.push_back(next_line);
+            o_lines.erase(o_lines.begin()+j,o_lines.begin()+j+1);
+            current_line = next_line;
+        }
+        return sorted_lines;
+}
+
+bool CImageProc::FindNearestLine(CLine& r_line,std::vector<CLine>& o_lines,CvPoint c_point){
+    if(o_lines.empty()){
+        throw logic_error("can't find line in empty vector<CLine>");
+    }
+
+    double min_distance = 10000; // 设定一个很大的值
+    int line_index = -1;
+    for(int i=0;i<o_lines.size();i++){
+        if(o_lines.at(i).isPassed()) continue;// 忽略已经走过的线
+        double dist = o_lines.at(i).PointDist(c_point);
+        if(dist < min_distance){
+            min_distance = dist;
+            line_index = i;
+        }
+    }
+
+    if(-1 == line_index){
+        // 没有找到最近的线
+        return false;
+    }else{
+        o_lines.at(line_index).SetPassed();
+        r_line = o_lines.at(line_index);
+        return true;
+    }
+}
+
+void CImageProc::DrawMiddleCircle(IplImage* img,CvScalar color /* = CV_RGB(0,255,0) */){
+    int w = img->width;
+    int h = img->height;
+    cvCircle(img,cvPoint(w/2,h/2),10,color,3);
 }
