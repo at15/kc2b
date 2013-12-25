@@ -37,14 +37,16 @@ public:
         CAR_STUCK// The car is stuck, need to speed up
     };
     CAR_ERROR Init(CCvPicCtrl* cam,CCvPicCtrl* o_map,CCvPicCtrl* o_car,CGConfigs* config);
+    bool GetCarInfo(CarInfo& info);
     bool StartCar();
+    bool StopCar();
     MOVE_RESULT CarProc();
     bool SpeedUp();
-    bool StopCar();
-     /* The new routine */
-    bool GetCarInfo(CarInfo& info);
+    
+    
     bool IsEnd();// if the car has reached the end
     // Method 1 move in lines
+
     // Method 2 move in points
 
 private:

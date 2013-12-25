@@ -113,4 +113,5 @@ public:
     CButton m_btn_stop_car;
     afx_msg void OnBnClickedBMainStartCar();
     CButton m_btn_prepare_car;
+    afx_msg void OnBnClickedBMainStopCar();
 };
