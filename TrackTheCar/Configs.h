@@ -48,6 +48,9 @@ public:
         m_value = value;
         m_set = true;
     }
+    bool IsSet(){
+        return m_set;
+    }
     // get a pointer to the value
     const std::vector<T>* GetPtr(){
         if(!m_set){

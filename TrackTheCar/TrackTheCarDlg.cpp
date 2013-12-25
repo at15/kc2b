@@ -571,15 +571,18 @@ void CTrackTheCarDlg::OnRestConfig()
 void CTrackTheCarDlg::OnBnClickedPrepareCar()
 {
     CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
+
     if(!m_main_input.IsCapturing()){
         AfxMessageBox(L"Open the cam please");
         AddToConsole("start_car_error:the cam is not opened");
         return;
-    }else{
-        AddToConsole("cam opened,please set the map and the car");
     }
 
     // check if config is set
+    if(!g_configs->map_corner.IsSet()){
+        AfxMessageBox(L"Map corner not set!");
+        return;
+    }
 
     // TODO: Connect and find the car, and find the lines
     CSmallCar::CAR_ERROR e;
