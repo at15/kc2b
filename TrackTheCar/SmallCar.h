@@ -27,6 +27,9 @@ public:
         REACH_POINT,
         PASS_POINT,
         REACH_END,
+        MOVE_FORWARD,
+        TURN_LEFT,
+        TURN_RIGHT,
         MOVE_ERROR
     };
     CAR_ERROR Init(CCvPicCtrl* cam,CCvPicCtrl* o_map,CCvPicCtrl* o_car,CGConfigs* config);

@@ -94,78 +94,6 @@ bool CSmallCar::StopCar(){
     return true;
 }
 
-//CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE_ERROR*/,
-//    int angle_error/* = ANGLE_ERROR*/){
-//        CImageProc proc;
-//        m_output->SetCurrentFrame(m_camera->GetCurrentFrame(),false);
-//
-//        // a green circle to show the car pos
-//        cvCircle(m_output->GetCurrentFrame(),m_current_car_pos,10,CV_RGB(0,255,0),3);
-//        // a yellow circle for the dst
-//        cvCircle(m_output->GetCurrentFrame(),m_next_point,10,CV_RGB(255,255,50),3);
-//        m_output->UpdateFrame();// why the hell i deleted this?
-//
-//        //求小车向量方向
-//        double direction_car=m_route.Angle(m_tail,m_head);
-//        //小车中心到下一个目标点的向量方向
-//        double direction_target=m_route.Angle(m_current_car_pos,m_next_point);
-//        //小车中心到目标点的距离
-//        double distance=m_route.Distance(m_current_car_pos,m_next_point);
-//        
-//        // 判断车是不是卡住了
-//
-//        // 达到目标
-//        if(distance <= distance_error) {
-//            m_car_control.Stop();
-//            return REACH_POINT;
-//        }
-//        // 如果点在小车身后那就pass了它
-//        if(fabs(direction_car - direction_target)> 90 &&
-//           fabs(direction_car - direction_target)< 270 ){
-//               m_car_control.Stop();
-//               return PASS_POINT;
-//        }
-//        // 转弯之后必须向前走，否则就一直卡那了
-//        if(fabs(direction_car - direction_target) > angle_error) //小车与目标不在同一方向，则转向
-//        {
-//            if(direction_car<180)
-//            {
-//                if(direction_target>direction_car && direction_target<direction_car+180) //左转
-//                {
-//                    m_car_control.GoLeft();
-//                    //m_car_control.GoForward();
-//                    return TURN_LEFT;
-//                }
-//                else //右转
-//                {
-//                    m_car_control.GoRight();
-//                    //m_car_control.GoForward();
-//                    return TURN_RIGHT;
-//                }
-//            }
-//            else
-//            {
-//                if(direction_target>direction_car-180 && direction_target<direction_car) //右转
-//                {
-//                    m_car_control.GoRight();
-//                    //m_car_control.GoForward();
-//                    return TURN_RIGHT;
-//                }
-//                else //左转
-//                {
-//                    m_car_control.GoLeft();
-//                    //m_car_control.GoForward();
-//                    return TURN_LEFT;
-//                }
-//            }
-//        }
-//        else //小车与目标已在同一方向，则向前开
-//        {
-//            m_car_control.GoForward();// 应该会把头转回来
-//            return GO_FORWARD;
-//        }
-//}
-
 CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
 {
     // 1 determine what to do
@@ -190,16 +118,18 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
     double direction_car=m_route.Angle(m_car_info.tail,m_car_info.head);
     //车头到下一点的角度
     double direction_target=m_route.Angle(m_car_info.head,current_line.end());
-    //小车中心到目标点的距离
+    //车头到目标点的距离
     double distance=CLine::Distance(m_car_info.head,current_line.end());
 
     // reach the target
-    if(distance <= distance_error) {
+    if(distance <= m_config->route_distance_error.Get()) {
         m_car_control.Stop();
+        m_current_line_index++;
         return REACH_POINT;
     }
 
     // pass the point if it is behind the car
+    // TODO:this should not happen....,maybe should let the car go back
     if(fabs(direction_car - direction_target)> 90 &&
         fabs(direction_car - direction_target)< 270 ){
             m_car_control.Stop();
@@ -208,41 +138,19 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
     }
 
     // in the same direction, just go forward
-    if(fabs(direction_car - direction_target) <= angle_error){
+    if(fabs(direction_car - direction_target) <= m_config->route_angle_error.Get()){
         m_car_control.GoForward(true);
+        return MOVE_FORWARD;
     }
 
-    if(direction_car<180)
-    {
-        if(direction_target>direction_car && direction_target<direction_car+180) //左转
-        {
-            m_car_control.GoLeft();
-            //m_car_control.GoForward();
-            return TURN_LEFT;
-        }
-        else //右转
-        {
-            m_car_control.GoRight();
-            //m_car_control.GoForward();
-            return TURN_RIGHT;
-        }
-    }
-    else
-    {
-        if(direction_target>direction_car-180 && direction_target<direction_car) //右转
-        {
-            m_car_control.GoRight();
-            //m_car_control.GoForward();
-            return TURN_RIGHT;
-        }
-        else //左转
-        {
-            m_car_control.GoLeft();
-            //m_car_control.GoForward();
-            return TURN_LEFT;
-        }
-    }
+    // see if go right or left
+    CVector car_vec(m_car_info.tail,m_car_info.head);
+    CVector drct_vec(current_line.start(),current_line.end());
 
-    return REACH_POINT;
+    if(car_vec.Cross(drct_vec) < 0){
+        m_car_control.GoRight();
+    }else{
+        m_car_control.GoLeft();
+    }
 }
 

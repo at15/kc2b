@@ -14,15 +14,6 @@ CConfigs::~CConfigs(void)
 }
 
 void CConfigs::LoadDefaultSetting(){
-    // the default setting , for the threshold only at this moment
-    // init the threshold value
-    m_threshold.push_back(150);
-    m_threshold.push_back(138);
-    m_threshold.push_back(40);
-    m_threshold.push_back(100);
-    m_threshold.push_back(80);
-    m_threshold.push_back(80);
-
     // for finding point in the map
     m_map_threshold = 99;
     m_thin_iteration = 20; // 20 times for the thin
@@ -110,6 +101,12 @@ void CGConfigs::LoadDefault()
     map_corner_width.Set(CORNER_SIZE);
 
     line_distance_error.Set(LINE_DISTANCE_ERROR);
+
+    route_distance_error.Set(DISTANCE_ERROR);
+    route_angle_error.Set(ANGLE_ERROR);
+
+    // default com port
+    com_port.Set(7);
 }
 
 CGConfigs::CGConfigs()
