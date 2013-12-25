@@ -332,10 +332,10 @@ void CImageProc::DrawMiddleCircle(IplImage* img,CvScalar color /* = CV_RGB(0,255
 }
 // the order of fout points is 
 // left top,right top, right bottom, left bottom
-std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img,int corner_size/* = CORNER_SIZE*/){
+std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img_bin,int corner_width,int corner_height){
     // step 1 find the left one
-    int w = img->width;
-    int h =img->height;
+    int w = img_bin->width;
+    int h =img_bin->height;
 
     CvRect left_top = cvRect(0,0,w/2,h/2);
     CvRect right_top = cvRect(w/2,0,w/2,h/2);
@@ -343,34 +343,34 @@ std::vector<CvPoint> CImageProc::FindMapCorner(IplImage* img,int corner_size/* =
     CvRect right_bottom = cvRect(w/2,h/2,w/2,h/2);
 
     // set the roi
-    cvSetImageROI(img,left_top);
+    cvSetImageROI(img_bin,left_top);
     // then calc the core to get the point
-    CvPoint left_top_p = CalcCore(img);
-    cvResetImageROI(img);
-    left_top_p.x +=  corner_size; // avoid the corner 
-    left_top_p.y += corner_size;
+    CvPoint left_top_p = CalcCore(img_bin);
+    cvResetImageROI(img_bin);
+    left_top_p.x +=  corner_width; // avoid the corner 
+    left_top_p.y += corner_height;
 
-    cvSetImageROI(img,right_top);
-    CvPoint right_top_p = CalcCore(img);
-    cvResetImageROI(img);
+    cvSetImageROI(img_bin,right_top);
+    CvPoint right_top_p = CalcCore(img_bin);
+    cvResetImageROI(img_bin);
     right_top_p.x += w/2 ;
-    right_top_p.x -= corner_size;
-    right_top_p.y += corner_size;
+    right_top_p.x -= corner_width;
+    right_top_p.y += corner_height;
 
-    cvSetImageROI(img,right_bottom);
-    CvPoint right_bottom_p = CalcCore(img);
-    cvResetImageROI(img);
+    cvSetImageROI(img_bin,right_bottom);
+    CvPoint right_bottom_p = CalcCore(img_bin);
+    cvResetImageROI(img_bin);
     right_bottom_p.x += w/2;
     right_bottom_p.y += h/2;
-    right_bottom_p.x -= corner_size;
-    right_bottom_p.y -= corner_size;
+    right_bottom_p.x -= corner_width;
+    right_bottom_p.y -= corner_height;
 
-    cvSetImageROI(img,left_bottom);
-    CvPoint left_bottom_p = CalcCore(img);
-    cvResetImageROI(img);
+    cvSetImageROI(img_bin,left_bottom);
+    CvPoint left_bottom_p = CalcCore(img_bin);
+    cvResetImageROI(img_bin);
     left_bottom_p.y += h/2;
-    left_bottom_p.x += corner_size;
-    left_bottom_p.y -= corner_size;
+    left_bottom_p.x += corner_width;
+    left_bottom_p.y -= corner_height;
 
     vector<CvPoint> points;
     points.push_back(left_top_p);

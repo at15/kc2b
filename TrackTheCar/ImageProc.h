@@ -54,7 +54,7 @@ public:
 
 
     // find the four red point so we can transform
-    std::vector<CvPoint> FindMapCorner(IplImage* img,int corner_size = CORNER_SIZE);
+    std::vector<CvPoint> FindMapCorner(IplImage* img_bin,int corner_width,int corner_height);
     // transform, corner size can be specified
     IplImage* TransformImage(IplImage* pSrc,std::vector<CvPoint> corners);
 

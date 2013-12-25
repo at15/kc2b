@@ -33,5 +33,6 @@ public:
     afx_msg void OnBnClickedTransformOpenImage();
     afx_msg void OnBnClickedTransformChangeCornerSize();
     // the size of the corner, they are red, so need to be removed to avoid influence on the car
-    int m_corner_size;
+    int m_corner_size_width;
+    int m_corner_size_height;
 };
