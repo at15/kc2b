@@ -26,6 +26,7 @@ class CConfigVector{
 public:
     CConfigVector(){
         m_set = false;
+        b_throw = false;
         m_value.clear();
     }
     // get a copy of all value
@@ -36,6 +37,7 @@ public:
             m_value.clear();
         }
         return m_value;
+
     }
     bool Get(std::vector<T>& v){
         if(!m_set){

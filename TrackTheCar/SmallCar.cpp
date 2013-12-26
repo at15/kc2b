@@ -16,11 +16,13 @@ CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CCvPicCtrl* output_map,
     // check if we can connect the car via blue tooth
     if(!m_car_control.Init(config->com_port.Get())) return CANT_CONNECT_CAR;
     // check if we can find the car
-    if(!GetCarInfo(m_car_info)) return CANT_FIND_CAR;
     m_camera = camera;
     m_output_map = output_map;
     m_output_car = output_car;
     m_config = config;
+
+    if(!GetCarInfo(m_car_info)) return CANT_FIND_CAR;
+    
     // sort the lines
     m_map_line = m_proc.SortLines(m_config->raw_line.Get(),
         m_car_info.head,m_car_info.tail);
