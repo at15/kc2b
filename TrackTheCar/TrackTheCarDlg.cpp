@@ -425,7 +425,7 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
 
     // TODO: Connect and find the car, and find the lines
     CSmallCar::CAR_ERROR e;
-    CarInfo* car_info;
+    CarInfo car_info;
     e = m_car.Init(&m_main_input,g_configs);
     if(CSmallCar::CANT_FIND_CAR == e){
         AfxMessageBox(L"Can't find car, please set the threshold!");
@@ -443,10 +443,12 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
         m_main_output.SetCurrentFrame(g_configs->map_thin.GetImage());
         proc.DrawLines(m_main_output.GetCurrentFrame(),g_configs->sorted_line.Get());
         // show the car position
+        m_car.GetCarInfo(car_info);
         m_main_output2.SetCurrentFrame(m_main_input.GetCurrentFrame());
-        cvCircle(m_main_output2.GetCurrentFrame(),m_car_info.core,10,CV_RGB(0,255,0),3);
+        cvCircle(m_main_output2.GetCurrentFrame(),car_info.core,10,CV_RGB(0,255,0),3);
         m_main_output.UpdateFrame();
         m_main_output2.UpdateFrame();
+
         m_btn_start_car.EnableWindow(TRUE);
     }
 }

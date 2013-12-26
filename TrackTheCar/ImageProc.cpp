@@ -318,11 +318,11 @@ vector<CLine> CImageProc::FindLines(IplImage* binary_image,
         return final_lines;
 }
 
-void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines){
+void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines,int delay /*= 0*/){
     cvSetZero(pSrc);
     for(int i=0;i<v_lines.size();i++){
         cvLine(pSrc,v_lines.at(i).start(),v_lines.at(i).end(),cvScalar(255,0,0));
-        //Sleep(500);
+        if(0 != delay) Sleep(delay);// show the process of drawing
     }
 }
 

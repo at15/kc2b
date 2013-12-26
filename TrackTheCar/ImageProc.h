@@ -64,7 +64,7 @@ public:
     // 使用线段的走法
     std::vector<CLine> FindLines(IplImage* binary_image,
         double line_distance_error = LINE_DISTANCE_ERROR);
-    void DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines);
+    void DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines,int delay = 0);
     std::vector<CLine> SortLines(std::vector<CLine> o_lines,
         CvPoint car_head,CvPoint car_tail,
         double point_dist = LINE_POINT_DIST);
