@@ -283,6 +283,7 @@ void CImageProc::cvThin (IplImage* src, IplImage* dst, int iterations /*= 1*/) {
         } 
         cvReleaseImage(&t_image); 
 }
+
 vector<CLine> CImageProc::FindLines(IplImage* binary_image,
     double line_distance_error /*= LINE_DISTANCE_ERROR */){
         CvMemStorage* storage = cvCreateMemStorage(); //创建一片内存区域存储线段数据

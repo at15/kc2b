@@ -163,7 +163,8 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
 
     // in the same direction, just go forward
     if(fabs(direction_car - direction_target) <= m_config->route_angle_error.Get()){
-        m_car_control.GoForward(true);
+        //m_car_control.GoForward(true);
+        m_car_control.GoForward();// should go back to the front
         log_str.Format(L"Forward from x=%d y=%d to x=%d y=%d",
             m_car_info.core.x,
             m_car_info.core.y,
