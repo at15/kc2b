@@ -174,6 +174,7 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
             current_line.end().y);
         return MOVE_FORWARD;
     }
+
     if(car_vec.Cross(drct_vec) < 0){
         m_car_control.GoRight();
         log_str.Format(L"Right from x=%d y=%d to x=%d y=%d",
