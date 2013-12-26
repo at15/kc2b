@@ -51,7 +51,6 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_COMMAND(ID_32777, &CTrackTheCarDlg::OnCarConfig)
     ON_COMMAND(ID_32780, &CTrackTheCarDlg::OnMainOpenCam)
     ON_WM_TIMER()
-    ON_BN_CLICKED(IDC_BUTTON2, &CTrackTheCarDlg::OnBnClickedStartCar)
     ON_COMMAND(ID_32783, &CTrackTheCarDlg::OnRestConfig)
     ON_BN_CLICKED(IDC_BUTTON3, &CTrackTheCarDlg::OnBnClickedPrepareCar)
     ON_BN_CLICKED(IDC_B_MAIN_START_CAR, &CTrackTheCarDlg::OnBnClickedBMainStartCar)
@@ -347,69 +346,6 @@ void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
     cvReleaseImage(&transformed_pic);
 }
 
-
-void CTrackTheCarDlg::OnBnClickedStartCar()
-{
-    //if(!m_main_input.IsCapturing()){
-    //    AfxMessageBox(L"Open the cam please");
-    //    AddToConsole("start_car_error:the cam is not opened");
-    //    return;
-    //}else{
-    //    AddToConsole("cam opened,please set the map and the car");
-    //}
-
-    //// then set all the config
-
-    //// check if all the config is done
-    //CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    //try{
-    //    global_configs->GetMapCorner();
-    //}catch(logic_error e){
-    //    AfxMessageBox(L"didn't set the corner for the map!");
-    //    AddToConsole(e.what());
-    //    return;
-    //}
-    //AddToConsole("map corner set!");
-
-    //// OnCenCorner();// gen the map point, NO! the map point should be done 
-    //// without putting the car on the map
-
-    //try{
-    //    global_configs->GetMapPoint();
-    //}catch(logic_error e){
-    //    AfxMessageBox(L"can't get the map point!");
-    //    AddToConsole(e.what());
-    //    return;
-    //}
-    //AddToConsole("map point generated!");
-
-    //AddToConsole("all config loaded!,start the car");
-
-    //// Note: the car will control camera now, you don't have call a timer
-    //// really? no .... you can't set timer in cpp....so this is just init...
-    //if(m_car.Init(&m_main_input,&m_main_output,global_configs)){
-    //    AddToConsole("car initialized!");
-    //}else{
-    //    AfxMessageBox(L"Please open the car and set the right com port!");
-    //    AddToConsole("Car init failed!");
-    //    return;
-    //}
-    //if(m_car.StartCar()){
-    //    KillTimer(MAIN_CAM);
-    //    SetTimer(CAR_PROC,20,NULL);
-    //}else{
-    //    AfxMessageBox(L"无法找到小车，请调节阀值！");
-    //    OnConfigThreshold();
-    //    return;
-    //}
-
-
-}
-
-
-
-
-
 void CTrackTheCarDlg::CamProc(){
     if(m_main_input.IsPause()) return;
     m_main_input.CaptureDontShow();
@@ -423,7 +359,7 @@ void CTrackTheCarDlg::CarProc(){
     CvPoint car_head,car_tail,car_target;
     if(!m_car.GetCarInfo(&car_head,&car_tail,&car_target)){
         ExitCarProc();
-        AddToConsole(L"Can't find car!.Exit now");
+        AddToConsole(L"Can't find car!.Exit now",true);
         AfxMessageBox(L"Can't find car!.Exit now");
         return;
     }
@@ -446,7 +382,7 @@ void CTrackTheCarDlg::CarProc(){
         return;
     }
     // other return value means the car is working fine
-    AddToConsole(log_str);
+    AddToConsole(log_str,false);
     car_working = false;
 }
 
@@ -454,7 +390,7 @@ void CTrackTheCarDlg::ExitCarProc(){
     m_car.StopCar();
     car_working = false;
     KillTimer(CAR_PROC);
-    AddToConsole(L"CarProc exit. some error may have occurred");
+    AddToConsole(L"CarProc exit. some error occurred",true);
 }
 
 void CTrackTheCarDlg::OnRestConfig()
@@ -511,8 +447,9 @@ void CTrackTheCarDlg::OnBnClickedBMainStartCar()
     m_btn_stop_car.EnableWindow(TRUE);
     // send the message to start the car, and start the loop
     m_car.StartCar();
-    // timer!
-    // ! the timer is not started!!!
+    // timer! i forgot... that's why car is always straight
+    KillTimer(MAIN_CAM);
+    SetTimer(CAR_PROC,20,NULL);
 }
 
 
