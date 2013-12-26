@@ -131,7 +131,7 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
     // move the car
 
     CLine current_line;
-    m_config->sorted_line.Get().at(m_current_line_index);
+    current_line = m_config->sorted_line.Get().at(m_current_line_index);
     /*
     //求小车向量方向
     double direction_car=m_route.Angle(m_car_info.tail,m_car_info.head);
