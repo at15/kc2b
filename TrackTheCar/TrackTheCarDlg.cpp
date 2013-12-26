@@ -182,7 +182,7 @@ void CTrackTheCarDlg::PostNcDestroy()
     CDialogEx::PostNcDestroy();
 }
 
-void CTrackTheCarDlg::AddToConsole(const CString& str,bool show /*=false*/){
+void CTrackTheCarDlg::AddToConsole(const CString& str,bool show /*=true*/){
     CString add_str = str;
     add_str.Append(L"\r\n");
     if(show){
@@ -194,7 +194,7 @@ void CTrackTheCarDlg::AddToConsole(const CString& str,bool show /*=false*/){
     m_log_file.WriteString(add_str);// write to log file;
 }
 
-void CTrackTheCarDlg::AddToConsole(const char* str,bool show /*=false*/){
+void CTrackTheCarDlg::AddToConsole(const char* str,bool show /*=true*/){
     wchar_t* wstr = EZ::CStrConv::ansi2utf16(str);
     CString add_str = wstr;
     add_str.Append(L"\r\n");
@@ -216,9 +216,9 @@ void CTrackTheCarDlg::ShowConfig(){
     int index = m_list_config.GetItemCount();
     m_list_config.InsertItem(index, L"地图变形");
     if(global_configs->IsTransfromSet()){
-        m_list_config.SetItemText(index,1,L"已设置");
+    m_list_config.SetItemText(index,1,L"已设置");
     }else{
-        m_list_config.SetItemText(index,1,L"未设置");
+    m_list_config.SetItemText(index,1,L"未设置");
     }
 
     index++;
@@ -229,9 +229,9 @@ void CTrackTheCarDlg::ShowConfig(){
     index++;
     m_list_config.InsertItem(index, L"地图点");
     if(global_configs->IsMapPointSet()){
-        m_list_config.SetItemText(index,1,L"已生成");
+    m_list_config.SetItemText(index,1,L"已生成");
     }else{
-        m_list_config.SetItemText(index,1,L"未生成");
+    m_list_config.SetItemText(index,1,L"未生成");
     }
 
     index++;
@@ -328,9 +328,12 @@ void CTrackTheCarDlg::OnMainOpenCam()
 
 void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
 {
-
+    if(CAR_PROC == nIDEvent && !car_working){
+        CarProc();
+        return;
+    } 
     if(MAIN_CAM == nIDEvent) CamProc();
-    if(CAR_PROC == nIDEvent && !car_working) CarProc();
+
     CDialogEx::OnTimer(nIDEvent);
 }
 
@@ -356,6 +359,7 @@ void CTrackTheCarDlg::CamProc(){
 void CTrackTheCarDlg::CarProc(){
     // this is new car proc
     car_working = true;
+    CamProc();//  get the new frame
     CvPoint car_head,car_tail,car_target;
     if(!m_car.GetCarInfo(&car_head,&car_tail,&car_target)){
         ExitCarProc();
@@ -394,8 +398,7 @@ void CTrackTheCarDlg::ExitCarProc(){
 }
 
 void CTrackTheCarDlg::OnRestConfig()
-{
-    
+{   
     CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
     g_configs->ResetConfig();
     ShowConfig();
@@ -467,10 +470,9 @@ void CTrackTheCarDlg::OnBnClickedBMainStartCar()
 
 void CTrackTheCarDlg::OnBnClickedBMainStopCar()
 {
-     // stop the car, in case something wrong has happened
+    // stop the car, in case something wrong has happened
     m_btn_prepare_car.EnableWindow(TRUE);
     m_btn_start_car.EnableWindow(TRUE);
     m_btn_stop_car.EnableWindow(FALSE);
-    m_car.StopCar();
-    // killer timer
+    ExitCarProc();
 }

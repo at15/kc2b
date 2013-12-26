@@ -149,6 +149,7 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
         return REACH_POINT;
     }
 
+    /*
     // pass the point if it is behind the car
     // TODO:this should not happen....,maybe should let the car go back
     if(fabs(direction_car - direction_target)> 90 &&
@@ -159,12 +160,12 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
                 current_line.end().y);
             error_str = L"";
             return PASS_POINT;
-    }
+    }*/
 
     // in the same direction, just go forward
     if(fabs(direction_car - direction_target) <= m_config->route_angle_error.Get()){
         //m_car_control.GoForward(true);
-        m_car_control.GoForward();// should go back to the front
+        m_car_control.GoForward();// should go straight
         log_str.Format(L"Forward from x=%d y=%d to x=%d y=%d",
             m_car_info.core.x,
             m_car_info.core.y,

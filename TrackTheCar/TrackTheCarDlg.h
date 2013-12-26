@@ -77,8 +77,8 @@ public:
     // the console to show messages 
     CEdit m_main_console;
     // func for add message to the console
-    void AddToConsole(const CString& str,bool show = false);
-    void AddToConsole(const char* str,bool show = false);
+    void AddToConsole(const CString& str,bool show = true);
+    void AddToConsole(const char* str,bool show = true);
     // save the console messages to log file
     CStdioFile m_log_file;
     CFileException m_log_error;
