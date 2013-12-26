@@ -451,13 +451,7 @@ void CTrackTheCarDlg::CarProc(){
     int c_error_modify = 0; // 自动修改过几次误差值
     // 用于记录上一次操作
     CSmallCar::MOVE_RESULT last_op = CSmallCar::REACH_POINT;
-    /*
-    int c_same_pos;
-    CRouteHelper route;// 用于计算小车位置的变化
-    CvPoint last_car_pos;
-    last_car_pos.x = -1;
-    last_car_pos.y = -1;*/
-
+   
     // the temp value for the small car distance
     int t_distance_e = global_configs->GetDistanceError();
     int t_angle_e = global_configs->GetAngleError();
@@ -490,6 +484,8 @@ void CTrackTheCarDlg::CarProc(){
         }else if((re == CSmallCar::TURN_LEFT) ||
             (re == CSmallCar::TURN_RIGHT)){
                 // 如果一直在转弯就得准备允许扩大误差了
+                // NO 应该让它后退!
+                m_car.GoBackForTurn();
                 c_same_op++;
         }
         if(MAX_ERROR_MODIFY_TIME < c_error_modify){
@@ -503,8 +499,8 @@ void CTrackTheCarDlg::CarProc(){
         }
         if(MAX_OP_TIME < c_same_op){
             c_same_op = 0;
-            t_distance_e += ERROR_MODIFY_VALUE;
-            t_distance_e += ERROR_MODIFY_VALUE;
+            //t_distance_e += ERROR_MODIFY_VALUE;
+            //t_distance_e += ERROR_MODIFY_VALUE;
             c_error_modify++;
         }
         // 输出操作结果
@@ -521,6 +517,10 @@ void CTrackTheCarDlg::CarProc(){
             op = L"go right";
             break;
                                    }
+        case CSmallCar::GO_BACK:{
+            op = L"go back";
+            break;
+        }
         case CSmallCar::REACH_POINT:{
             op = L"reach point";
             break;

@@ -134,14 +134,14 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
 
         // 达到目标
         if(distance <= distance_error) {
-            //m_car_control.Stop();
+            m_car_control.Stop();
             return REACH_POINT;
         }
-        // 如果点在小车身后那就pass了它
+        // 如果点在小车身后那就pass了它,no 应该倒退
         if(fabs(direction_car - direction_target)> 90 &&
            fabs(direction_car - direction_target)< 270 ){
-               m_car_control.Stop();
-               return PASS_POINT;
+               GoBackForTurn();
+               return GO_BACK;
         }
         // 转弯之后必须向前走，否则就一直卡那了
         if(fabs(direction_car - direction_target) > angle_error) //小车与目标不在同一方向，则转向
@@ -156,7 +156,7 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
                     m_car_control.GoForward();
 #endif
                     m_car_control.GoLeft();
-                    //m_car_control.GoForward();
+                    m_car_control.GoForward(false);
                     return TURN_LEFT;
                 }
                 else //右转
@@ -167,7 +167,7 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
                     m_car_control.GoForward();
 #endif
                     m_car_control.GoRight();
-                    //m_car_control.GoForward();
+                    m_car_control.GoForward(false);
                     return TURN_RIGHT;
                 }
             }
@@ -181,7 +181,7 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
                     m_car_control.GoForward();
 #endif
                     m_car_control.GoRight();
-                    //m_car_control.GoForward();
+                    m_car_control.GoForward(false);
                     return TURN_RIGHT;
                 }
                 else //左转
@@ -192,7 +192,7 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
                     m_car_control.GoForward();
 #endif
                     m_car_control.GoLeft();
-                    //m_car_control.GoForward();
+                    m_car_control.GoForward(false);
                     return TURN_LEFT;
                 }
             }
@@ -231,4 +231,13 @@ bool CSmallCar::isCarStuck(){
         m_stuck_info.stuck_time = 0;
         return false;
     }
+}
+
+bool CSmallCar::GoBackForTurn()
+{
+    m_car_control.GoBack();
+    Sleep(CAR_S_SLEEP_TIME);
+    m_car_control.GoForward();// 调转车头
+    m_car_control.Stop();// 停车，等待接下来的指令
+    return true;
 }

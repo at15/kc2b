@@ -31,12 +31,14 @@ public:
         PASS_POINT,
         TURN_LEFT,
         TURN_RIGHT,
+        GO_BACK,
         GO_FORWARD,
         CAR_STUCK// 车卡住了，需要加一下速
     };
     bool Init(CCvPicCtrl* camera,CCvPicCtrl* output,CConfigs* config);
     bool StartCar();
     bool SpeedUp();
+    bool GoBackForTurn();// 转弯转不过去了
     bool StopCar();
     double GetCarLength();
     FIND_POINT GetCarPosEx(CvPoint* car_pos = NULL);
