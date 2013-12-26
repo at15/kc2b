@@ -123,6 +123,9 @@ public:
     CConfigVector<CLine> sorted_line;
 
     CConfigItem<double> line_distance_error;
+
+    // save the map image,which can be used
+    CTempImage map_bin;
 private:
     void LoadDefault();
 };

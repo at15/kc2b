@@ -472,7 +472,7 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
 
     if(!m_main_input.IsCapturing()){
         AfxMessageBox(L"Open the cam please");
-        AddToConsole("start_car_error:the cam is not opened");
+        AddToConsole("start_car_error:the cam is not opened",true);
         return;
     }
 
@@ -500,7 +500,7 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
         return;
     }
     if(CSmallCar::NO_CAR_ERROR == e){
-        AddToConsole(L"Car initialized, waiting for order");
+        AddToConsole(L"Car initialized, waiting for order",true);
         m_btn_start_car.EnableWindow(TRUE);
     }
 }
@@ -512,6 +512,7 @@ void CTrackTheCarDlg::OnBnClickedBMainStartCar()
     // send the message to start the car, and start the loop
     m_car.StartCar();
     // timer!
+    // ! the timer is not started!!!
 }
 
 
