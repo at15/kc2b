@@ -22,5 +22,6 @@
 // for route helper functions
 #define DISTANCE_ERROR 30 //当距离小于等于distance_error像素时，可认为已到达该点
 #define ANGLE_ERROR 20 // 当角度小于distance_error像素时，可认为是0
+#define ANGLE_SIN_OFFSET 0.3	//最大偏移角度正弦
 
 #define CAR_S_SLEEP_TIME 20
