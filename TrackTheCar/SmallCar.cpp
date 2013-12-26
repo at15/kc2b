@@ -96,15 +96,14 @@ bool CSmallCar::StopCar(){
 CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
 {
     error_str = L"";
-    // 1 determine what to do
-    // 2 draw the result on the screen
+
     if(!GetCarInfo(m_car_info)){
         log_str = L"error:";
         error_str = L"can't find the car";
         return MOVE_ERROR;
     }
 
-    // Should stop the car now
+    // reach the end
     if(m_config->sorted_line.Get().size() == (m_current_line_index+1)){
         m_car_control.Stop();
         log_str = L"Reach last point";
@@ -115,13 +114,7 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
 
     CLine current_line;
     current_line = m_config->sorted_line.Get().at(m_current_line_index);
-    /*
-    //求小车向量方向
-    double direction_car=m_route.Angle(m_car_info.tail,m_car_info.head);
-    //车头到下一点的角度
-    double direction_target=m_route.Angle(m_car_info.head,current_line.end());
-    //车头到目标点的距离
-    */
+  
     double distance=CLine::Distance(m_car_info.head,current_line.end());
      
     // reach the target
@@ -133,35 +126,10 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
         return REACH_POINT;
     }
 
-    /*
-    // pass the point if it is behind the car
-    // TODO:this should not happen....,maybe should let the car go back
-    if(fabs(direction_car - direction_target)> 90 &&
-        fabs(direction_car - direction_target)< 270 ){
-            m_car_control.Stop();
-            m_current_line_index++;
-            log_str.Format(L"Warning:Pass point x=%d y=%d",current_line.end().x,
-                current_line.end().y);
-            error_str = L"";
-            return PASS_POINT;
-    }*/
-
-    /*
-    // in the same direction, just go forward
-    if(fabs(direction_car - direction_target) <= m_config->route_angle_error.Get()){
-        //m_car_control.GoForward(true);
-        m_car_control.GoForward();// should go straight
-        log_str.Format(L"Forward from x=%d y=%d to x=%d y=%d",
-            m_car_info.core.x,
-            m_car_info.core.y,
-            current_line.end().x,
-            current_line.end().y);
-        return MOVE_FORWARD;
-    }
-    */
-    // see if go right or left
+    // 判断向左向右
     CVector car_vec(m_car_info.tail,m_car_info.head);
-    CVector drct_vec(current_line.start(),current_line.end());
+    //CVector drct_vec(current_line.start(),current_line.end());
+    CVector drct_vec(m_car_info.tail,current_line.end());
     // PS:如果一直给小车发转向的指令，舵机会坏掉。所以在car control里会记录
     // 上一次的操作，如果相同就不再发出指令。
 
@@ -192,4 +160,6 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
             current_line.end().y);
         return TURN_LEFT;
     }
+
+    // 需要倒车的功能么？应该不需要吧？
 }
