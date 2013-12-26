@@ -10,7 +10,7 @@
 // for opencv functions
 // 用于寻找角点 cvgoodfeaturestotrack
 #define MCV_QUALITY_LEVEL 0.10
-#define MCV_MIN_DISTANCE 10
+#define MCV_MIN_DISTANCE 40
 // Hough变换找直线
 #define MCV_LINE_EXIST 10 // 线段是否存在的阀值
 #define MCV_MIN_LINE_LENGTH 20 // 最短线段的长度，短于它的将被忽略
@@ -20,7 +20,7 @@
 
 // for route helper functions
 #define DISTANCE_ERROR 10 //当距离小于等于distance_error像素时，可认为为0
-#define ANGLE_ERROR 10 // 当角度小于angle_error像素时，可认为是0
+#define ANGLE_ERROR 20 // 当角度小于angle_error像素时，可认为是0
 
 // for control the car in MainDlg
 #define MAX_OP_TIME 20 // 小车单一操作最多的重复次数，超过它就会修改误差值
