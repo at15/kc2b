@@ -140,7 +140,7 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
     //车头到目标点的距离
     */
     double distance=CLine::Distance(m_car_info.head,current_line.end());
-
+     
     // reach the target
     if(distance <= m_config->route_distance_error.Get()) {
         m_car_control.Stop();
