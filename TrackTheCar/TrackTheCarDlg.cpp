@@ -540,7 +540,7 @@ void CTrackTheCarDlg::CarProc(){
         AddToConsole(str);
         if(re == CSmallCar::REACH_POINT) break;
         if(re == CSmallCar::PASS_POINT) break;
-
+        Sleep(200);
     }while(re != CSmallCar::REACH_POINT);
 
     AddToConsole("reach point");

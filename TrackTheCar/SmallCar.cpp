@@ -125,10 +125,10 @@ CSmallCar::MOVE_RESULT CSmallCar::Move2NextPoint(int distance_error/* = DISTANCE
 
         //求小车向量方向
         double direction_car=m_route.Angle(m_tail,m_head);
-        //小车中心到下一个目标点的向量方向
-        double direction_target=m_route.Angle(m_current_car_pos,m_next_point);
-        //小车中心到目标点的距离
-        double distance=m_route.Distance(m_current_car_pos,m_next_point);
+        //车头到下一个目标点的向量方向
+        double direction_target=m_route.Angle(m_head,m_next_point);
+        //车头到目标点的距离
+        double distance=m_route.Distance(m_head,m_next_point);
         
         // 判断车是不是卡住了
 
