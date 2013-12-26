@@ -17,7 +17,7 @@ CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CGConfigs* config )
     m_config = config;
 
     // check if we can connect the car via blue tooth
-    //if(!m_car_control.Init(config->com_port.Get())) return CANT_CONNECT_CAR;
+    if(!m_car_control.Init(config->com_port.Get())) return CANT_CONNECT_CAR;
     
     // check if we can find the car
     if(!GetCarInfo(m_car_info)) return CANT_FIND_CAR;
@@ -125,7 +125,49 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
             current_line.end().y);
         return REACH_POINT;
     }
+    else
+    {
+        unsigned char data;
+        CVector car_vec(m_car_info.tail,m_car_info.head);
+        CVector drct_vec(m_car_info.tail,current_line.end());
+        double coss = car_vec.x() * drct_vec.x() + car_vec.y() * drct_vec.y();
+        double abss = car_vec.ABS() * drct_vec.ABS();
+        double sinn = car_vec.x() * drct_vec.y() - car_vec.y() * drct_vec.x();
+        coss = coss / abss;
+        if( abss < 0 )
+        {
+            if(coss > 9.5)
+            {
+                m_car_control.CMD('q');
+            }
+            else
+            {
+                m_car_control.CMD('w');
+            }
 
+        }
+        else
+        {
+            if(coss > 0.9) // zhuan quan
+            {
+                m_car_control.CMD('e');
+            }
+            else
+            {
+                m_car_control.CMD('r');
+            }
+
+
+        }
+
+
+    }
+
+
+
+
+
+    /*
     // 判断向左向右
     CVector car_vec(m_car_info.tail,m_car_info.head);
     //CVector drct_vec(current_line.start(),current_line.end());
@@ -162,4 +204,5 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
     }
 
     // 需要倒车的功能么？应该不需要吧？
+    */
 }

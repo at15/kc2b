@@ -27,7 +27,7 @@ public:
     bool SpeedDown();
     // 速度的值从3-9
     bool SetSpeed(int new_speed);
-private:
+
     CSerialPort* m_port;
     bool port_ready;
     int m_speed;
@@ -43,6 +43,9 @@ private:
         kLeft,    // 左转
         kRight,   // 右转
         kStop,    // 停止
+        mLeft,    //微左转
+        mRight,   //微右转
+
         speedup,  // 加速
         slowdown, // 减速
     };
@@ -57,5 +60,6 @@ private:
     /* --------------------------------------------------------------------------*/
     void RunCar(opcode op);
     void ClosePort();
+    void CMD(unsigned char a);
 };
 
