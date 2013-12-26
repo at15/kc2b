@@ -1,5 +1,6 @@
 #pragma once
 #include "constants.h"
+#include "CvPicCtrl.h"
 // deal with the image processing
 // 图像类
 template<class T> class Image {
@@ -64,7 +65,7 @@ public:
     // 使用线段的走法
     std::vector<CLine> FindLines(IplImage* binary_image,
         double line_distance_error = LINE_DISTANCE_ERROR);
-    void DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines,int delay = 0);
+    void DrawLines(CCvPicCtrl* pic_ctrl,const std::vector<CLine>& v_lines,int delay = 0);
     std::vector<CLine> SortLines(std::vector<CLine> o_lines,
         CvPoint car_head,CvPoint car_tail,
         double point_dist = LINE_POINT_DIST);

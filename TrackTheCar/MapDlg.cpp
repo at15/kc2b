@@ -91,7 +91,7 @@ void CMapDlg::map_process(){
     IplImage* thin = m_map_thin.GetCurrentFrame();
     vector<CLine> v_lines = proc.FindLines(thin,m_line_distance_error);
     m_map_line_gened.SetCurrentFrame(thin);// just need a bw image
-    proc.DrawLines(m_map_line_gened.GetCurrentFrame(),v_lines);
+    proc.DrawLines(&m_map_line_gened,v_lines);
     m_map_line_gened.UpdateFrame();
     //  set the line
     g_configs->raw_line.Set(v_lines);

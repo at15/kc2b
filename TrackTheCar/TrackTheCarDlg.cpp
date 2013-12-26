@@ -447,7 +447,7 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
         CImageProc proc;
         // show the map 
         m_main_output.SetCurrentFrame(g_configs->map_thin.GetImage());
-        proc.DrawLines(m_main_output.GetCurrentFrame(),g_configs->sorted_line.Get(),200);
+        proc.DrawLines(&m_main_output,g_configs->sorted_line.Get(),200);
         // show the car position
         m_car.GetCarInfo(car_info);
         m_main_output2.SetCurrentFrame(m_main_input.GetCurrentFrame());

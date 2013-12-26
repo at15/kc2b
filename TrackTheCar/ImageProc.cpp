@@ -319,14 +319,18 @@ vector<CLine> CImageProc::FindLines(IplImage* binary_image,
         return final_lines;
 }
 
-void CImageProc::DrawLines(IplImage* pSrc,const std::vector<CLine>& v_lines,int delay /*= 0*/){
+void CImageProc::DrawLines(CCvPicCtrl* pic_ctrl,const std::vector<CLine>& v_lines,int delay /*= 0*/){
+    IplImage* pSrc = pic_ctrl->GetCurrentFrame();
     cvSetZero(pSrc);
     for(int i=0;i<v_lines.size();i++){
         cvLine(pSrc,v_lines.at(i).start(),v_lines.at(i).end(),cvScalar(255,0,0));
         // draw circle for the start(small) and end(big)
         cvCircle(pSrc,v_lines.at(i).start(),5,cvScalar(255,0,0),1);
         cvCircle(pSrc,v_lines.at(i).end(),15,cvScalar(255,0,0),3);
-        if(0 != delay) Sleep(delay);// show the process of drawing
+        if(0 != delay){
+            Sleep(delay);// show the process of drawing
+            pic_ctrl->UpdateFrame();
+        }
     }
 }
 
