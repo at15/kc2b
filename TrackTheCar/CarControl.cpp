@@ -146,6 +146,18 @@ bool CCarControl::IsValidSpeed( int speed )
 
 void CCarControl::RunCar(opcode op)
 {
+    unsigned char* data;
+    switch(op){
+    case kLeft:
+        data =(unsigned char*) '3';
+        m_port->WriteData(data,1);
+
+    case kRight:
+        data = (unsigned char*)'4';
+        m_port->WriteData(data,1);
+    }
+    
+    /*
     if(!port_ready) return;
 
     unsigned char* data;
@@ -206,5 +218,5 @@ void CCarControl::RunCar(opcode op)
         data =(unsigned char*)"$00004#";
         m_port->WriteData(data, 7);
         break;
-    }
+    }*/
 }
