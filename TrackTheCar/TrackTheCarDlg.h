@@ -81,8 +81,8 @@ public:
     // the console to show messages like change the threshold and transform etc
     CEdit m_main_console;
     // func for add message to the console
-    void AddToConsole(const CString& str);
-    void AddToConsole(const char* str);
+    void AddToConsole(const CString& str,bool show =false);
+    void AddToConsole(const char* str,bool show =false);
     // save the console to log file
     CStdioFile m_log_file;
     CFileException m_log_error;

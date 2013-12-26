@@ -108,7 +108,7 @@ BOOL CTrackTheCarDlg::OnInitDialog()
 
     car_working = false;
 
-    AddToConsole(_T("Track the car app init finished, waiting for orders..."));
+    AddToConsole(_T("Track the car app init finished, waiting for orders..."),true);
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -162,25 +162,32 @@ HCURSOR CTrackTheCarDlg::OnQueryDragIcon()
 }
 
 
-void CTrackTheCarDlg::AddToConsole(const CString& str){
-    CString old;
-    m_main_console.GetWindowTextW(old);
-    old.Append(str);
-    old.Append(L"\r\n");
-    m_main_console.SetWindowTextW(old);
-    m_log_file.WriteString(old);// write to log file;
+void CTrackTheCarDlg::AddToConsole(const CString& str,bool show /*=false*/){
+    CString add_str = str;
+    add_str.Append(L"\r\n");
+    if(show){
+        CString old;
+        m_main_console.GetWindowTextW(old);
+        old.Append(add_str);
+        m_main_console.SetWindowTextW(old);
+    }
+    m_log_file.WriteString(add_str);// write to log file;
 }
 
-void CTrackTheCarDlg::AddToConsole(const char* str){
-    CString old;
-    m_main_console.GetWindowTextW(old);
+void CTrackTheCarDlg::AddToConsole(const char* str,bool show /*=false*/){
     wchar_t* wstr = EZ::CStrConv::ansi2utf16(str);
-    old.Append(wstr);
+    CString add_str = wstr;
+    add_str.Append(L"\r\n");
+    if(show){
+        CString old;
+        m_main_console.GetWindowTextW(old);
+        old.Append(add_str);
+        m_main_console.SetWindowTextW(old);
+    }
+    m_log_file.WriteString(add_str);// write to log file;
     delete wstr;
-    old.Append(L"\r\n");
-    m_main_console.SetWindowTextW(old);
-    m_log_file.WriteString(old);// write to log file;
 }
+
 
 void CTrackTheCarDlg::ShowConfig(){
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
@@ -386,10 +393,10 @@ void CTrackTheCarDlg::OnBnClickedStartCar()
     // Note: the car will control camera now, you don't have call a timer
     // really? no .... you can't set timer in cpp....so this is just init...
     if(m_car.Init(&m_main_input,&m_main_output,global_configs)){
-        AddToConsole("car initialized!");
+        AddToConsole("car initialized!",true);
     }else{
         AfxMessageBox(L"Please open the car and set the right com port!");
-        AddToConsole("Car init failed!");
+        AddToConsole("Car init failed!",true);
         return;
     }
     if(m_car.StartCar()){

@@ -35,3 +35,5 @@
 
 
 //#define USE_BACK
+
+#define CAR_SPEED 4
