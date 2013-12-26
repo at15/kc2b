@@ -195,4 +195,3 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
         return TURN_LEFT;
     }
 }
-
