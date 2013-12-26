@@ -17,7 +17,7 @@ CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CGConfigs* config )
     m_config = config;
 
     // check if we can connect the car via blue tooth
-    if(!m_car_control.Init(config->com_port.Get())) return CANT_CONNECT_CAR;
+    //if(!m_car_control.Init(config->com_port.Get())) return CANT_CONNECT_CAR;
     
     // check if we can find the car
     if(!GetCarInfo(m_car_info)) return CANT_FIND_CAR;
