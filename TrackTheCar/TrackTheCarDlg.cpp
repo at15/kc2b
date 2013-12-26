@@ -94,10 +94,12 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     // the log file
     CTime tm = CTime::GetCurrentTime();
     CString c_time =tm.Format("%d-%H-%M-%S");
+    CString log_current_time = tm.Format("20%y-%m-%d %H:%M:%S");
     CString log_path; 
     log_path.Format(L"%s%s.txt",L"C:\\Users\\W7_64\\Desktop\\",c_time);
     m_log_file.Open(log_path , CFile::modeWrite|CFile::modeCreate, &m_log_error);
     AddToConsole(L">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",true);// start the log
+    AddToConsole(log_current_time);
 
     // init the pic ctrls
     if(!m_main_input.Init(this,IDC_MAIN_INPUT)){
@@ -253,9 +255,10 @@ void CTrackTheCarDlg::OnCapPic()
 
 void CTrackTheCarDlg::OnShowAbout()
 {
-    // TODO: 在此添加命令处理程序代码
-    m_about.DoModal();
-    AddToConsole(_T("opend the about dialog box"));
+    //m_about.DoModal();
+    AddToConsole(L"KC2B: Track the car. Using opencv with MFC");
+    AddToConsole(L"Author: DXY, FH, GPL");
+    AddToConsole(L"If you find any bug.Email me at15@outlook.com");
 }
 
 
