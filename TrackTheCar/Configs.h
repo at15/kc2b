@@ -1,4 +1,5 @@
 #pragma once
+#include "TempImage.h"
 // The config item that store int or bool
 template<class T>
 class CConfigItem{
@@ -124,8 +125,8 @@ public:
 
     CConfigItem<double> line_distance_error;
 
-    // save the map image,which can be used
-    CTempImage map_bin;
+    // save the map image after cvThin,use this as a dummy to show output
+    CTempImage map_thin;
 private:
     void LoadDefault();
 };

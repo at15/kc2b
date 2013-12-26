@@ -11,26 +11,22 @@ CSmallCar::~CSmallCar(void)
 {
 }
 
-CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CCvPicCtrl* output_map,CCvPicCtrl* output_car,CGConfigs* config )
+CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CGConfigs* config )
 {
-    // check if we can connect the car via blue tooth
-    if(!m_car_control.Init(config->com_port.Get())) return CANT_CONNECT_CAR;
-    // check if we can find the car
     m_camera = camera;
-    m_output_map = output_map;
-    m_output_car = output_car;
     m_config = config;
 
+    // check if we can connect the car via blue tooth
+    if(!m_car_control.Init(config->com_port.Get())) return CANT_CONNECT_CAR;
+    
+    // check if we can find the car
     if(!GetCarInfo(m_car_info)) return CANT_FIND_CAR;
     
     // sort the lines
     m_map_line = m_proc.SortLines(m_config->raw_line.Get(),
         m_car_info.head,m_car_info.tail);
     m_config->sorted_line.Set(m_map_line);
-    // show the image in the output
-    cvCircle(m_output_car->GetCurrentFrame(),m_car_info.core,10,CV_RGB(0,255,0),3);
-    // show the new map in the output
-    m_proc.DrawLines(m_output_map->GetCurrentFrame(),m_config->sorted_line.Get());
+    
     /*
     // 设置初始点对线段排序影响很大
     vector<CLine> v_processed = proc.SortLines(v_lines,cvPoint(400,600),cvPoint(400,600));
@@ -47,8 +43,7 @@ CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CCvPicCtrl* output_map,
     }
     m_map_line_gened.UpdateFrame();
     */
-    m_output_map->UpdateFrame();
-    m_output_car->UpdateFrame();
+    
     return NO_CAR_ERROR;
 }
 

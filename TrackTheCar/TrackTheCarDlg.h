@@ -105,7 +105,6 @@ public:
     void CarProc();
     void ExitCarProc();
 public:
-    afx_msg void OnBnClickedStartCar();
     virtual void PostNcDestroy();
     afx_msg void OnBnClickedPrepareCar();
     CButton m_btn_start_car;

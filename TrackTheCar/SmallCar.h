@@ -32,7 +32,7 @@ public:
         TURN_RIGHT,
         MOVE_ERROR
     };
-    CAR_ERROR Init(CCvPicCtrl* cam,CCvPicCtrl* o_map,CCvPicCtrl* o_car,CGConfigs* config);
+    CAR_ERROR Init(CCvPicCtrl* cam,CGConfigs* config);
     bool GetCarInfo(CvPoint* head,CvPoint* tail,CvPoint* target);
     bool GetCarInfo(CarInfo& info);
     bool StartCar();
@@ -44,8 +44,8 @@ private:
     CImageProc m_proc;
 
     CCvPicCtrl* m_camera;
-    CCvPicCtrl* m_output_map;// show the map
-    CCvPicCtrl* m_output_car;// show the car
+    //CCvPicCtrl* m_output_map;// show the map
+    //CCvPicCtrl* m_output_car;// show the car
 
     CGConfigs* m_config;
 
