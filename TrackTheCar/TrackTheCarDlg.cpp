@@ -258,7 +258,6 @@ void CTrackTheCarDlg::OnShowAbout()
     //m_about.DoModal();
     AddToConsole(L"KC2B: Track the car. Using opencv with MFC");
     AddToConsole(L"Author: DXY, FH, GPL");
-    AddToConsole(L"If you find any bug.Email me at15@outlook.com");
 }
 
 
