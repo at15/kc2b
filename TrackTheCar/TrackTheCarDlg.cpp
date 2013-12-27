@@ -33,6 +33,9 @@ void CTrackTheCarDlg::DoDataExchange(CDataExchange* pDX)
     CDialogEx::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_EDIT1, m_main_console);
     DDX_Control(pDX, IDC_LIST1, m_list_config);
+    DDX_Control(pDX, IDC_B_MAIN_START_CAR, m_btn_start_car);
+    DDX_Control(pDX, IDC_B_MAIN_STOP_CAR, m_btn_stop_car);
+    DDX_Control(pDX, IDC_BUTTON3, m_btn_prepare_car);
 }
 
 BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
@@ -45,12 +48,13 @@ BEGIN_MESSAGE_MAP(CTrackTheCarDlg, CDialogEx)
     ON_COMMAND(ID_32773, &CTrackTheCarDlg::OnConfigTransform)
     ON_COMMAND(ID_32778, &CTrackTheCarDlg::OnMainOpenImage)
     ON_COMMAND(ID_32781, &CTrackTheCarDlg::OnConfigMap)
-    ON_COMMAND(ID_32782, &CTrackTheCarDlg::OnCenCorner)
     ON_COMMAND(ID_32777, &CTrackTheCarDlg::OnCarConfig)
     ON_COMMAND(ID_32780, &CTrackTheCarDlg::OnMainOpenCam)
     ON_WM_TIMER()
-    ON_BN_CLICKED(IDC_BUTTON2, &CTrackTheCarDlg::OnBnClickedStartCar)
     ON_COMMAND(ID_32783, &CTrackTheCarDlg::OnRestConfig)
+    ON_BN_CLICKED(IDC_BUTTON3, &CTrackTheCarDlg::OnBnClickedPrepareCar)
+    ON_BN_CLICKED(IDC_B_MAIN_START_CAR, &CTrackTheCarDlg::OnBnClickedBMainStartCar)
+    ON_BN_CLICKED(IDC_B_MAIN_STOP_CAR, &CTrackTheCarDlg::OnBnClickedBMainStopCar)
 END_MESSAGE_MAP()
 
 
@@ -90,15 +94,22 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     // the log file
     CTime tm = CTime::GetCurrentTime();
     CString c_time =tm.Format("%d-%H-%M-%S");
+    CString log_current_time = tm.Format("20%y-%m-%d %H:%M:%S");
     CString log_path; 
     log_path.Format(L"%s%s.txt",L"C:\\Users\\W7_64\\Desktop\\",c_time);
     m_log_file.Open(log_path , CFile::modeWrite|CFile::modeCreate, &m_log_error);
-    AddToConsole(L">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");// start the log
+    AddToConsole(L">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",true);// start the log
+    AddToConsole(log_current_time);
+
+    // init the pic ctrls
     if(!m_main_input.Init(this,IDC_MAIN_INPUT)){
-        AddToConsole(_T("ERROR: can't init the main picture control!"));
+        AddToConsole(_T("ERROR: can't init the main picture control!"),true);
     }
     if(!m_main_output.Init(this,IDC_MAIN_OUTPUT)){
-        AddToConsole(_T("ERROR: can't init the output picture control!"));
+        AddToConsole(_T("ERROR: can't init the output picture control!"),true);
+    }
+    if(!m_main_output2.Init(this,IDC_MAIN_OUTPUT2)){
+        AddToConsole(_T("ERROR: can't init the output2 picture control!"),true);
     }
 
     // show the configs in the listctrl
@@ -106,9 +117,14 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     m_list_config.InsertColumn(1,L"Value", LVCFMT_CENTER,100);
     ShowConfig();
 
+    // set the flag
     car_working = false;
 
+    // disable the buttons
+    m_btn_start_car.EnableWindow(FALSE);
+    m_btn_stop_car.EnableWindow(FALSE);
     AddToConsole(_T("Track the car app init finished, waiting for orders..."),true);
+
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -161,8 +177,14 @@ HCURSOR CTrackTheCarDlg::OnQueryDragIcon()
     return static_cast<HCURSOR>(m_hIcon);
 }
 
+void CTrackTheCarDlg::PostNcDestroy()
+{
+    // TODO: 在此添加专用代码和/或调用基类
+    m_log_file.Close();
+    CDialogEx::PostNcDestroy();
+}
 
-void CTrackTheCarDlg::AddToConsole(const CString& str,bool show /*=false*/){
+void CTrackTheCarDlg::AddToConsole(const CString& str,bool show /*=true*/){
     CString add_str = str;
     add_str.Append(L"\r\n");
     if(show){
@@ -174,7 +196,7 @@ void CTrackTheCarDlg::AddToConsole(const CString& str,bool show /*=false*/){
     m_log_file.WriteString(add_str);// write to log file;
 }
 
-void CTrackTheCarDlg::AddToConsole(const char* str,bool show /*=false*/){
+void CTrackTheCarDlg::AddToConsole(const char* str,bool show /*=true*/){
     wchar_t* wstr = EZ::CStrConv::ansi2utf16(str);
     CString add_str = wstr;
     add_str.Append(L"\r\n");
@@ -188,17 +210,17 @@ void CTrackTheCarDlg::AddToConsole(const char* str,bool show /*=false*/){
     delete wstr;
 }
 
-
 void CTrackTheCarDlg::ShowConfig(){
+    /* using CGConfig now
     CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
     m_list_config.DeleteAllItems();
     CString str;
     int index = m_list_config.GetItemCount();
     m_list_config.InsertItem(index, L"地图变形");
     if(global_configs->IsTransfromSet()){
-        m_list_config.SetItemText(index,1,L"已设置");
+    m_list_config.SetItemText(index,1,L"已设置");
     }else{
-        m_list_config.SetItemText(index,1,L"未设置");
+    m_list_config.SetItemText(index,1,L"未设置");
     }
 
     index++;
@@ -209,9 +231,9 @@ void CTrackTheCarDlg::ShowConfig(){
     index++;
     m_list_config.InsertItem(index, L"地图点");
     if(global_configs->IsMapPointSet()){
-        m_list_config.SetItemText(index,1,L"已生成");
+    m_list_config.SetItemText(index,1,L"已生成");
     }else{
-        m_list_config.SetItemText(index,1,L"未生成");
+    m_list_config.SetItemText(index,1,L"未生成");
     }
 
     index++;
@@ -222,7 +244,7 @@ void CTrackTheCarDlg::ShowConfig(){
     m_list_config.InsertItem(index, L"蓝牙端口");
     str.Format(L"%d",global_configs->GetCOM());
     m_list_config.SetItemText(index,1,str);
-
+    */
 }
 
 void CTrackTheCarDlg::OnCapPic()
@@ -233,9 +255,9 @@ void CTrackTheCarDlg::OnCapPic()
 
 void CTrackTheCarDlg::OnShowAbout()
 {
-    // TODO: 在此添加命令处理程序代码
-    m_about.DoModal();
-    AddToConsole(_T("opend the about dialog box"));
+    //m_about.DoModal();
+    AddToConsole(L"KC2B: Track the car. Using opencv with MFC");
+    AddToConsole(L"Author: DXY, FH, GPL");
 }
 
 
@@ -283,32 +305,6 @@ void CTrackTheCarDlg::OnMainOpenImage()
 }
 
 
-void CTrackTheCarDlg::OnCenCorner()
-{
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    // TODO: typo ... should be OnGenCorner
-    CImageProc proc;
-    m_main_output.SetCurrentFrame(m_main_input.GetCurrentFrame());
-
-    // first get the bin image
-    IplImage* grey = proc.GetGrey(m_main_output.GetCurrentFrame());
-    // add true get the different type of binary image.... 
-    IplImage* bin = proc.GetBinary(grey,global_configs->GetMapThreshold(),true);
-    proc.cvThin(bin,bin,global_configs->GetThinIteration());
-
-    vector<CvPoint2D32f> points;
-    proc.FindMapPoints(bin,points);
-    // set the map point in global
-    global_configs->SetMapPoint(points);
-    proc.DrawMapPoints(m_main_output.GetCurrentFrame(),points); 
-    m_main_output.UpdateFrame();
-
-    cvReleaseImage(&grey);
-    cvReleaseImage(&bin);
-    ShowConfig();
-}
-
-
 void CTrackTheCarDlg::OnCarConfig()
 {
     m_dlg_car = new CarControlDlg;
@@ -334,91 +330,26 @@ void CTrackTheCarDlg::OnMainOpenCam()
 
 void CTrackTheCarDlg::OnTimer(UINT_PTR nIDEvent)
 {
-
+    if(CAR_PROC == nIDEvent && !car_working){
+        CarProc();
+        return;
+    } 
     if(MAIN_CAM == nIDEvent) CamProc();
-    if(CAR_PROC == nIDEvent && !car_working) CarProc();
+
     CDialogEx::OnTimer(nIDEvent);
 }
 
 void CTrackTheCarDlg::process_input(CCvPicCtrl* pic_ctrl){
     // transform the image
     CImageProc proc;
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
+    CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
     // return if the transform is not set
-    if(!global_configs->IsTransfromSet()) return; 
+    if(!g_configs->map_corner.IsSet()) return; 
     IplImage* transformed_pic= proc.TransformImage(pic_ctrl->GetCurrentFrame(),
-        global_configs->GetMapCorner());
+        g_configs->map_corner.Get());
     pic_ctrl->SetCurrentFrame(transformed_pic);
     cvReleaseImage(&transformed_pic);
 }
-
-
-void CTrackTheCarDlg::OnBnClickedStartCar()
-{
-    if(!m_main_input.IsCapturing()){
-        AfxMessageBox(L"Open the cam please");
-        AddToConsole("start_car_error:the cam is not opened");
-        return;
-    }else{
-        AddToConsole("cam opened,please set the map and the car");
-    }
-
-    // then set all the config
-
-    // check if all the config is done
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    try{
-        global_configs->GetMapCorner();
-    }catch(logic_error e){
-        AfxMessageBox(L"didn't set the corner for the map!");
-        AddToConsole(e.what());
-        return;
-    }
-    AddToConsole("map corner set!");
-
-    // OnCenCorner();// gen the map point, NO! the map point should be done 
-    // without putting the car on the map
-
-    try{
-        global_configs->GetMapPoint();
-    }catch(logic_error e){
-        AfxMessageBox(L"can't get the map point!");
-        AddToConsole(e.what());
-        return;
-    }
-    AddToConsole("map point generated!");
-
-    AddToConsole("all config loaded!,start the car");
-
-    // Note: the car will control camera now, you don't have call a timer
-    // really? no .... you can't set timer in cpp....so this is just init...
-    if(m_car.Init(&m_main_input,&m_main_output,global_configs)){
-        AddToConsole("car initialized!",true);
-    }else{
-        AfxMessageBox(L"Please open the car and set the right com port!");
-        AddToConsole("Car init failed!",true);
-        return;
-    }
-    if(m_car.StartCar()){
-        KillTimer(MAIN_CAM);
-        SetTimer(CAR_PROC,20,NULL);
-    }else{
-        AfxMessageBox(L"无法找到小车，请调节阀值！");
-        OnConfigThreshold();
-        return;
-    }
-
-
-}
-
-
-void CTrackTheCarDlg::PostNcDestroy()
-{
-    // TODO: 在此添加专用代码和/或调用基类
-    m_log_file.Close();
-    CDialogEx::PostNcDestroy();
-}
-
 
 void CTrackTheCarDlg::CamProc(){
     if(m_main_input.IsPause()) return;
@@ -428,138 +359,122 @@ void CTrackTheCarDlg::CamProc(){
 }
 
 void CTrackTheCarDlg::CarProc(){
+    // this is new car proc
     car_working = true;
-
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-
-    CvPoint from;
-    CvPoint to;
-    CSmallCar::MOVE_RESULT re;
-    CString op;
-    CSmallCar::FIND_POINT pre = m_car.FindNextPoint(&to);
-    // 已经走完了！
-    if(pre == CSmallCar::NO_MORE_POINT){
-        AddToConsole("reach last point!");
-        ExitCarProc(true);
-        AfxMessageBox(L"The car has reached last point!");
+    CamProc();//  get the new frame
+    CvPoint car_head,car_tail,car_target;
+    if(!m_car.GetCarInfo(&car_head,&car_tail,&car_target)){
+        ExitCarProc();
+        AddToConsole(L"Can't find car!.Exit now",true);
+        AfxMessageBox(L"Can't find car!.Exit now");
         return;
     }
 
-    // 避免小车卡在一个地方
-    // 避免小车回头在Move2NextPoint里
-    int c_same_op = 0;
-    int c_error_modify = 0; // 自动修改过几次误差值
-    // 用于记录上一次操作
-    CSmallCar::MOVE_RESULT last_op = CSmallCar::REACH_POINT;
-   
-    // the temp value for the small car distance
-    int t_distance_e = global_configs->GetDistanceError();
-    int t_angle_e = global_configs->GetAngleError();
-
-    do{
-
-        CamProc();// cap a new frame
-
-        if(CSmallCar::FAIL == m_car.GetCarPosEx(&from)){
-            AddToConsole(L"can't find the car pos!");
-            ExitCarProc(true);
-            AfxMessageBox(L"找不到小车");
-            return;
-        }
-
-        if(m_car.isCarStuck()){
-            CString str;
-            str.Format(L"car stuck at x=%d y=%d",from.x,from.y);
-            AddToConsole(str);
-            // 加速一下，然后再捕获
-            m_car.SpeedUp();
-            continue;
-        }
-
-        re = m_car.Move2NextPoint(t_distance_e,t_angle_e);
-
-        if(re != last_op){
-            c_same_op = 0;
-            last_op = re;
-        }else if((re == CSmallCar::TURN_LEFT) ||
-            (re == CSmallCar::TURN_RIGHT)){
-                // 如果一直在转弯就得准备允许扩大误差了
-                // NO 应该让它后退!
-                m_car.GoBackForTurn();
-                c_same_op++;
-        }
-        if(MAX_ERROR_MODIFY_TIME < c_error_modify){
-            // too much modify!
-            CString str;
-            str.Format(L"ERROR:too much modify! %d times",c_error_modify);
-            AddToConsole(str);
-            //AfxMessageBox(L"自动修改次数过多！角点生成有误");
-            ExitCarProc(true);
-            
-        }
-        if(MAX_OP_TIME < c_same_op){
-            c_same_op = 0;
-            //t_distance_e += ERROR_MODIFY_VALUE;
-            //t_distance_e += ERROR_MODIFY_VALUE;
-            c_error_modify++;
-        }
-        // 输出操作结果
-        switch(re){
-        case CSmallCar::GO_FORWARD:{
-            op = L"go forward";
-            break;
-                                   }
-        case CSmallCar::TURN_LEFT:{
-            op = L"go left";
-            break;
-                                  }
-        case CSmallCar::TURN_RIGHT:{
-            op = L"go right";
-            break;
-                                   }
-        case CSmallCar::GO_BACK:{
-            op = L"go back";
-            break;
-        }
-        case CSmallCar::REACH_POINT:{
-            op = L"reach point";
-            break;
-                                    }
-        case CSmallCar::PASS_POINT:{
-            op = L"pass point";
-            break;
-                                   }
-
-        }
-
-        CString str;
-        str.Format(L"Op=%s Move from x=%d y=%d to x=%d y=%d",
-            op,
-            from.x,from.y,
-            to.x,to.y);
-        AddToConsole(str);
-        if(re == CSmallCar::REACH_POINT) break;
-        if(re == CSmallCar::PASS_POINT) break;
-        Sleep(200);
-    }while(re != CSmallCar::REACH_POINT);
-
-    AddToConsole("reach point");
-
-
+    CSmallCar::MOVE_RESULT re;
+    CString log_str,error_str;
+    re = m_car.MoveCar(log_str,error_str);
+    // unknown error
+    if(CSmallCar::MOVE_ERROR == re){
+        ExitCarProc();
+        AddToConsole(L"Error in moving car!.Exit now",true);
+        AfxMessageBox(L"Error in moving car!.Exit now");
+        return;
+    }
+    // reach the end point
+    if(CSmallCar::REACH_END == re){
+        ExitCarProc();
+        AddToConsole(L"Reach end!",true);
+        AfxMessageBox(L"Reach end!");
+        return;
+    }
+    // other return value means the car is working fine
+    AddToConsole(log_str,false);
     car_working = false;
 }
 
-void CTrackTheCarDlg::ExitCarProc(bool forever /*= true*/){
+void CTrackTheCarDlg::ExitCarProc(){
     m_car.StopCar();
     car_working = false;
-    if(forever){
-        KillTimer(CAR_PROC);
-    }
+    KillTimer(CAR_PROC);
+    AddToConsole(L"CarProc exit. some error occurred",true);
 }
 
 void CTrackTheCarDlg::OnRestConfig()
-{
-    CConfigs* global_configs = &((CTrackTheCarApp*)AfxGetApp())->global_configs;
-    global_configs->RestConfig();
+{   
+    CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
+    g_configs->ResetConfig();
     ShowConfig();
+}
+
+
+void CTrackTheCarDlg::OnBnClickedPrepareCar()
+{
+    CGConfigs* g_configs = &((CTrackTheCarApp*)AfxGetApp())->g_configs;
+
+    if(!m_main_input.IsCapturing()){
+        AfxMessageBox(L"Open the cam please");
+        AddToConsole("start_car_error:the cam is not opened",true);
+        return;
+    }
+
+    // check if config is set
+    if(!g_configs->map_corner.IsSet()){
+        AfxMessageBox(L"Map corner not set!");
+        return;
+    }
+
+    if(!g_configs->raw_line.IsSet()){
+        AfxMessageBox(L"Map line not generated!");
+        return;
+    }
+
+    // TODO: Connect and find the car, and find the lines
+    CSmallCar::CAR_ERROR e;
+    CarInfo car_info;
+    e = m_car.Init(&m_main_input,g_configs);
+    if(CSmallCar::CANT_FIND_CAR == e){
+        AfxMessageBox(L"Can't find car, please set the threshold!");
+        OnConfigThreshold();
+        return;
+    }
+    if(CSmallCar::CANT_CONNECT_CAR == e){
+        AfxMessageBox(L"Can't connect car, please set the right com port,and open the car");
+        return;
+    }
+    if(CSmallCar::NO_CAR_ERROR == e){
+        AddToConsole(L"Car initialized, waiting for order",true);
+        CImageProc proc;
+        // show the map 
+        m_main_output.SetCurrentFrame(g_configs->map_thin_image.GetImage());
+        proc.DrawPoints
+        // show the car position
+        m_car.GetCarInfo(car_info);
+        m_main_output2.SetCurrentFrame(m_main_input.GetCurrentFrame());
+        cvCircle(m_main_output2.GetCurrentFrame(),car_info.core,10,CV_RGB(0,255,0),3);
+        m_main_output.UpdateFrame();
+        m_main_output2.UpdateFrame();
+
+        m_btn_start_car.EnableWindow(TRUE);
+    }
+}
+
+void CTrackTheCarDlg::OnBnClickedBMainStartCar()
+{
+    m_btn_prepare_car.EnableWindow(FALSE);
+    m_btn_stop_car.EnableWindow(TRUE);
+    // send the message to start the car, and start the loop
+    m_car.StartCar();
+    // timer! i forgot... that's why car is always straight
+    KillTimer(MAIN_CAM);
+    SetTimer(CAR_PROC,5,NULL);
+}
+
+
+void CTrackTheCarDlg::OnBnClickedBMainStopCar()
+{
+    // stop the car, in case something wrong has happened
+    m_btn_prepare_car.EnableWindow(TRUE);
+    m_btn_start_car.EnableWindow(TRUE);
+    m_btn_stop_car.EnableWindow(FALSE);
+    ExitCarProc();
 }
