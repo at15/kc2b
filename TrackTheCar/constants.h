@@ -17,7 +17,7 @@
 #define MCV_MAX_LINE_DISTANCE 40 // 线段间隔最大值，小于它，线段将被连在一起??
 
 #define LINE_DISTANCE_ERROR 10 // 去除重复直线时允许的端点间距离,小于它被认为重复
-#define LINE_POINT_DIST 10 // 线段排序时，若端点距离小于它合为一点，否则增加一条直线
+#define LINE_POINT_DIST 40 // 线段排序时，若端点距离小于它合为一点，否则增加一条直线
 
 // for route helper functions
 #define DISTANCE_ERROR 30 //当距离小于等于distance_error像素时，可认为已到达该点

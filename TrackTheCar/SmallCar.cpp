@@ -138,11 +138,14 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
         {
             if(coss > 9.5)
             {
-                m_car_control.CMD('q');
+                //m_car_control.CMD('q');
+                m_car_control.RunCar(CCarControl::mLeft);
             }
             else
             {
-                m_car_control.CMD('w');
+                //m_car_control.CMD('w');
+                m_car_control.RunCar(CCarControl::mRight);
+
             }
 
         }
@@ -150,11 +153,14 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
         {
             if(coss > 0.9) // zhuan quan
             {
-                m_car_control.CMD('e');
+                //m_car_control.CMD('e');
+                m_car_control.RunCar(CCarControl::kLeft);
+
             }
             else
             {
-                m_car_control.CMD('r');
+                //m_car_control.CMD('r');
+                m_car_control.RunCar(CCarControl::kRight);
             }
 
 

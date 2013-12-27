@@ -144,33 +144,35 @@ bool CCarControl::IsValidSpeed( int speed )
 }
 
 void CCarControl::CMD(unsigned char a){
-    m_port->WriteData(&a,1);
+    unsigned char ch = a;// 这里有问题，到writedata就卡住了
+    // usigned char -> usigned char*？
+    m_port->WriteData(&ch,1);
 }
 
 void CCarControl::RunCar(opcode op)
 {
     if(!port_ready) return;
-    unsigned char data;
+    unsigned char* data;
     switch(op){
 
     case mLeft:
-        data = 'q';//(unsigned char*) 'e';
-        m_port->WriteData(&data,1);
+        data = (unsigned char*)'q';//(unsigned char*) 'e';
+        m_port->WriteData(data,1);
         break;
 
     case mRight:
-        data = 'w';//(unsigned char*) 'e';
-        m_port->WriteData(&data,1);
+        data = (unsigned char*)'w';//(unsigned char*) 'e';
+        m_port->WriteData(data,1);
         break;
 
     case kLeft:
-        data = 'e';//(unsigned char*) 'e';
-        m_port->WriteData(&data,1);
+        data = (unsigned char*)'e';//(unsigned char*) 'e';
+        m_port->WriteData(data,1);
         break;
 
     case kRight:
-        data = 'r';//(unsigned char*)'r';
-        m_port->WriteData(&data,1);
+        data = (unsigned char*)'r';//(unsigned char*)'r';
+        m_port->WriteData(data,1);
         break;
 
 
