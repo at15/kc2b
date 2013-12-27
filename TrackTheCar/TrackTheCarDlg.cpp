@@ -372,7 +372,8 @@ void CTrackTheCarDlg::CarProc(){
 
     CSmallCar::MOVE_RESULT re;
     CString log_str,error_str;
-    re = m_car.MoveCar(log_str,error_str);
+    CvPoint car_pos, target_pos;
+    re = m_car.MoveCar(log_str,error_str,car_pos,target_pos);
     // unknown error
     if(CSmallCar::MOVE_ERROR == re){
         ExitCarProc();
@@ -389,6 +390,13 @@ void CTrackTheCarDlg::CarProc(){
     }
     // other return value means the car is working fine
     AddToConsole(log_str,false);
+    // update the window
+    // show the car position
+    m_main_output2.SetCurrentFrame(m_main_input.GetCurrentFrame());
+    cvCircle(m_main_output2.GetCurrentFrame(),car_pos,10,CV_RGB(0,255,0),3);
+    cvCircle(m_main_output2.GetCurrentFrame(),target_pos,15,CV_RGB(0,255,0),3);
+    m_main_output2.UpdateFrame();
+
     car_working = false;
 }
 

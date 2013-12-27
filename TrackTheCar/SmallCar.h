@@ -37,7 +37,8 @@ public:
     bool GetCarInfo(CarInfo& info);
     bool StartCar();
     bool StopCar();
-    MOVE_RESULT MoveCar(CString& log_str,CString& error_str);
+    MOVE_RESULT MoveCar(CString& log_str,CString& error_str,CvPoint& car_pos,
+        CvPoint& target_pos);
     bool SpeedUp();
 
 private:

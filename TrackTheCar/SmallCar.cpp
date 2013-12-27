@@ -93,7 +93,8 @@ bool CSmallCar::StopCar(){
     return true;
 }
 
-CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
+CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str,CvPoint& car_pos,
+    CvPoint& target_pos)
 {
     error_str = L"";
 
@@ -111,11 +112,14 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
     }
 
     // move the car
-
+    
     CLine current_line;
     current_line = m_config->sorted_line.Get().at(m_current_line_index);
 
     double distance=CLine::Distance(m_car_info.head,current_line.end());
+
+    car_pos = m_car_info.core;
+    target_pos = current_line.end();
 
     // reach the target
     if(distance <= DISTANCE_ERROR) {
