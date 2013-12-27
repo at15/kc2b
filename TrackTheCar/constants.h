@@ -3,6 +3,7 @@
 #define CORNER_SIZE 10 // the size of the red corner
 #define PI 3.1415926 // PI
 
+#define COM_PORT_NUM 3
 // the param for the little car
 #define CAR_LENGTH 15
 #define HEADTAIL_DISTANCE 8.5 

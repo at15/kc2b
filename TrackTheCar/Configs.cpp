@@ -40,7 +40,7 @@ void CGConfigs::LoadDefault()
     route_angle_error.Set(ANGLE_ERROR);
 
     // default com port
-    com_port.Set(7);
+    com_port.Set(COM_PORT_NUM);
 }
 
 CGConfigs::CGConfigs()
