@@ -445,8 +445,12 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
         AddToConsole(L"Car initialized, waiting for order",true);
         CImageProc proc;
         // show the map 
-        m_main_output.SetCurrentFrame(g_configs->map_thin_image.GetImage());
-        proc.DrawLines(&m_main_output,g_configs->sorted_line.Get(),200);
+        m_main_output.SetCurrentFrame(m_main_input.GetCurrentFrame());
+        IplImage* pSrc = m_main_output.GetCurrentFrame();
+        vector<CvPoint> v_corners = g_configs->all_map_points;
+        for (int i=0;i<v_corners.size();i++){
+            cvCircle(pSrc,v_corners.at(i),6, CV_RGB(255,0,0),2);
+        }
         // show the car position
         m_car.GetCarInfo(car_info);
         m_main_output2.SetCurrentFrame(m_main_input.GetCurrentFrame());
