@@ -445,7 +445,7 @@ void CTrackTheCarDlg::OnBnClickedPrepareCar()
         AddToConsole(L"Car initialized, waiting for order",true);
         CImageProc proc;
         // show the map 
-        m_main_output.SetCurrentFrame(g_configs->map_thin.GetImage());
+        m_main_output.SetCurrentFrame(g_configs->map_thin_image.GetImage());
         proc.DrawLines(&m_main_output,g_configs->sorted_line.Get(),200);
         // show the car position
         m_car.GetCarInfo(car_info);

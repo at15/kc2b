@@ -93,6 +93,12 @@
     <ClInclude Include="BasicConfigDlg.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Queue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="seqQueue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="TrackTheCar.cpp">

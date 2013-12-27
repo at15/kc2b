@@ -1,6 +1,7 @@
 #pragma once
 #include "constants.h"
 #include "CvPicCtrl.h"
+#include "seqQueue.h"
 // deal with the image processing
 // 图像类
 template<class T> class Image {
@@ -73,5 +74,7 @@ public:
     // abandoned:根据c_point的位置找离他最近的直线，找到后把该直线的passed设为true
     bool FindNearestLine(CLine& r_line,std::vector<CLine>& o_lines,CvPoint c_point);
 
+    double distance2(int x1,int y1,int x2,int y2);
+    std::vector<CvPoint> RoadPoint(IplImage* src,CvPoint begin,seqQueue<CvPoint>& que);
 };
 

@@ -420,3 +420,77 @@ void CImageProc::DrawMiddleCircle(IplImage* img,CvScalar color /* = CV_RGB(0,255
     int h = img->height;
     cvCircle(img,cvPoint(w/2,h/2),10,color,3);
 }
+
+
+#define r 30
+#define rr 900
+
+double CImageProc::distance2(int x1,int y1,int x2,int y2){
+    double tmp=(x1-x2)*(x1-x2)+(y1-y2)*(y1-y2);
+    std::cout<<tmp<<std::endl;
+    return tmp;
+}
+
+vector<CvPoint> CImageProc::RoadPoint(IplImage* src,CvPoint begin,seqQueue<CvPoint>& que)
+{
+    vector<CvPoint> map_points;
+    bool find=true;
+    CvPoint center=cvPoint(begin.x,begin.y);
+    CvPoint tmp=cvPoint(0,0);
+    int i,j;
+    BwImage deal(src);
+    int num = 0;
+    que.enQueue(center);++num;
+
+
+    while(find==true ){
+        find=false;
+        //std::cout<<1<<std::endl;//ÓÒ±ß
+        for(i=center.x+r,j=center.y-r;!find && j<center.y+r;++j){
+            if (deal[j][i]==255 && (distance2(tmp.x,tmp.y,i,j)>=rr)) {
+
+                tmp=cvPoint(center.x,center.y);
+                center.x=i;center.y=j;
+
+                que.enQueue(center);
+                ++num;find=true;//deal[j][i]=0;
+            }
+        }
+
+        //std::cout<<2<<std::endl;//µ×±ß
+        for(i=center.x+r,j=center.y+r;!find && i>center.x-r;--i){
+            if (deal[j][i]==255 && (distance2(tmp.x,tmp.y,i,j)>=rr)) {
+                tmp=cvPoint(center.x,center.y);
+                center.x=i;center.y=j;
+                que.enQueue(center);
+                ++num;find=true;//deal[j][i]=0;
+            }
+        }
+
+        //std::cout<<3<<std::endl;//×ó±ß
+        for(i=center.x-r,j=center.y+r;!find && j>center.y-r;--j){
+            if (deal[j][i]==255 && (distance2(tmp.x,tmp.y,i,j)>=rr)) {
+                tmp=cvPoint(center.x,center.y);
+                center.x=i;center.y=j;
+                que.enQueue(center);
+                ++num;find=true;//deal[j][i]=0;
+            }
+        }
+        //std::cout<<4<<std::endl;//ÉÏ±ß
+        for(i=center.x-r,j=center.y-r;!find && i<center.x+r;++i){
+            if (deal[j][i]==255 && (distance2(tmp.x,tmp.y,i,j)>=rr)) {
+                tmp=cvPoint(center.x,center.y);
+                center.x=i;center.y=j;
+                que.enQueue(center);
+                ++num;find=true;//deal[j][i]=0;
+            }
+        }
+        std::cout<<num<<std::endl;
+
+    }
+
+    while(!que.isEmpty()){
+        map_points.push_back(que.deQueue());
+    }
+    return map_points;
+}

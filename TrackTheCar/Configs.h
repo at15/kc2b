@@ -126,7 +126,10 @@ public:
     CConfigItem<double> line_distance_error;
 
     // save the map image after cvThin,use this as a dummy to show output
-    CTempImage map_thin;
+    CTempImage map_thin_image;
+
+    seqQueue<CvPoint> que;
+    std::vector<CvPoint> all_map_points;
 private:
     void LoadDefault();
 };

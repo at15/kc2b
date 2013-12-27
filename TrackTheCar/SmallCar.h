@@ -59,4 +59,7 @@ private:
     bool m_reach_end;
     std::vector<CLine> m_map_line;
     int m_current_line_index; // which line the car is running 0 based
+
+    std::vector<CvPoint> m_all_map_point;
+    int map_point_index;
 };

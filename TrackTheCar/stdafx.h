@@ -60,3 +60,4 @@
 #include "StrConv.h"
 #include "RouteHelper.h"
 #include "ImageProc.h"
+#include "seqQueue.h"

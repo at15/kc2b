@@ -94,8 +94,8 @@ void CMapDlg::map_process(){
     proc.DrawLines(&m_map_line_gened,v_lines);
     m_map_line_gened.UpdateFrame();
     //  set the line
+    g_configs->map_thin_image.SetImage(thin);
     g_configs->raw_line.Set(v_lines);
-    g_configs->map_thin.SetImage(thin);
 }
 
 void CMapDlg::OnBnClickedMapOpenImage()

@@ -112,8 +112,10 @@
     <ClInclude Include="ImageProc.h" />
     <ClInclude Include="MapDlg.h" />
     <ClInclude Include="MyCvvImage.h" />
+    <ClInclude Include="Queue.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="RouteHelper.h" />
+    <ClInclude Include="seqQueue.h" />
     <ClInclude Include="SerialPort.h" />
     <ClInclude Include="SmallCar.h" />
     <ClInclude Include="stdafx.h" />
