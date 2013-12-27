@@ -54,11 +54,9 @@ void CCarControl::GoLeft(){
 
 void CCarControl::GoRight(){
     if(!port_ready) return;
-    if(m_last_op != kRight){
-        m_last_op = kRight;
-        RunCar(kRight);
-        RunCar(kSFront);
-    }
+
+    unsigned char data = 'r';
+    m_port->WriteData(&data,1);
 }
 
 void CCarControl::GoBack(){
@@ -68,9 +66,12 @@ void CCarControl::GoBack(){
 }
 
 void CCarControl::Stop(){
-    if(!port_ready) return;
+    /*if(!port_ready) return;
     m_last_op = kStop;
-    RunCar(kStop);
+    RunCar(kStop);*/
+    // stop the car
+    unsigned char data = 's';
+    m_port->WriteData(&data,1);
 }
 
 
@@ -152,29 +153,36 @@ void CCarControl::CMD(unsigned char a){
 void CCarControl::RunCar(opcode op)
 {
     if(!port_ready) return;
-    unsigned char* data;
+    unsigned char data;
     switch(op){
 
     case mLeft:
-        data = (unsigned char*)'q';//(unsigned char*) 'e';
-        m_port->WriteData(data,1);
+        data = 'q';//(unsigned char*) 'e';
+        m_port->WriteData(&data,1);
         break;
 
     case mRight:
-        data = (unsigned char*)'w';//(unsigned char*) 'e';
-        m_port->WriteData(data,1);
+        data = 'w';//(unsigned char*) 'e';
+        m_port->WriteData(&data,1);
         break;
 
     case kLeft:
-        data = (unsigned char*)'e';//(unsigned char*) 'e';
-        m_port->WriteData(data,1);
+        data = 'e';//(unsigned char*) 'e';
+        m_port->WriteData(&data,1);
         break;
 
     case kRight:
-        data = (unsigned char*)'r';//(unsigned char*)'r';
-        m_port->WriteData(data,1);
+        data = 'r';//(unsigned char*)'r';
+        m_port->WriteData(&data,1);
         break;
-
+    case GoD:
+        data = 'd';
+        m_port->WriteData(&data,1);
+        break;
+    case GoF:
+        data = 'f';
+        m_port->WriteData(&data,1);
+        break;
 
     }
     

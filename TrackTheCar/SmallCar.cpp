@@ -18,15 +18,15 @@ CSmallCar::CAR_ERROR CSmallCar::Init( CCvPicCtrl* camera,CGConfigs* config )
 
     // check if we can connect the car via blue tooth
     if(!m_car_control.Init(config->com_port.Get())) return CANT_CONNECT_CAR;
-    
+
     // check if we can find the car
     if(!GetCarInfo(m_car_info)) return CANT_FIND_CAR;
-    
+
     // sort the lines
     m_map_line = m_proc.SortLines(m_config->raw_line.Get(),
         m_car_info.head,m_car_info.tail);
     m_config->sorted_line.Set(m_map_line);
-    
+
     return NO_CAR_ERROR;
 }
 
@@ -114,11 +114,11 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
 
     CLine current_line;
     current_line = m_config->sorted_line.Get().at(m_current_line_index);
-  
+
     double distance=CLine::Distance(m_car_info.head,current_line.end());
-     
+
     // reach the target
-    if(distance <= m_config->route_distance_error.Get()) {
+    if(distance <= DISTANCE_ERROR) {
         m_car_control.Stop();
         m_current_line_index++;
         log_str.Format(L"reach point x=%d y=%d",current_line.end().x,
@@ -134,28 +134,34 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
         double abss = car_vec.ABS() * drct_vec.ABS();
         double sinn = car_vec.x() * drct_vec.y() - car_vec.y() * drct_vec.x();
         coss = coss / abss;
-        if( abss < 0 )
+        if( sinn < 0 )
         {
-            if(coss > 9.5)
+            if(coss > 0.95)
             {
                 //m_car_control.CMD('q');
                 m_car_control.RunCar(CCarControl::mLeft);
             }
+            else if(coss > 0.9)
+                m_car_control.RunCar(CCarControl::GoD);
             else
             {
                 //m_car_control.CMD('w');
-                m_car_control.RunCar(CCarControl::mRight);
+                m_car_control.RunCar(CCarControl::kLeft);
 
             }
 
         }
         else
         {
-            if(coss > 0.9) // zhuan quan
+            if(coss > 0.95) // zhuan quan
             {
                 //m_car_control.CMD('e');
-                m_car_control.RunCar(CCarControl::kLeft);
+                m_car_control.RunCar(CCarControl::mRight);
 
+            }
+            else if(coss > 0.9)
+            {
+                m_car_control.RunCar(CCarControl::GoF);
             }
             else
             {
@@ -182,31 +188,31 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str)
     // 上一次的操作，如果相同就不再发出指令。
 
     if(fabs(car_vec.Cross(drct_vec)) < car_vec.ABS()*drct_vec.ABS()*ANGLE_SIN_OFFSET){
-        m_car_control.GoForward();// should go straight
-        log_str.Format(L"Forward from x=%d y=%d to x=%d y=%d",
-            m_car_info.core.x,
-            m_car_info.core.y,
-            current_line.end().x,
-            current_line.end().y);
-        return MOVE_FORWARD;
+    m_car_control.GoForward();// should go straight
+    log_str.Format(L"Forward from x=%d y=%d to x=%d y=%d",
+    m_car_info.core.x,
+    m_car_info.core.y,
+    current_line.end().x,
+    current_line.end().y);
+    return MOVE_FORWARD;
     }
 
     if(car_vec.Cross(drct_vec) < 0){
-        m_car_control.GoRight();
-        log_str.Format(L"Right from x=%d y=%d to x=%d y=%d",
-            m_car_info.core.x,
-            m_car_info.core.y,
-            current_line.end().x,
-            current_line.end().y);
-        return TURN_RIGHT;
+    m_car_control.GoRight();
+    log_str.Format(L"Right from x=%d y=%d to x=%d y=%d",
+    m_car_info.core.x,
+    m_car_info.core.y,
+    current_line.end().x,
+    current_line.end().y);
+    return TURN_RIGHT;
     }else{
-        m_car_control.GoLeft();
-        log_str.Format(L"Left from x=%d y=%d to x=%d y=%d",
-            m_car_info.core.x,
-            m_car_info.core.y,
-            current_line.end().x,
-            current_line.end().y);
-        return TURN_LEFT;
+    m_car_control.GoLeft();
+    log_str.Format(L"Left from x=%d y=%d to x=%d y=%d",
+    m_car_info.core.x,
+    m_car_info.core.y,
+    current_line.end().x,
+    current_line.end().y);
+    return TURN_LEFT;
     }
 
     // 需要倒车的功能么？应该不需要吧？

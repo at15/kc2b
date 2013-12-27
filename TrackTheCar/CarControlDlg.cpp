@@ -77,7 +77,9 @@ void CarControlDlg::OnBnClickedForward()
 void CarControlDlg::OnBnClickedLeft()
 {
     // TODO: 在此添加控件通知处理程序代码
-    m_car_ctrl.RunCar(CCarControl::kLeft);
+    //m_car_ctrl.RunCar(CCarControl::kLeft);
+    unsigned char data = 'r';
+    m_car_ctrl.m_port->WriteData(&data,1);
 }
 
 

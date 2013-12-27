@@ -45,6 +45,8 @@ public:
         kStop,    // 停止
         mLeft,    //微左转
         mRight,   //微右转
+        GoD,
+        GoF,
 
         speedup,  // 加速
         slowdown, // 减速
