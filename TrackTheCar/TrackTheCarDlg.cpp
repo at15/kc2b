@@ -466,7 +466,7 @@ void CTrackTheCarDlg::OnBnClickedBMainStartCar()
     m_car.StartCar();
     // timer! i forgot... that's why car is always straight
     KillTimer(MAIN_CAM);
-    SetTimer(CAR_PROC,20,NULL);
+    SetTimer(CAR_PROC,5,NULL);
 }
 
 
