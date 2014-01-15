@@ -96,7 +96,7 @@ BOOL CTrackTheCarDlg::OnInitDialog()
     CString c_time =tm.Format("%d-%H-%M-%S");
     CString log_current_time = tm.Format("20%y-%m-%d %H:%M:%S");
     CString log_path; 
-    log_path.Format(L"%s%s.txt",L"C:\\Users\\W7_64\\Desktop\\",c_time);
+    log_path.Format(L"%s\\%s.txt",GetExeDir(),c_time);
     m_log_file.Open(log_path , CFile::modeWrite|CFile::modeCreate, &m_log_error);
     AddToConsole(L">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>",true);// start the log
     AddToConsole(log_current_time);
@@ -362,13 +362,14 @@ void CTrackTheCarDlg::CarProc(){
     // this is new car proc
     car_working = true;
     CamProc();//  get the new frame
+    /*
     CvPoint car_head,car_tail,car_target;
     if(!m_car.GetCarInfo(&car_head,&car_tail,&car_target)){
         ExitCarProc();
         AddToConsole(L"Can't find car!.Exit now",true);
         AfxMessageBox(L"Can't find car!.Exit now");
         return;
-    }
+    }*/
 
     CSmallCar::MOVE_RESULT re;
     CString log_str,error_str;
@@ -485,4 +486,15 @@ void CTrackTheCarDlg::OnBnClickedBMainStopCar()
     m_btn_start_car.EnableWindow(TRUE);
     m_btn_stop_car.EnableWindow(FALSE);
     ExitCarProc();
+}
+
+CString CTrackTheCarDlg::GetExeDir()
+{
+    wchar_t  exepath[MAX_PATH];
+    CString  strdir,tmpdir; 
+    memset(exepath,0,MAX_PATH); 
+    GetModuleFileName(NULL,exepath,MAX_PATH); 
+    tmpdir=exepath; 
+    strdir=tmpdir.Left(tmpdir.ReverseFind('\\'));
+    return strdir; 
 }

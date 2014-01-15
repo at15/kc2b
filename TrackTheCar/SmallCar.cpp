@@ -105,7 +105,8 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str,Cv
     }
 
     // reach the end
-    if(m_config->sorted_line.Get().size() == (m_current_line_index+1)){
+    if(m_config->sorted_line.Get().size() == m_current_line_index){
+
         m_car_control.Stop();
         log_str = L"Reach last point";
         return REACH_END;
@@ -178,47 +179,4 @@ CSmallCar::MOVE_RESULT CSmallCar::MoveCar(CString& log_str,CString& error_str,Cv
 
 
     }
-
-
-
-
-
-    /*
-    // 判断向左向右
-    CVector car_vec(m_car_info.tail,m_car_info.head);
-    //CVector drct_vec(current_line.start(),current_line.end());
-    CVector drct_vec(m_car_info.tail,current_line.end());
-    // PS:如果一直给小车发转向的指令，舵机会坏掉。所以在car control里会记录
-    // 上一次的操作，如果相同就不再发出指令。
-
-    if(fabs(car_vec.Cross(drct_vec)) < car_vec.ABS()*drct_vec.ABS()*ANGLE_SIN_OFFSET){
-    m_car_control.GoForward();// should go straight
-    log_str.Format(L"Forward from x=%d y=%d to x=%d y=%d",
-    m_car_info.core.x,
-    m_car_info.core.y,
-    current_line.end().x,
-    current_line.end().y);
-    return MOVE_FORWARD;
-    }
-
-    if(car_vec.Cross(drct_vec) < 0){
-    m_car_control.GoRight();
-    log_str.Format(L"Right from x=%d y=%d to x=%d y=%d",
-    m_car_info.core.x,
-    m_car_info.core.y,
-    current_line.end().x,
-    current_line.end().y);
-    return TURN_RIGHT;
-    }else{
-    m_car_control.GoLeft();
-    log_str.Format(L"Left from x=%d y=%d to x=%d y=%d",
-    m_car_info.core.x,
-    m_car_info.core.y,
-    current_line.end().x,
-    current_line.end().y);
-    return TURN_LEFT;
-    }
-
-    // 需要倒车的功能么？应该不需要吧？
-    */
 }

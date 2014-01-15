@@ -21,7 +21,7 @@
 #define LINE_POINT_DIST 40 // 线段排序时，若端点距离小于它合为一点，否则增加一条直线
 
 // for route helper functions
-#define DISTANCE_ERROR 50 //当距离小于等于distance_error像素时，可认为已到达该点
+#define DISTANCE_ERROR 40 //当距离小于等于distance_error像素时，可认为已到达该点
 #define ANGLE_ERROR 20 // 当角度小于distance_error像素时，可认为是0
 #define ANGLE_SIN_OFFSET 0.3	//最大偏移角度正弦
 
