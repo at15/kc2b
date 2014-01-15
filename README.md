@@ -1,8 +1,13 @@
-kc2b
+﻿kc2b
 ====
 
-Homework about using opencv to guide a small car
+科创2B小车走黑线 2013 B16 PC端
 
-If you are a student in sjtu, this code might be useful to you
+使用opencv处理图像，通过蓝牙把信号发给小车。小车最初是舵机转向，后来改成后轮驱动。（个人认为后轮灵活很多，可能给写的代码也有关系)
 
-坑爹的科创2B！！！
+1 界面使用MFC，显示IplImage通过CCvPicCtrl实现，通过timer来不断获取图像
+2 图像处理相关函数在CImageProc类中
+
+编译时注意修改配置属性中的库目录和包含目录（除非你的opencv2.4安装在c盘)
+
+2014-1-15 祝大家新年快乐
